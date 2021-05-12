@@ -1,0 +1,16 @@
+{
+    "manifest_version": 2,
+
+    "name": "Cowin Automation",
+    "description": "automatically fill data on cowin portal to speed up slot booking",
+    "version": "1.1",
+    "content_scripts": [
+        {
+            "matches": ["https://selfregistration.cowin.gov.in/*"],
+            "js": ["jquery.min.js" ,"contentScript.js"]
+        }
+    ],
+    "icons": {
+        "128": "icon.png"
+    }
+}
