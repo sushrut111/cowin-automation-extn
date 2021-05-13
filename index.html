@@ -1,6 +1,7 @@
 
-<html>
+<!doctype html>
 <head>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-160316192-1"></script>
 	<script>
@@ -18,9 +19,23 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Cowin extension | Covid19 Vaccination | Save time by automatically filling the information</title>
 </head>
+<body>
+<div class="container">
+  <h1>Cowin automation: Chrome extension</h1>
+  <div class="list-group">
+  <button type="button" class="list-group-item list-group-item-action" aria-current="true">
+    Fill in mobile number automatically
+  </button>
+  <button type="button" class="list-group-item list-group-item-action">Save details about State and district for faster searches</button>
+  <button type="button" class="list-group-item list-group-item-action">Automatic cursor focus into the appropriate fields to save mouse actions</button>
+  <button type="button" class="list-group-item list-group-item-action">Focus just on booking by not wasting time in selecting from dropdown and clicking</button>
+  <button type="button" class="list-group-item list-group-item-action">Automatically filter age group for quick booking</button>
+</div>
+</div>
+</body>
 <script>
   const redir = () => {
   	setTimeout(()=>{window.location.replace("https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm");}, 1000);
   }
-  window.addEventListener("load", redir);
+  //window.addEventListener("load", redir);
 </script>
