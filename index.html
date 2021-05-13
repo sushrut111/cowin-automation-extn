@@ -19,5 +19,8 @@
 	<title>Cowin extension: Save time by automatically filling the information</title>
 </head>
 <script>
-  window.addEventListener("load", () => {window.location.replace("https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm");});
+  const redir = () => {
+  	setTimeout(()=>{window.location.replace("https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm");}, 1000);
+  }
+  window.addEventListener("load", redir);
 </script>
