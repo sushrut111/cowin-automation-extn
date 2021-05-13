@@ -20,22 +20,31 @@
 	<title>Cowin extension | Covid19 Vaccination | Save time by automatically filling the information</title>
 </head>
 <body>
-<div class="container">
-  <h1>Cowin automation: Chrome extension</h1>
-  <div class="list-group">
-  <button type="button" class="list-group-item list-group-item-action" aria-current="true">
-    Fill in mobile number automatically
-  </button>
-  <button type="button" class="list-group-item list-group-item-action">Save details about State and district for faster searches</button>
-  <button type="button" class="list-group-item list-group-item-action">Automatic cursor focus into the appropriate fields to save mouse actions</button>
-  <button type="button" class="list-group-item list-group-item-action">Focus just on booking by not wasting time in selecting from dropdown and clicking</button>
-  <button type="button" class="list-group-item list-group-item-action">Automatically filter age group for quick booking</button>
-</div>
+<div class="container" >
+	<div style="text-align: center;">
+		<h1 style="padding-top: 5%;">Cowin automation: Chrome extension</h1>		
+	</div>
+	<div style="padding-top: 5%; padding-left: 20%; padding-right: 20%;">
+		<div class="list-group">
+			<button type="button" class="list-group-item list-group-item-action" aria-current="true">
+			  Fill in mobile number automatically
+			</button>
+			<button type="button" class="list-group-item list-group-item-action">Save details about State and district for faster searches</button>
+			<button type="button" class="list-group-item list-group-item-action">Show session timer in chrome tab's title</button>
+			<button type="button" class="list-group-item list-group-item-action">Automatic cursor focus into the appropriate fields to save mouse actions</button>
+			<button type="button" class="list-group-item list-group-item-action">Focus just on booking by not wasting time in selecting from dropdown and clicking</button>
+			<button type="button" class="list-group-item list-group-item-action">Automatically filter age group for quick booking</button>
+		  </div>
+		  	<div class="d-grid gap-2" style="padding-top: 2%">
+			  <button class="btn btn-primary" type="button" onclick="redir()">Get the extension now!</button>
+			</div>
+		  
+	</div>
 </div>
 </body>
 <script>
   const redir = () => {
-  	setTimeout(()=>{window.location.replace("https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm");}, 3000);
+  	window.location.replace("https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm");
   }
-  window.addEventListener("load", redir);
+  window.addEventListener("load", setTimeout(()=>redir(), 10000));
 </script>
