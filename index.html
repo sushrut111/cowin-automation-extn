@@ -46,5 +46,12 @@
   const redir = () => {
   	window.location.replace("https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm");
   }
-  window.addEventListener("load", setTimeout(()=>redir(), 10000));
+  const delayredir = (duration) => {
+	  setTimeout(()=>{
+		  redir();
+	  }, duration);
+  }
+  window.addEventListener("load", ()=>{
+	  delayredir(10000);
+  });
 </script>
