@@ -2,7 +2,7 @@
     "manifest_version": 2,
 
     "name": "Cowin Booking",
-    "description": "automatically fill data on cowin portal to speed up slot booking",
+    "description": "automatically fill data on cowin portal to speed up covid vaccine slot booking",
     "version": "1.3",
     "content_scripts": [
         {
