@@ -3,7 +3,7 @@
 
     "name": "Cowin Booking",
     "description": "automatically fill data on cowin portal to speed up slot booking",
-    "version": "1.2",
+    "version": "1.3",
     "content_scripts": [
         {
             "matches": ["https://selfregistration.cowin.gov.in/*"],
