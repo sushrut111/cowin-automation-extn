@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
 
-    "name": "Cowin Automation",
+    "name": "Cowin Booking",
     "description": "automatically fill data on cowin portal to speed up slot booking",
     "version": "1.2",
     "content_scripts": [
