@@ -221,9 +221,9 @@ const createSelectOptions = (id, text, value, selected) => {
 const createForm = () => {
 
   // basic styles : reused
-  let textLabelStyles = "color: black;";
+  let textLabelStyles = "color: black; padding-left: 1%;";
   let inputStyles = "color: black; background: white;";
-  let warnLabelStyles = "color: red;";
+  let warnLabelStyles = "color: red; padding-left: 1%;";
 
   // parent div for form
   let wrapperDiv = document.createElement("div");
@@ -235,7 +235,7 @@ const createForm = () => {
   let mobileInput = createInput(mobileinputid, inputStyles, "number", mobilenumber);
   let mobileLabel = createLabel("mobileinputlabel", mobileinputid, "Mobile number (first 9 digits): ", textLabelStyles);
   let mobileNumberWarn = createWarningText(
-    "You will have to enter the 10th digit in the input box to proceed with automation.",
+    "You will have to enter the 10th digit in the actual website form to proceed with automation.",
     warnLabelStyles
   )
 
@@ -243,7 +243,7 @@ const createForm = () => {
   let pincodeinputid = "pincodeinput";
   let pincodeinput = createInput(pincodeinputid, inputStyles, "number", first_5_pin_digits);
   let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code (First 5 digits)", textLabelStyles);
-  let pincodewarn = createWarningText("You will have to enter the 6th digit in the input box to proceed with automation.", warnLabelStyles);
+  let pincodewarn = createWarningText("You will have to enter the 6th digit in the actual website form manually to proceed with automation.", warnLabelStyles);
 
   // state name input field
   let stateinputid = "data-state";
