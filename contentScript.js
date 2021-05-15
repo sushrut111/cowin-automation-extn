@@ -1,9 +1,10 @@
 let mobilenumber = window.localStorage.getItem("mobile");
 let state_name = window.localStorage.getItem("state");
 let district_name = window.localStorage.getItem("district");
-let first_5_pin_digits = "";
+let first_5_pin_digits = window.localStorage.getItem("pincode");
 let allow_multiple = window.localStorage.getItem("allow_multiple")==="true"?true:false;
 let ageSelectorText = window.localStorage.getItem("age");
+let searchByDistrictFlag = window.localStorage.getItem("searchpref")==="district"?true:false;
 console.log(typeof(allow_multiple));
 
 var waitForEl = function(selector, callback) {
@@ -50,11 +51,32 @@ const repFun = () => {
     if(!!!allow_multiple) $('.register-btn').trigger('click');
   })
 
+  const dispatchAgeSelectorClick = () => {
+    setTimeout(()=>{
+      $(`label:contains(${ageSelectorText})`).trigger('click');
+    }, 500);
+  }
+
+  const dispatchStateDistrictClick = () => {
+    // checked = district
+    // unchecked = pincode
+    setTimeout(()=>{
+      if(searchByDistrictFlag) {
+        if($("[formcontrolname=searchType]")[0] && !!!$("[formcontrolname=searchType]")[0].checked)
+          $("[formcontrolname=searchType]").trigger('click')
+      } else {
+        $("[formcontrolname=pincode]").val(first_5_pin_digits);
+      }
+    }, 500);
+  }
+
   waitForEl("[formcontrolname=searchType]", function() {
-    setTimeout(()=>$("[formcontrolname=searchType]").trigger('click'), 500);
+
+    dispatchStateDistrictClick();
     $("[formcontrolname=pincode]").on('input', (e) => {
       if(e.target.value.length===6){
         $('.pin-search-btn').trigger('click');
+        dispatchAgeSelectorClick();
       }
     })
     
@@ -69,18 +91,14 @@ const repFun = () => {
           setTimeout(()=>{
             $('.pin-search-btn').trigger('click');
           }, 500);
-          setTimeout(()=>{
-            $(`label:contains(${ageSelectorText})`).trigger('click');
-          }, 500);
+          dispatchAgeSelectorClick();
         }, 500);
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
         $("[formcontrolname=pincode]").on('input', (e) => {
           if(e.target.value.length===6){
             $('.pin-search-btn').trigger('click');
-            setTimeout(()=>{
-              $(`label:contains(${ageSelectorText})`).trigger('click');
-            }, 500);
+            dispatchAgeSelectorClick();
           }
         })
       
@@ -158,7 +176,50 @@ const keep_focusing = () => {
 
 keep_focusing();
 
+const createInput = (id, style, type, value) => {
+  let retel = document.createElement("input");
+  retel.id = id;
+  retel.type = type;
+  retel.style = style;
+  retel.value = value;
+  return retel;
+}
+
+const createLabel = (id, forid, labelText, style) => {
+  let retel = document.createElement("label");
+  retel.id = id;
+  retel.for = forid;
+  retel.appendChild(document.createTextNode(labelText));
+  retel.style = style;
+  return retel;
+}
+
+const createWarningText = (warningtext, style) => {
+  let retel = document.createElement('p');
+  retel.appendChild(document.createTextNode(warningtext));
+  retel.style = style;
+  return retel;
+}
+
+const createSelectInput = (id, style, value) => {
+  let retel = document.createElement("select");
+  retel.style = style;
+  retel.id = id;
+  retel.value = value;
+  return retel;
+}
+
+const createSelectOptions = (id, text, value, selected) => {
+  let retel = document.createElement("option");
+  retel.id = id;
+  retel.value = value;
+  retel.appendChild(document.createTextNode(text));
+  if(selected) retel.selected = true;
+  return retel;
+}
+ 
 const createForm = () => {
+
   // basic styles : reused
   let textLabelStyles = "color: black;";
   let inputStyles = "color: black; background: white;";
@@ -170,82 +231,53 @@ const createForm = () => {
   wrapperDiv.style = "position: fixed; background: white; top: 12.5%; width: 75%; left: 12.5%; border: 3px solid #73AD21;"
 
   // mobile number input field
-  let mobileInput = document.createElement("input");
-  mobileInput.style = inputStyles;
-  mobileInput.id = "data-mob";
-  mobileInput.type = "number";
-  mobileInput.value = mobilenumber;
+  let mobileinputid = "data-mob";
+  let mobileInput = createInput(mobileinputid, inputStyles, "number", mobilenumber);
+  let mobileLabel = createLabel("mobileinputlabel", mobileinputid, "Mobile number (first 9 digits): ", textLabelStyles);
+  let mobileNumberWarn = createWarningText(
+    "You will have to enter the 10th digit in the input box to proceed with automation.",
+    warnLabelStyles
+  )
 
-  let mobileLabel = document.createElement("p");
-  mobileLabel.appendChild(document.createTextNode("Mobile number (first 9 digits): "));
-  mobileLabel.style = textLabelStyles;
-
-  let mobileNumberWarn = document.createElement('p');
-  mobileNumberWarn.appendChild(document.createTextNode("You will have to enter the 10th digit in the input box to proceed with automation."));
-  mobileNumberWarn.style = warnLabelStyles;
+  // pin code field
+  let pincodeinputid = "pincodeinput";
+  let pincodeinput = createInput(pincodeinputid, inputStyles, "number", first_5_pin_digits);
+  let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code (First 5 digits)", textLabelStyles);
+  let pincodewarn = createWarningText("You will have to enter the 6th digit in the input box to proceed with automation.", warnLabelStyles);
 
   // state name input field
-  let stateInput = document.createElement("input");
-  stateInput.style = inputStyles;
-  stateInput.id = "data-state";
-  stateInput.value = state_name;
-
-  let stateLabel = document.createElement("p");
-  stateLabel.appendChild(document.createTextNode("Name of the state: "));
-  stateLabel.style = textLabelStyles;
+  let stateinputid = "data-state";
+  let stateInput = createInput(stateinputid, inputStyles, "text", state_name);
+  let stateLabel = createLabel("stateinputlabel", stateinputid, "Name of the state: ", textLabelStyles)
 
   // district name input field
-  let districInput = document.createElement("input");
-  districInput.style = inputStyles;
-  districInput.id = "data-district";
-  districInput.value = district_name;
+  let districtinputid = "data-district";
+  let districInput = createInput(districtinputid, inputStyles, "text", district_name);
+  let districLabel = createLabel("districtinputlabel", districtinputid, "District name: ", textLabelStyles);
 
-  let districLabel = document.createElement("p");
-  districLabel.appendChild(document.createTextNode("District name: "));
-  districLabel.style = textLabelStyles;
-
-  let ageSelector = document.createElement("select");
-  ageSelector.style = inputStyles;
-  ageSelector.id = "ageselect";
-  ageSelector.value = ageSelectorText;
-  let age18 = document.createElement("option");
-  age18.id = "age18";
-  age18.value = "Age 18+";
-  age18.appendChild(document.createTextNode("Age 18+"));
-  let age45 = document.createElement("option");
-  age45.id = "age45";
-  age45.value = "Age 45+";
-  age45.appendChild(document.createTextNode("Age 45+"));
-
+  let ageSelector = createSelectInput("ageselect", inputStyles, ageSelectorText);
+  let age18 = createSelectOptions("age18", "Age 18+", "Age 18+", ageSelectorText === "Age 18+");
+  let age45 = createSelectOptions("age45", "Age 45+", "Age 45+", ageSelectorText === "Age 45+");
   ageSelector.appendChild(age18);
   ageSelector.appendChild(age45);
-
-  if(ageSelectorText === "Age 18+"){
-    age18.selected = true;
-  } else {
-    age45.selected = true;
-  }
-
-
-  let AgeSelectLabel = document.createElement("span");
-  AgeSelectLabel.appendChild(document.createTextNode("Age group: "));
-  AgeSelectLabel.style = textLabelStyles;
+  let AgeSelectLabel = createLabel("ageselectlabel", "ageselect", "Age group: ", textLabelStyles)
 
 
   // multiple members allow checkbox
-  let allowMultipleInput = document.createElement("input");
-  allowMultipleInput.type = "checkbox";
-  allowMultipleInput.id = "allowMultiple";
-  allowMultipleInput.style = inputStyles;
+  let allowMultipleid = "allowMultiple";
+  let allowMultipleInput = createInput(allowMultipleid, inputStyles, "checkbox", "");
   allowMultipleInput.checked = allow_multiple;
+  let allowMultipleInputLabel = createLabel("multipleinputlabel", allowMultipleid, "Allow multiple members", textLabelStyles);
+  let allowMultipleWarn = createWarningText("This will prevent automatic click on the Schedule Now button", warnLabelStyles);
 
-  let allowMultipleInputLabel = document.createElement('span');
-  allowMultipleInputLabel.appendChild(document.createTextNode("Allow multiple members"));
-  allowMultipleInputLabel.style = textLabelStyles;
-
-  let allowMultipleWarn = document.createElement('p');
-  allowMultipleWarn.appendChild(document.createTextNode("This will prevent automatic click on the Schedule Now button"));
-  allowMultipleWarn.style = warnLabelStyles;
+  // search preferrance
+  let searchprefid = "searchpref";
+  let searchPrefSelector = createSelectInput(searchprefid, inputStyles, searchByDistrictFlag?"district":"pincode");
+  let districtoption = createSelectOptions("districtoption", "District", "district", searchByDistrictFlag);
+  let pincodeoption = createSelectOptions("pincodeoption", "PIN code", "pincode", !!!searchByDistrictFlag);
+  searchPrefSelector.appendChild(districtoption);
+  searchPrefSelector.appendChild(pincodeoption);
+  let searchPrefLabel = createLabel("searchpreflabel", searchprefid, "Search by", textLabelStyles);
 
   // submit button
   let submitButton = document.createElement("button");
@@ -264,27 +296,31 @@ const createForm = () => {
   wrapperDiv.appendChild(mobileInput);
   wrapperDiv.appendChild(document.createElement('br'));
   wrapperDiv.appendChild(mobileNumberWarn);
+  wrapperDiv.appendChild(document.createElement('hr'));
+  wrapperDiv.appendChild(pincodelabel);
+  wrapperDiv.appendChild(pincodeinput);
   wrapperDiv.appendChild(document.createElement('br'));
+  wrapperDiv.appendChild(pincodewarn);
+  wrapperDiv.appendChild(document.createElement('hr'));
+
   wrapperDiv.appendChild(stateLabel);
   wrapperDiv.appendChild(stateInput);
-  wrapperDiv.appendChild(document.createElement('br'));
-  wrapperDiv.appendChild(document.createElement('br'));
-  wrapperDiv.appendChild(document.createElement('br'));
+  wrapperDiv.appendChild(document.createElement('hr'));
   wrapperDiv.appendChild(districLabel);
   wrapperDiv.appendChild(districInput);
-  wrapperDiv.appendChild(document.createElement('br'));
-  wrapperDiv.appendChild(document.createElement('br'));
-  wrapperDiv.appendChild(document.createElement('br'));
+  wrapperDiv.appendChild(document.createElement('hr'));
   wrapperDiv.appendChild(AgeSelectLabel);
-  wrapperDiv.appendChild(document.createTextNode( '\u00A0' ));
   wrapperDiv.appendChild(ageSelector);
-  wrapperDiv.appendChild(document.createElement('br'));
+  wrapperDiv.appendChild(document.createElement('hr'));
 
   wrapperDiv.appendChild(allowMultipleInputLabel);
-  wrapperDiv.appendChild(document.createTextNode( '\u00A0' ));
   wrapperDiv.appendChild(allowMultipleInput);
   wrapperDiv.appendChild(document.createElement('br'));
   wrapperDiv.appendChild(allowMultipleWarn);
+  wrapperDiv.appendChild(document.createElement('hr'));
+  wrapperDiv.appendChild(searchPrefLabel);
+  wrapperDiv.appendChild(searchPrefSelector);
+  wrapperDiv.appendChild(document.createElement('hr'));
   wrapperDiv.appendChild(document.createElement('br'));
   wrapperDiv.appendChild(document.createElement('br'));
   wrapperDiv.appendChild(document.createElement('br'));
@@ -321,6 +357,8 @@ const bindSubmitButtonToSaveInfo = () => {
     district_name = document.getElementById("data-district").value;
     allow_multiple = document.getElementById("allowMultiple").checked;
     ageSelectorText = document.getElementById("ageselect").value;
+    let searchPreftext = document.getElementById("searchpref").value;
+    first_5_pin_digits = document.getElementById("pincodeinput").value;
     console.log(allow_multiple);
     $("#formWrapper").hide();
     window.localStorage.setItem("mobile", mobilenumber);
@@ -328,6 +366,8 @@ const bindSubmitButtonToSaveInfo = () => {
     window.localStorage.setItem("district", district_name);
     window.localStorage.setItem("allow_multiple", allow_multiple);
     window.localStorage.setItem("age", ageSelectorText);
+    window.localStorage.setItem("searchpref", searchPreftext);
+    window.localStorage.setItem("pincode", first_5_pin_digits);
     window.location.reload();
   })
 }
