@@ -217,7 +217,12 @@ const createSelectOptions = (id, text, value, selected) => {
   if(selected) retel.selected = true;
   return retel;
 }
- 
+
+const createHrSeparator = () => {
+  let retel = document.createElement("hr");
+  retel.style = "background-color: black";
+  return retel;
+}
 const createForm = () => {
 
   // basic styles : reused
@@ -242,7 +247,7 @@ const createForm = () => {
   // pin code field
   let pincodeinputid = "pincodeinput";
   let pincodeinput = createInput(pincodeinputid, inputStyles, "number", first_5_pin_digits);
-  let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code (First 5 digits)", textLabelStyles);
+  let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code (First 5 digits): ", textLabelStyles);
   let pincodewarn = createWarningText("You will have to enter the 6th digit in the actual website form manually to proceed with automation.", warnLabelStyles);
 
   // state name input field
@@ -267,7 +272,7 @@ const createForm = () => {
   let allowMultipleid = "allowMultiple";
   let allowMultipleInput = createInput(allowMultipleid, inputStyles, "checkbox", "");
   allowMultipleInput.checked = allow_multiple;
-  let allowMultipleInputLabel = createLabel("multipleinputlabel", allowMultipleid, "Allow multiple members", textLabelStyles);
+  let allowMultipleInputLabel = createLabel("multipleinputlabel", allowMultipleid, "Allow multiple members ", textLabelStyles);
   let allowMultipleWarn = createWarningText("This will prevent automatic click on the Schedule Now button", warnLabelStyles);
 
   // search preferrance
@@ -277,7 +282,7 @@ const createForm = () => {
   let pincodeoption = createSelectOptions("pincodeoption", "PIN code", "pincode", !!!searchByDistrictFlag);
   searchPrefSelector.appendChild(districtoption);
   searchPrefSelector.appendChild(pincodeoption);
-  let searchPrefLabel = createLabel("searchpreflabel", searchprefid, "Search by", textLabelStyles);
+  let searchPrefLabel = createLabel("searchpreflabel", searchprefid, "Search by: ", textLabelStyles);
 
   // submit button
   let submitButton = document.createElement("button");
@@ -296,31 +301,31 @@ const createForm = () => {
   wrapperDiv.appendChild(mobileInput);
   wrapperDiv.appendChild(document.createElement('br'));
   wrapperDiv.appendChild(mobileNumberWarn);
-  wrapperDiv.appendChild(document.createElement('hr'));
+  wrapperDiv.appendChild(createHrSeparator());
   wrapperDiv.appendChild(pincodelabel);
   wrapperDiv.appendChild(pincodeinput);
   wrapperDiv.appendChild(document.createElement('br'));
   wrapperDiv.appendChild(pincodewarn);
-  wrapperDiv.appendChild(document.createElement('hr'));
+  wrapperDiv.appendChild(createHrSeparator());
 
   wrapperDiv.appendChild(stateLabel);
   wrapperDiv.appendChild(stateInput);
-  wrapperDiv.appendChild(document.createElement('hr'));
+  wrapperDiv.appendChild(createHrSeparator());
   wrapperDiv.appendChild(districLabel);
   wrapperDiv.appendChild(districInput);
-  wrapperDiv.appendChild(document.createElement('hr'));
+  wrapperDiv.appendChild(createHrSeparator());
   wrapperDiv.appendChild(AgeSelectLabel);
   wrapperDiv.appendChild(ageSelector);
-  wrapperDiv.appendChild(document.createElement('hr'));
+  wrapperDiv.appendChild(createHrSeparator());
 
   wrapperDiv.appendChild(allowMultipleInputLabel);
   wrapperDiv.appendChild(allowMultipleInput);
   wrapperDiv.appendChild(document.createElement('br'));
   wrapperDiv.appendChild(allowMultipleWarn);
-  wrapperDiv.appendChild(document.createElement('hr'));
+  wrapperDiv.appendChild(createHrSeparator());
   wrapperDiv.appendChild(searchPrefLabel);
   wrapperDiv.appendChild(searchPrefSelector);
-  wrapperDiv.appendChild(document.createElement('hr'));
+  wrapperDiv.appendChild(createHrSeparator());
   wrapperDiv.appendChild(document.createElement('br'));
   wrapperDiv.appendChild(document.createElement('br'));
   wrapperDiv.appendChild(document.createElement('br'));
