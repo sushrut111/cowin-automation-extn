@@ -47,9 +47,10 @@ const repFun = () => {
     })
   });
   
-  waitForEl(".register-btn", () => {
-    if(!!!allow_multiple) $('.register-btn').trigger('click');
-  })
+  // waitForEl(".register-btn", () => {
+  //   console.log("clicking button");
+  //   if(!!!allow_multiple) $('.register-btn').trigger('click');
+  // })
 
   const dispatchAgeSelectorClick = () => {
     setTimeout(()=>{
@@ -269,11 +270,11 @@ const createForm = () => {
 
 
   // multiple members allow checkbox
-  let allowMultipleid = "allowMultiple";
-  let allowMultipleInput = createInput(allowMultipleid, inputStyles, "checkbox", "");
-  allowMultipleInput.checked = allow_multiple;
-  let allowMultipleInputLabel = createLabel("multipleinputlabel", allowMultipleid, "Allow multiple members ", textLabelStyles);
-  let allowMultipleWarn = createWarningText("This will prevent automatic click on the Schedule Now button", warnLabelStyles);
+  // let allowMultipleid = "allowMultiple";
+  // let allowMultipleInput = createInput(allowMultipleid, inputStyles, "checkbox", "");
+  // allowMultipleInput.checked = allow_multiple;
+  // let allowMultipleInputLabel = createLabel("multipleinputlabel", allowMultipleid, "Allow multiple members ", textLabelStyles);
+  // let allowMultipleWarn = createWarningText("This will prevent automatic click on the Schedule Now button", warnLabelStyles);
 
   // search preferrance
   let searchprefid = "searchpref";
@@ -318,11 +319,11 @@ const createForm = () => {
   wrapperDiv.appendChild(ageSelector);
   wrapperDiv.appendChild(createHrSeparator());
 
-  wrapperDiv.appendChild(allowMultipleInputLabel);
-  wrapperDiv.appendChild(allowMultipleInput);
-  wrapperDiv.appendChild(document.createElement('br'));
-  wrapperDiv.appendChild(allowMultipleWarn);
-  wrapperDiv.appendChild(createHrSeparator());
+  // wrapperDiv.appendChild(allowMultipleInputLabel);
+  // wrapperDiv.appendChild(allowMultipleInput);
+  // wrapperDiv.appendChild(document.createElement('br'));
+  // wrapperDiv.appendChild(allowMultipleWarn);
+  // wrapperDiv.appendChild(createHrSeparator());
   wrapperDiv.appendChild(searchPrefLabel);
   wrapperDiv.appendChild(searchPrefSelector);
   wrapperDiv.appendChild(createHrSeparator());
@@ -360,7 +361,7 @@ const bindSubmitButtonToSaveInfo = () => {
     mobilenumber = document.getElementById("data-mob").value;
     state_name = document.getElementById("data-state").value;
     district_name = document.getElementById("data-district").value;
-    allow_multiple = document.getElementById("allowMultiple").checked;
+    // allow_multiple = document.getElementById("allowMultiple").checked;
     ageSelectorText = document.getElementById("ageselect").value;
     let searchPreftext = document.getElementById("searchpref").value;
     first_5_pin_digits = document.getElementById("pincodeinput").value;
@@ -369,7 +370,7 @@ const bindSubmitButtonToSaveInfo = () => {
     window.localStorage.setItem("mobile", mobilenumber);
     window.localStorage.setItem("state", state_name);
     window.localStorage.setItem("district", district_name);
-    window.localStorage.setItem("allow_multiple", allow_multiple);
+    // window.localStorage.setItem("allow_multiple", allow_multiple);
     window.localStorage.setItem("age", ageSelectorText);
     window.localStorage.setItem("searchpref", searchPreftext);
     window.localStorage.setItem("pincode", first_5_pin_digits);
