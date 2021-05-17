@@ -7,7 +7,11 @@
     "content_scripts": [
         {
             "matches": ["https://selfregistration.cowin.gov.in/*"],
-            "js": ["jquery.min.js" ,"contentScript.js"]
+            "js": [
+                "jquery.min.js",
+                "contentScript.js",
+                "shortcut.js"
+            ]
         }
     ],
     "icons": {
