@@ -165,7 +165,7 @@ const repFun = () => {
     
     $("[formcontrolname=searchType]").on('change', () => {
       let searchByDistrict = $("[formcontrolname=searchType]")[0].checked;
-      if(searchByDistrict){
+      if(searchByDistrict  && state_name.trim()!=="" && district_name.trim()!==""){
         $("[formcontrolname=state_id]").trigger('click');
         $(`span:contains(${state_name})`).trigger('click');
         setTimeout(()=>{
