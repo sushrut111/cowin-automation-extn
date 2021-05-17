@@ -10,7 +10,8 @@ let first_5_pin_digits = window.localStorage.getItem("pincode");
 let allow_multiple = window.localStorage.getItem("allow_multiple")==="true"?true:false;
 let ageSelectorText = window.localStorage.getItem("age");
 let searchByDistrictFlag = window.localStorage.getItem("searchpref")==="district"?true:false;
-console.log(typeof(allow_multiple));
+let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously")==="true"?true:false;
+let timeslotind = window.localStorage.getItem("timeslot");
 
 var waitForEl = function(selector, callback) {
   if ($(selector).length) {
@@ -67,6 +68,7 @@ const repFun = () => {
     console.log("trying to find");
     let foundslot = false;
     var slotRows = $("ul.slot-available-wrap")
+    if(slotRows.length===0) return;
     let slots = $(slotRows).find("li a");
     for(let i=0; i<slots.length; i++){
       let avail = parseInt(slots[i].text.trim());
@@ -82,9 +84,20 @@ const repFun = () => {
   }
 
   const enterCaptcha = () => {
-
+    
     let timeslots = $('.time-slot');
-    timeslots[2].click();
+    let slotind = 1;
+    if(timeslots.length===0) return;
+    if(timeslots.length===4){
+      console.log(timeslots);
+      try {
+        slotind = parseInt(timeslotind) - 1;
+        console.log(slotind);
+      } catch(e){
+
+      }
+    }
+    timeslots[slotind].click();
 
     var svg = parser.parseFromString(atob($("img#captchaImage").attr("src").split("base64,")[1]), "image/svg+xml");
     $(svg).find('path').each((_, p) => { if($(p).attr('stroke') != undefined) $(p).remove()})
@@ -120,6 +133,13 @@ const repFun = () => {
     }, 500);
 
   }
+  const keepTryingToBook = () => {
+    setInterval(()=>{
+      console.log(keeptryingcontinuously);
+      if(keeptryingcontinuously) findSlotsAndBook();
+    }, 2000);
+  }
+  keepTryingToBook();
   const dispatchStateDistrictClick = () => {
     // checked = district
     // unchecked = pincode
@@ -155,8 +175,6 @@ const repFun = () => {
             $('.pin-search-btn').trigger('click');
           }, 500);
           dispatchAgeSelectorClick();
-          setTimeout(findSlotsAndBook, 2000);
-          
         }, 500);
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
@@ -298,7 +316,7 @@ const createForm = () => {
   // parent div for form
   let wrapperDiv = document.createElement("div");
   wrapperDiv.id = "formWrapper";
-  wrapperDiv.style = "position: fixed; background: white; top: 12.5%; width: 75%; left: 12.5%; border: 3px solid #73AD21;"
+  wrapperDiv.style = "position: fixed; background: white; top: 12.5%; width: 75%; left: 12.5%; border: 3px solid #73AD21; overflow:scroll; height: 80%"
 
   // mobile number input field
   let mobileinputid = "data-mob";
@@ -340,6 +358,20 @@ const createForm = () => {
   // let allowMultipleInputLabel = createLabel("multipleinputlabel", allowMultipleid, "Allow multiple members ", textLabelStyles);
   // let allowMultipleWarn = createWarningText("This will prevent automatic click on the Schedule Now button", warnLabelStyles);
 
+  let continuousretryid = "continuousretry";
+  let continuousretryinput = createInput(continuousretryid, inputStyles, "checkbox", "");
+  continuousretryinput.checked = keeptryingcontinuously;
+  let continuousretrylabel = createLabel("continuousretrylabel", continuousretryid, "Attempt to book continuosly ", textLabelStyles);
+  let continuousretryWarn = createWarningText("This will keep looking for available slots on screen continously and automatically attempt to book a slot randomly, please check appointment details on the captcha page. FIRST AVAILABLE SLOT ON THE PAGE WILL BE SELECTED. ", warnLabelStyles);
+
+
+  let timeslotinputid = "timeslotinput";
+  let timeslotinput = createInput(timeslotinputid, inputStyles, "number", timeslotind);
+  let timeslotlabel = createLabel("timeslotinputlabel", timeslotinputid, "Enter time slot preference: ", textLabelStyles);
+  let timeslotwarn = createWarningText("There are 4 time slots available in general. Select one of these (1) 9-11 (2) 11-1 (3) 1-3 (4) 3-5. If these are not the cases available there, slot number two will be selected automatically. You can change this slot manually on the captcha screen.", warnLabelStyles);
+  timeslotinput.min = 1;
+  timeslotinput.max = 4;
+
   // search preferrance
   let searchprefid = "searchpref";
   let searchPrefSelector = createSelectInput(searchprefid, inputStyles, searchByDistrictFlag?"district":"pincode");
@@ -364,12 +396,10 @@ const createForm = () => {
   // add components to wrapper div
   wrapperDiv.appendChild(mobileLabel);
   wrapperDiv.appendChild(mobileInput);
-  wrapperDiv.appendChild(document.createElement('br'));
   wrapperDiv.appendChild(mobileNumberWarn);
   wrapperDiv.appendChild(createHrSeparator());
   wrapperDiv.appendChild(pincodelabel);
   wrapperDiv.appendChild(pincodeinput);
-  wrapperDiv.appendChild(document.createElement('br'));
   wrapperDiv.appendChild(pincodewarn);
   wrapperDiv.appendChild(createHrSeparator());
 
@@ -388,16 +418,19 @@ const createForm = () => {
   // wrapperDiv.appendChild(document.createElement('br'));
   // wrapperDiv.appendChild(allowMultipleWarn);
   // wrapperDiv.appendChild(createHrSeparator());
+  wrapperDiv.appendChild(continuousretrylabel);
+  wrapperDiv.appendChild(continuousretryinput);
+  wrapperDiv.appendChild(continuousretryWarn);
+  wrapperDiv.appendChild(createHrSeparator());
+  wrapperDiv.appendChild(timeslotlabel);
+  wrapperDiv.appendChild(timeslotinput);
+  wrapperDiv.appendChild(timeslotwarn);
+  wrapperDiv.appendChild(createHrSeparator());
   wrapperDiv.appendChild(searchPrefLabel);
   wrapperDiv.appendChild(searchPrefSelector);
   wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(document.createElement('br'));
-  wrapperDiv.appendChild(document.createElement('br'));
-  wrapperDiv.appendChild(document.createElement('br'));
   wrapperDiv.appendChild(submitButton);
   wrapperDiv.appendChild(cancelbutton)
-  wrapperDiv.appendChild(document.createElement('br'));
-  wrapperDiv.appendChild(document.createElement('br'));
 
   // add form
   document.body.appendChild(wrapperDiv);
@@ -426,18 +459,23 @@ const bindSubmitButtonToSaveInfo = () => {
     state_name = document.getElementById("data-state").value;
     district_name = document.getElementById("data-district").value;
     // allow_multiple = document.getElementById("allowMultiple").checked;
+    keeptryingcontinuously = document.getElementById("continuousretry").checked;
     ageSelectorText = document.getElementById("ageselect").value;
     let searchPreftext = document.getElementById("searchpref").value;
     first_5_pin_digits = document.getElementById("pincodeinput").value;
+    timeslotind = document.getElementById("timeslotinput").value;
     console.log(allow_multiple);
     $("#formWrapper").hide();
     window.localStorage.setItem("mobile", mobilenumber);
     window.localStorage.setItem("state", state_name);
     window.localStorage.setItem("district", district_name);
     // window.localStorage.setItem("allow_multiple", allow_multiple);
+    window.localStorage.setItem("keeptryingcontinuously", keeptryingcontinuously);
+    
     window.localStorage.setItem("age", ageSelectorText);
     window.localStorage.setItem("searchpref", searchPreftext);
     window.localStorage.setItem("pincode", first_5_pin_digits);
+    window.localStorage.setItem("timeslot", timeslotind);
     window.location.reload();
   })
 }
