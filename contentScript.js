@@ -94,7 +94,7 @@ const repFun = () => {
         slotind = parseInt(timeslotind) - 1;
         console.log(slotind);
       } catch(e){
-
+        slotind = 1;
       }
     }
     timeslots[slotind].click();
