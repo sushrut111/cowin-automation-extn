@@ -3,7 +3,7 @@
 
     "name": "Cowin Booking",
     "description": "automatically fill data on cowin portal to speed up covid vaccine slot booking",
-    "version": "2.0",
+    "version": "2.0.1",
     "content_scripts": [
         {
             "matches": ["https://selfregistration.cowin.gov.in/*"],
