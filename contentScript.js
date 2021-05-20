@@ -54,7 +54,6 @@ const repFun = () => {
   });
   
   // waitForEl(".register-btn", () => {
-  //   console.log("clicking button");
   //   if(!!!allow_multiple) $('.register-btn').trigger('click');
   // })
 
@@ -65,7 +64,6 @@ const repFun = () => {
   }
 
   const findSlotsAndBook = () => {
-    console.log("trying to find");
     let foundslot = false;
     var slotRows = $("ul.slot-available-wrap")
     if(slotRows.length===0) return;
@@ -89,10 +87,8 @@ const repFun = () => {
     let slotind = 1;
     if(timeslots.length===0) return;
     if(timeslots.length===4){
-      console.log(timeslots);
       try {
         slotind = parseInt(timeslotind) - 1;
-        console.log(slotind);
       } catch(e){
         slotind = 1;
       }
@@ -122,7 +118,6 @@ const repFun = () => {
         })
     
     $($(".captcha-style input")[0]).focus();
-    console.log(solution);
     
     for (var ii=0; ii<5; ii++) {
         $($(".captcha-style input")[0]).val(solution.join("").substr(0, ii+1));
@@ -138,7 +133,6 @@ const repFun = () => {
   }
   const keepTryingToBook = () => {
     setInterval(()=>{
-      console.log(keeptryingcontinuously);
       if(keeptryingcontinuously) findSlotsAndBook();
     }, 2000);
   }
@@ -196,7 +190,6 @@ const repFun = () => {
 }
 
 $(window).on("load", () => {
-  console.log("loaded");
   repFun();
 });
 
@@ -365,7 +358,7 @@ const createForm = () => {
   let continuousretryinput = createInput(continuousretryid, inputStyles, "checkbox", "");
   continuousretryinput.checked = keeptryingcontinuously;
   let continuousretrylabel = createLabel("continuousretrylabel", continuousretryid, "Attempt to book continuosly ", textLabelStyles);
-  let continuousretryWarn = createWarningText("This will keep looking for available slots on screen continously and automatically attempt to book a slot randomly, please check appointment details on the captcha page. FIRST AVAILABLE SLOT ON THE PAGE WILL BE SELECTED. ", warnLabelStyles);
+  let continuousretryWarn = createWarningText("This will keep looking for available slots on screen continously and automatically attempt to book a slot randomly, please check appointment details on the captcha page. FIRST AVAILABLE SLOT ON THE PAGE WILL BE SELECTED. Automatic captcha detection is supported only if this is checked/selected.", warnLabelStyles);
 
 
   let timeslotinputid = "timeslotinput";
@@ -467,7 +460,6 @@ const bindSubmitButtonToSaveInfo = () => {
     let searchPreftext = document.getElementById("searchpref").value;
     first_5_pin_digits = document.getElementById("pincodeinput").value;
     timeslotind = document.getElementById("timeslotinput").value;
-    console.log(allow_multiple);
     $("#formWrapper").hide();
     window.localStorage.setItem("mobile", mobilenumber);
     window.localStorage.setItem("state", state_name);
