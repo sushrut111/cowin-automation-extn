@@ -167,7 +167,7 @@ const repFun = () => {
         $(`span:contains(${state_name})`).trigger('click');
         setTimeout(()=>{
           $("[formcontrolname=district_id]").trigger('click');
-          $(`span:contains(${district_name})`).trigger('click');
+          $("span").filter((ind, spn)=> spn.innerText===district_name).trigger("click");
           setTimeout(()=>{
             $('.pin-search-btn').trigger('click');
           }, 500);
