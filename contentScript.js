@@ -97,6 +97,9 @@ const repFun = () => {
         slotind = 1;
       }
     }
+    if(isNaN(slotind)){
+      slotind = 1;
+    }
     timeslots[slotind].click();
 
     var svg = parser.parseFromString(atob($("img#captchaImage").attr("src").split("base64,")[1]), "image/svg+xml");
@@ -368,7 +371,7 @@ const createForm = () => {
   let timeslotinputid = "timeslotinput";
   let timeslotinput = createInput(timeslotinputid, inputStyles, "number", timeslotind);
   let timeslotlabel = createLabel("timeslotinputlabel", timeslotinputid, "Enter time slot preference: ", textLabelStyles);
-  let timeslotwarn = createWarningText("There are 4 time slots available in general. Select one of these (1) 9-11 (2) 11-1 (3) 1-3 (4) 3-5. If these are not the cases available there, slot number two will be selected automatically. You can change this slot manually on the captcha screen.", warnLabelStyles);
+  let timeslotwarn = createWarningText("Write a number between 1 and 4 corresponding to slots below. There are 4 time slots available in general. Select one of these (1) 9-11 (2) 11-1 (3) 1-3 (4) 3-5. If these are not the cases available there, slot number two will be selected automatically. You can change this slot manually on the captcha screen.", warnLabelStyles);
   timeslotinput.min = 1;
   timeslotinput.max = 4;
 
