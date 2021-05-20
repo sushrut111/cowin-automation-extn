@@ -12,6 +12,7 @@ let ageSelectorText = window.localStorage.getItem("age");
 let searchByDistrictFlag = window.localStorage.getItem("searchpref")==="district"?true:false;
 let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously")==="true"?true:false;
 let timeslotind = window.localStorage.getItem("timeslot");
+let enableAutoRefresh = window.localStorage.getItem("autorefresh")==="true"?true:false;
 
 var waitForEl = function(selector, callback) {
   if ($(selector).length) {
@@ -78,6 +79,15 @@ const repFun = () => {
     }
     if(foundslot){
       setTimeout(enterCaptcha, 1000);
+    } else {
+
+      if(searchByDistrictFlag && enableAutoRefresh){
+        if($('.pin-search-btn').length!==0){
+            $('.pin-search-btn').trigger('click');
+            dispatchAgeSelectorClick();  
+        }
+      }
+
     }
   }
 
@@ -360,6 +370,12 @@ const createForm = () => {
   let continuousretrylabel = createLabel("continuousretrylabel", continuousretryid, "Attempt to book continuosly ", textLabelStyles);
   let continuousretryWarn = createWarningText("This will keep looking for available slots on screen continously and automatically attempt to book a slot randomly, please check appointment details on the captcha page. FIRST AVAILABLE SLOT ON THE PAGE WILL BE SELECTED. Automatic captcha detection is supported only if this is checked/selected.", warnLabelStyles);
 
+  let enableautorefreshid = "enableautorefresh";
+  let enableautorefreshinput = createInput(enableautorefreshid, inputStyles, "checkbox", "");
+  enableautorefreshinput.checked = enableAutoRefresh;
+  let enableautorefreshlabel = createLabel("enableautorefreshlabel", enableautorefreshid, "Enable Auto Refresh on search by district ", textLabelStyles);
+  let enableautorefreshWarn = createWarningText("Keep auto refreshing every 2 seconds in search with district. This work only if 'Attempt to book continuosly is selected' and search preference is set to District. Use this option carefully. Your access to cowin portal may be blocked if you send too many request during a short duration.", warnLabelStyles);
+
 
   let timeslotinputid = "timeslotinput";
   let timeslotinput = createInput(timeslotinputid, inputStyles, "number", timeslotind);
@@ -425,6 +441,10 @@ const createForm = () => {
   wrapperDiv.appendChild(searchPrefLabel);
   wrapperDiv.appendChild(searchPrefSelector);
   wrapperDiv.appendChild(createHrSeparator());
+  wrapperDiv.appendChild(enableautorefreshlabel);
+  wrapperDiv.appendChild(enableautorefreshinput);
+  wrapperDiv.appendChild(enableautorefreshWarn);
+  wrapperDiv.appendChild(createHrSeparator());
   wrapperDiv.appendChild(submitButton);
   wrapperDiv.appendChild(cancelbutton)
 
@@ -456,6 +476,7 @@ const bindSubmitButtonToSaveInfo = () => {
     district_name = document.getElementById("data-district").value;
     // allow_multiple = document.getElementById("allowMultiple").checked;
     keeptryingcontinuously = document.getElementById("continuousretry").checked;
+    enableAutoRefresh = document.getElementById("enableautorefresh").checked;
     ageSelectorText = document.getElementById("ageselect").value;
     let searchPreftext = document.getElementById("searchpref").value;
     first_5_pin_digits = document.getElementById("pincodeinput").value;
@@ -466,6 +487,7 @@ const bindSubmitButtonToSaveInfo = () => {
     window.localStorage.setItem("district", district_name);
     // window.localStorage.setItem("allow_multiple", allow_multiple);
     window.localStorage.setItem("keeptryingcontinuously", keeptryingcontinuously);
+    window.localStorage.setItem("autorefresh", enableAutoRefresh);
     
     window.localStorage.setItem("age", ageSelectorText);
     window.localStorage.setItem("searchpref", searchPreftext);
