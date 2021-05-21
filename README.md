@@ -6,9 +6,6 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 
 # COWIN portal automation
 
-## THIS EXTENSION DOES NOT BOOK A SLOT FOR YOU, IT HELPS YOU REDUCE THE TIME YOU SPEND FOR FILLING THE INPUTS AND CLICKING THE SUBMIT BUTTONS WHICH RESULTS IN FASTER EXPERIENCE AND GIVES ADVANTAGE OVER OTHERS
-
-
 ## How to use the extension?
 
 0. You can now install this extension directly from chrome extensions store [here](https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm)
