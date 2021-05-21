@@ -265,12 +265,13 @@ const keep_focusing = () => {
 
 keep_focusing();
 
-const createInput = (id, style, type, value) => {
+const createInput = (id, style, type, value, className) => {
   let retel = document.createElement("input");
   retel.id = id;
   retel.type = type;
   retel.style = style;
   retel.value = value;
+  retel.className = className
   return retel;
 }
 
@@ -280,11 +281,13 @@ const createLabel = (id, forid, labelText, style) => {
   retel.for = forid;
   retel.appendChild(document.createTextNode(labelText));
   retel.style = style;
+  retel.className = "form-label"
   return retel;
 }
 
 const createWarningText = (warningtext, style) => {
-  let retel = document.createElement('p');
+  let retel = document.createElement('div');
+  retel.className = "form-text"
   retel.appendChild(document.createTextNode(warningtext));
   retel.style = style;
   return retel;
@@ -295,6 +298,7 @@ const createSelectInput = (id, style, value) => {
   retel.style = style;
   retel.id = id;
   retel.value = value;
+  retel.className = 'form-select';
   return retel;
 }
 
@@ -315,18 +319,17 @@ const createHrSeparator = () => {
 const createForm = () => {
 
   // basic styles : reused
-  let textLabelStyles = "color: black; padding-left: 1%;";
-  let inputStyles = "color: black; background: white;";
-  let warnLabelStyles = "color: red; padding-left: 1%;";
+  let textLabelStyles = "color: black";
+  let inputStyles = "";
+  let warnLabelStyles = "color: red";
 
   // parent div for form
   let wrapperDiv = document.createElement("div");
   wrapperDiv.id = "formWrapper";
-  wrapperDiv.style = "position: fixed; background: white; top: 12.5%; width: 75%; left: 12.5%; border: 3px solid #73AD21; overflow:scroll; height: 80%"
 
   // mobile number input field
   let mobileinputid = "data-mob";
-  let mobileInput = createInput(mobileinputid, inputStyles, "number", mobilenumber);
+  let mobileInput = createInput(mobileinputid, inputStyles, "number", mobilenumber, 'form-control');
   let mobileLabel = createLabel("mobileinputlabel", mobileinputid, "Mobile number (first 9 digits): ", textLabelStyles);
   let mobileNumberWarn = createWarningText(
     "You will have to enter the 10th digit in the actual website form to proceed with automation.",
@@ -335,18 +338,18 @@ const createForm = () => {
 
   // pin code field
   let pincodeinputid = "pincodeinput";
-  let pincodeinput = createInput(pincodeinputid, inputStyles, "number", first_5_pin_digits);
+  let pincodeinput = createInput(pincodeinputid, inputStyles, "number", first_5_pin_digits, 'form-control');
   let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code (First 5 digits): ", textLabelStyles);
   let pincodewarn = createWarningText("You will have to enter the 6th digit in the actual website form manually to proceed with automation.", warnLabelStyles);
 
   // state name input field
   let stateinputid = "data-state";
-  let stateInput = createInput(stateinputid, inputStyles, "text", state_name);
+  let stateInput = createInput(stateinputid, inputStyles, "text", state_name, 'form-control');
   let stateLabel = createLabel("stateinputlabel", stateinputid, "Name of the state: ", textLabelStyles)
 
   // district name input field
   let districtinputid = "data-district";
-  let districInput = createInput(districtinputid, inputStyles, "text", district_name);
+  let districInput = createInput(districtinputid, inputStyles, "text", district_name, 'form-control');
   let districLabel = createLabel("districtinputlabel", districtinputid, "District name: ", textLabelStyles);
 
   let ageSelector = createSelectInput("ageselect", inputStyles, ageSelectorText);
@@ -365,20 +368,20 @@ const createForm = () => {
   // let allowMultipleWarn = createWarningText("This will prevent automatic click on the Schedule Now button", warnLabelStyles);
 
   let continuousretryid = "continuousretry";
-  let continuousretryinput = createInput(continuousretryid, inputStyles, "checkbox", "");
+  let continuousretryinput = createInput(continuousretryid, inputStyles, "checkbox", "", 'form-check-input');
   continuousretryinput.checked = keeptryingcontinuously;
   let continuousretrylabel = createLabel("continuousretrylabel", continuousretryid, "Attempt to book continuosly ", textLabelStyles);
   let continuousretryWarn = createWarningText("This will keep looking for available slots on screen continously and automatically attempt to book a slot randomly, please check appointment details on the captcha page. FIRST AVAILABLE SLOT ON THE PAGE WILL BE SELECTED. Automatic captcha detection is supported only if this is checked/selected.", warnLabelStyles);
 
   let enableautorefreshid = "enableautorefresh";
-  let enableautorefreshinput = createInput(enableautorefreshid, inputStyles, "checkbox", "");
+  let enableautorefreshinput = createInput(enableautorefreshid, inputStyles, "checkbox", "", 'form-check-input');
   enableautorefreshinput.checked = enableAutoRefresh;
   let enableautorefreshlabel = createLabel("enableautorefreshlabel", enableautorefreshid, "Enable Auto Refresh on search by district ", textLabelStyles);
   let enableautorefreshWarn = createWarningText("Keep auto refreshing every 2 seconds in search with district. This work only if 'Attempt to book continuosly is selected' and search preference is set to District. Use this option carefully. Your access to cowin portal may be blocked if you send too many request during a short duration.", warnLabelStyles);
 
 
   let timeslotinputid = "timeslotinput";
-  let timeslotinput = createInput(timeslotinputid, inputStyles, "number", timeslotind);
+  let timeslotinput = createInput(timeslotinputid, inputStyles, "number", timeslotind, 'form-control');
   let timeslotlabel = createLabel("timeslotinputlabel", timeslotinputid, "Enter time slot preference: ", textLabelStyles);
   let timeslotwarn = createWarningText("Write a number between 1 and 4 corresponding to slots below. There are 4 time slots available in general. Select one of these (1) 9-11 (2) 11-1 (3) 1-3 (4) 3-5. If these are not the cases available there, slot number two will be selected automatically. You can change this slot manually on the captcha screen.", warnLabelStyles);
   timeslotinput.min = 1;
@@ -393,63 +396,46 @@ const createForm = () => {
   searchPrefSelector.appendChild(pincodeoption);
   let searchPrefLabel = createLabel("searchpreflabel", searchprefid, "Search by: ", textLabelStyles);
 
-  // submit button
-  let submitButton = document.createElement("button");
-  submitButton.appendChild(document.createTextNode("Save inputs"));
-  submitButton.id = "data-submit";
-  submitButton.style = "color: black; background: #c2d6d6; font-size:20px; border-radius: 10px;"
-
-  // cancel button
-  let cancelbutton = document.createElement("button");
-  cancelbutton.id = "cancelbutton";
-  cancelbutton.appendChild(document.createTextNode("Cancel"));
-  cancelbutton.style = "color: white; background: black; font-size:20px; border-radius: 10px;";
-
   // add components to wrapper div
-  wrapperDiv.appendChild(mobileLabel);
-  wrapperDiv.appendChild(mobileInput);
-  wrapperDiv.appendChild(mobileNumberWarn);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(pincodelabel);
-  wrapperDiv.appendChild(pincodeinput);
-  wrapperDiv.appendChild(pincodewarn);
-  wrapperDiv.appendChild(createHrSeparator());
 
-  wrapperDiv.appendChild(stateLabel);
-  wrapperDiv.appendChild(stateInput);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(districLabel);
-  wrapperDiv.appendChild(districInput);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(AgeSelectLabel);
-  wrapperDiv.appendChild(ageSelector);
-  wrapperDiv.appendChild(createHrSeparator());
+  wrapperDiv.appendChild(makeRow([makeColumn([mobileLabel, mobileInput, mobileNumberWarn]),
+  makeColumn([pincodelabel, pincodeinput, pincodewarn])]))
+
+  wrapperDiv.appendChild(makeRow([makeColumn([stateLabel, stateInput]),
+  makeColumn([districLabel, districInput]),
+  makeColumn([AgeSelectLabel, ageSelector])]))
+
+  wrapperDiv.appendChild(makeRow([makeColumn([continuousretrylabel, continuousretryinput, continuousretryWarn])]))
+
+  wrapperDiv.appendChild(makeRow([makeColumn([timeslotlabel, timeslotinput, timeslotwarn])]))
+
+  wrapperDiv.appendChild(makeRow([makeColumn([searchPrefLabel, searchPrefSelector])]))
+
+  wrapperDiv.appendChild(makeRow([makeColumn([continuousretrylabel, continuousretryinput, continuousretryWarn]),
+  makeColumn([enableautorefreshlabel, enableautorefreshinput, enableautorefreshWarn])]))
 
   // wrapperDiv.appendChild(allowMultipleInputLabel);
   // wrapperDiv.appendChild(allowMultipleInput);
   // wrapperDiv.appendChild(document.createElement('br'));
   // wrapperDiv.appendChild(allowMultipleWarn);
   // wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(continuousretrylabel);
-  wrapperDiv.appendChild(continuousretryinput);
-  wrapperDiv.appendChild(continuousretryWarn);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(timeslotlabel);
-  wrapperDiv.appendChild(timeslotinput);
-  wrapperDiv.appendChild(timeslotwarn);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(searchPrefLabel);
-  wrapperDiv.appendChild(searchPrefSelector);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(enableautorefreshlabel);
-  wrapperDiv.appendChild(enableautorefreshinput);
-  wrapperDiv.appendChild(enableautorefreshWarn);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(submitButton);
-  wrapperDiv.appendChild(cancelbutton)
 
   // add form
-  document.body.appendChild(wrapperDiv);
+  document.getElementById('form-modal-body').appendChild(wrapperDiv)
+}
+
+const makeColumn = (children) => {
+  let columnWrapper = document.createElement('div')
+  columnWrapper.className = "col"
+  for (var i = 0; i < children.length; i++) columnWrapper.appendChild(children[i])
+  return columnWrapper;
+}
+
+const makeRow = (columns) => {
+  let rowWrapper = document.createElement('div')
+  rowWrapper.className = "row mb-3"
+  for (var i = 0; i < columns.length; i++) rowWrapper.appendChild(columns[i])
+  return rowWrapper;
 }
 
 const createHideShowButton = () => {
@@ -466,10 +452,6 @@ const createHideShowButton = () => {
 
 const bindSubmitButtonToSaveInfo = () => {
   let submitbtn = document.getElementById("data-submit");
-  let cancelbutton = document.getElementById("cancelbutton");
-  cancelbutton.addEventListener("click", () => {
-    $("#formWrapper").toggle();
-  });
   submitbtn.addEventListener("click", () => {
     mobilenumber = document.getElementById("data-mob").value;
     state_name = document.getElementById("data-state").value;
@@ -481,7 +463,6 @@ const bindSubmitButtonToSaveInfo = () => {
     let searchPreftext = document.getElementById("searchpref").value;
     first_5_pin_digits = document.getElementById("pincodeinput").value;
     timeslotind = document.getElementById("timeslotinput").value;
-    $("#formWrapper").hide();
     window.localStorage.setItem("mobile", mobilenumber);
     window.localStorage.setItem("state", state_name);
     window.localStorage.setItem("district", district_name);
@@ -527,24 +508,23 @@ function loadJS(file) {
 
 const createModal = () => {
   let wrapperDiv = document.createElement("div");
+  wrapperDiv.className = "modal fade";
+  wrapperDiv.id = 'form-modal'
   let modal = `
-  <div class="modal fade" id="form-modal">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Form</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body">
-        ...
+      <div class="modal-body" id="form-modal-body">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary" id="data-submit" data-bs-dismiss="modal">Save changes</button>
       </div>
     </div>
   </div>
-</div>
   `
   wrapperDiv.innerHTML = modal;
 
@@ -565,9 +545,9 @@ const createFormAndOthers = () => {
   addBootstrap();
   createModal();
   createModalHideShowButton();
-  // createForm();
+  createForm();
   // createHideShowButton();
-  // bindSubmitButtonToSaveInfo();
+  bindSubmitButtonToSaveInfo();
 }
 
 createFormAndOthers();
