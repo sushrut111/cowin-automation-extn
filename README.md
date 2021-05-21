@@ -75,6 +75,7 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 
 ## Credits
 1. CAPTCHA Decoder inspired from [@ayushchd](https://github.com/ayushchd)'s code
+2. Icons made by [mavadee](https://www.flaticon.com/authors/mavadee) from [www.flaticon.com](https://www.flaticon.com/)
 
 ## Misc
 1. I do not intend to collect any personal information and do not intend to cause any harm to you. This extension is just another helper utility. Should you not trust this, feel free to back out and not use the extension.
