@@ -1,17 +1,22 @@
 {
     "manifest_version": 2,
-
     "name": "Cowin Booking",
     "description": "Extensio to automatically fill data on cowin portal to speed up covid vaccine slot booking including captcha",
     "version": "2.1.0",
     "content_scripts": [
         {
-            "matches": ["https://selfregistration.cowin.gov.in/*"],
+            "matches": [
+                "https://selfregistration.cowin.gov.in/*"
+            ],
             "js": [
                 "jquery.min.js",
+                "bootstrap.min.js",
                 "contentScript.js",
                 "shortcut.js",
                 "sessionexp.js"
+            ],
+            "css": [
+                "bootstrap.min.css"
             ]
         }
     ],

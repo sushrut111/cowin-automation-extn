@@ -7,85 +7,85 @@ let mobilenumber = window.localStorage.getItem("mobile");
 let state_name = window.localStorage.getItem("state");
 let district_name = window.localStorage.getItem("district");
 let first_5_pin_digits = window.localStorage.getItem("pincode");
-let allow_multiple = window.localStorage.getItem("allow_multiple")==="true"?true:false;
+let allow_multiple = window.localStorage.getItem("allow_multiple") === "true" ? true : false;
 let ageSelectorText = window.localStorage.getItem("age");
-let searchByDistrictFlag = window.localStorage.getItem("searchpref")==="district"?true:false;
-let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously")==="true"?true:false;
+let searchByDistrictFlag = window.localStorage.getItem("searchpref") === "district" ? true : false;
+let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously") === "true" ? true : false;
 let timeslotind = window.localStorage.getItem("timeslot");
-let enableAutoRefresh = window.localStorage.getItem("autorefresh")==="true"?true:false;
+let enableAutoRefresh = window.localStorage.getItem("autorefresh") === "true" ? true : false;
 let minavailability = window.localStorage.getItem("minavailability");
 let center_prefs_string = window.localStorage.getItem("centerprefs");
-let center_prefs_dirty = center_prefs_string?center_prefs_string.split(","):"";
+let center_prefs_dirty = center_prefs_string ? center_prefs_string.split(",") : "";
 let center_prefs = [];
-for(let i=0;i<center_prefs_dirty.length;i++){
+for (let i = 0; i < center_prefs_dirty.length; i++) {
   let t = center_prefs_dirty[i].trim();
-  if(t!==""){
+  if (t !== "") {
     center_prefs.push(t);
   }
 }
-if(center_prefs.length===0){
+if (center_prefs.length === 0) {
   center_prefs = [""];
 }
 
 
 let booking_lower_lim = 1;
-try{
+try {
   booking_lower_lim = parseInt(minavailability);
-} catch(e) {
+} catch (e) {
   booking_lower_lim = 1;
 } finally {
-  if(isNaN(booking_lower_lim)){
+  if (isNaN(booking_lower_lim)) {
     booking_lower_lim = 1;
   }
 }
 
 
-var waitForEl = function(selector, callback) {
+var waitForEl = function (selector, callback) {
   if ($(selector).length) {
     callback();
-    
+
   } else {
-    setTimeout(function() {
+    setTimeout(function () {
       waitForEl(selector, callback);
     }, 100);
   }
 };
 
-var waitForElAgain = function(selector, callback) {
+var waitForElAgain = function (selector, callback) {
   if ($(selector).length) {
     callback();
     waitForElAgain(selector, callback);
   } else {
-    setTimeout(function() {
+    setTimeout(function () {
       waitForEl(selector, callback);
     }, 100);
   }
 };
 
 const repFun = () => {
-  waitForEl("[formcontrolname=mobile_number]", function() {
+  waitForEl("[formcontrolname=mobile_number]", function () {
     $("[formcontrolname=mobile_number]").val(mobilenumber);
     $("[formcontrolname=mobile_number]").on('input', (e) => {
-      if(e.target.value.length===10){
+      if (e.target.value.length === 10) {
         $('.login-btn').trigger('click');
       }
     })
   });
-  
-  waitForEl("[formcontrolname=otp]", function() {
+
+  waitForEl("[formcontrolname=otp]", function () {
     $("[formcontrolname=otp]").on('input', (e) => {
-      if(e.target.value.length===6){
+      if (e.target.value.length === 6) {
         $('.vac-btn').trigger('click');
       }
     })
   });
-  
+
   // waitForEl(".register-btn", () => {
   //   if(!!!allow_multiple) $('.register-btn').trigger('click');
   // })
 
   const dispatchAgeSelectorClick = () => {
-    setTimeout(()=>{
+    setTimeout(() => {
       $(`label:contains(${ageSelectorText})`).trigger('click');
     }, 500);
   }
@@ -94,43 +94,43 @@ const repFun = () => {
     let foundslot = false;
     var slotRows = $("ul.slot-available-wrap")
     var centerNameRows = $("ion-col.main-slider-wrap");
-    if(slotRows.length===0) return;
-    
+    if (slotRows.length === 0) return;
+
     let centerTitles = $(centerNameRows).find(".center-name-title");
     let centerAddresses = $(centerNameRows).find(".center-name-text");
-    
-    for(let i=0; i<slotRows.length; i++){
-      
+
+    for (let i = 0; i < slotRows.length; i++) {
+
       let center_text = centerTitles[i].innerText.trim() + " " + centerAddresses[i].innerText.trim();
       center_text = center_text.toLocaleLowerCase();
       let found_center_match = false;
-      for(let jj=0; jj<center_prefs.length; jj++) {
-        if(center_text.includes(center_prefs[jj].toLocaleLowerCase())) found_center_match = true;
+      for (let jj = 0; jj < center_prefs.length; jj++) {
+        if (center_text.includes(center_prefs[jj].toLocaleLowerCase())) found_center_match = true;
       }
-      if(!found_center_match){
-        if(searchByDistrictFlag) continue;
+      if (!found_center_match) {
+        if (searchByDistrictFlag) continue;
       }
       let slots = $(slotRows[i]).find("li a");
-      for(let slotIter=0; slotIter<slots.length; slotIter++){
+      for (let slotIter = 0; slotIter < slots.length; slotIter++) {
         let avail = parseInt(slots[slotIter].text.trim());
-        if(avail>=booking_lower_lim){
+        if (avail >= booking_lower_lim) {
           slots[slotIter].click();
           foundslot = true;
           break;
         }
       }
-      if(foundslot){
+      if (foundslot) {
         break;
       }
     }
-    if(foundslot){
+    if (foundslot) {
       setTimeout(enterCaptcha, 1000);
     } else {
 
-      if(searchByDistrictFlag && enableAutoRefresh){
-        if($('.pin-search-btn').length!==0){
-            $('.pin-search-btn').trigger('click');
-            dispatchAgeSelectorClick();  
+      if (searchByDistrictFlag && enableAutoRefresh) {
+        if ($('.pin-search-btn').length !== 0) {
+          $('.pin-search-btn').trigger('click');
+          dispatchAgeSelectorClick();
         }
       }
 
@@ -138,67 +138,67 @@ const repFun = () => {
   }
 
   const enterCaptcha = () => {
-    
+
     let timeslots = $('.time-slot');
     let slotind = 1;
-    if(timeslots.length===0) return;
-    if(timeslots.length===4){
+    if (timeslots.length === 0) return;
+    if (timeslots.length === 4) {
       try {
         slotind = parseInt(timeslotind) - 1;
-      } catch(e){
+      } catch (e) {
         slotind = 1;
       }
     }
-    if(isNaN(slotind)){
+    if (isNaN(slotind)) {
       slotind = 1;
     }
     timeslots[slotind].click();
 
     var svg = parser.parseFromString(atob($("img#captchaImage").attr("src").split("base64,")[1]), "image/svg+xml");
-    $(svg).find('path').each((_, p) => { if($(p).attr('stroke') != undefined) $(p).remove()})
+    $(svg).find('path').each((_, p) => { if ($(p).attr('stroke') != undefined) $(p).remove() })
     vals = []
     $(svg).find('path').each(
-        (_, p) => { 
-            idx = parseInt($(p).attr("d").split(".")[0].replace("M", ""))
-            vals.push(idx)
-        }
+      (_, p) => {
+        idx = parseInt($(p).attr("d").split(".")[0].replace("M", ""))
+        vals.push(idx)
+      }
     )
-    var sorted = [...vals].sort(function(a,b) { return a - b; })
+    var sorted = [...vals].sort(function (a, b) { return a - b; })
     var solution = ['', '', '', '', '']
 
     $(svg).find('path').each(
-        (idx, p) => { 
-            var pattern = $(p).attr('d').replace(/[\d\.\s]/g, "")
+      (idx, p) => {
+        var pattern = $(p).attr('d').replace(/[\d\.\s]/g, "")
 
-            solution[sorted.indexOf(vals[idx])] = parsed_model[pattern]
-        })
-    
+        solution[sorted.indexOf(vals[idx])] = parsed_model[pattern]
+      })
+
     $($(".captcha-style input")[0]).focus();
-    
-    for (var ii=0; ii<5; ii++) {
-        $($(".captcha-style input")[0]).val(solution.join("").substr(0, ii+1));
-        
-        $(".captcha-style input")[0].dispatchEvent(new Event("keyup", { bubbles: true }));
-        
+
+    for (var ii = 0; ii < 5; ii++) {
+      $($(".captcha-style input")[0]).val(solution.join("").substr(0, ii + 1));
+
+      $(".captcha-style input")[0].dispatchEvent(new Event("keyup", { bubbles: true }));
+
     }
 
-    setTimeout(()=>{
+    setTimeout(() => {
       // $("ion-button.confirm-btn")[0].click();
     }, 500);
 
   }
   const keepTryingToBook = () => {
-    setInterval(()=>{
-      if(keeptryingcontinuously) findSlotsAndBook();
+    setInterval(() => {
+      if (keeptryingcontinuously) findSlotsAndBook();
     }, 2000);
   }
   keepTryingToBook();
   const dispatchStateDistrictClick = () => {
     // checked = district
     // unchecked = pincode
-    setTimeout(()=>{
-      if(searchByDistrictFlag) {
-        if($("[formcontrolname=searchType]")[0] && !!!$("[formcontrolname=searchType]")[0].checked)
+    setTimeout(() => {
+      if (searchByDistrictFlag) {
+        if ($("[formcontrolname=searchType]")[0] && !!!$("[formcontrolname=searchType]")[0].checked)
           $("[formcontrolname=searchType]").trigger('click')
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
@@ -206,25 +206,25 @@ const repFun = () => {
     }, 500);
   }
 
-  waitForEl("[formcontrolname=searchType]", function() {
+  waitForEl("[formcontrolname=searchType]", function () {
 
     dispatchStateDistrictClick();
     $("[formcontrolname=pincode]").on('input', (e) => {
-      if(e.target.value.length===6){
+      if (e.target.value.length === 6) {
         $('.pin-search-btn').trigger('click');
         dispatchAgeSelectorClick();
       }
     })
-    
+
     $("[formcontrolname=searchType]").on('change', () => {
       let searchByDistrict = $("[formcontrolname=searchType]")[0].checked;
-      if(searchByDistrict  && state_name.trim()!=="" && district_name.trim()!==""){
+      if (searchByDistrict && state_name.trim() !== "" && district_name.trim() !== "") {
         $("[formcontrolname=state_id]").trigger('click');
         $(`span:contains(${state_name})`).trigger('click');
-        setTimeout(()=>{
+        setTimeout(() => {
           $("[formcontrolname=district_id]").trigger('click');
-          $("span").filter((ind, spn)=> spn.innerText===district_name).trigger("click");
-          setTimeout(()=>{
+          $("span").filter((ind, spn) => spn.innerText === district_name).trigger("click");
+          setTimeout(() => {
             $('.pin-search-btn').trigger('click');
           }, 500);
           dispatchAgeSelectorClick();
@@ -232,14 +232,14 @@ const repFun = () => {
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
         $("[formcontrolname=pincode]").on('input', (e) => {
-          if(e.target.value.length===6){
+          if (e.target.value.length === 6) {
             $('.pin-search-btn').trigger('click');
             dispatchAgeSelectorClick();
           }
         })
-      
+
       }
-  
+
     })
   })
 
@@ -256,35 +256,36 @@ if (window.location.hash) {
 }
 
 var current_href = location.href;
-setInterval(function(){
-    if(current_href !== location.href){
-        repFun();
-        current_href = location.href;
-    }else{
-    }
-},100);
+setInterval(function () {
+  if (current_href !== location.href) {
+    repFun();
+    current_href = location.href;
+  } else {
+  }
+}, 100);
 
 
 const keep_focusing = () => {
 
-  setInterval(()=>{
+  setInterval(() => {
     focus_ids.forEach(element => {
-      
-      if($("#formWrapper").is(":hidden")) if($(element).length!==0) $(element).focus();
+
+      if ($("#formWrapper").is(":hidden")) if ($(element).length !== 0) $(element).focus();
     });
-    
-  }, 1000);  
+
+  }, 1000);
 }
 
 
 keep_focusing();
 
-const createInput = (id, style, type, value) => {
+const createInput = (id, style, type, value, className) => {
   let retel = document.createElement("input");
   retel.id = id;
   retel.type = type;
   retel.style = style;
   retel.value = value;
+  retel.className = className
   return retel;
 }
 
@@ -294,11 +295,13 @@ const createLabel = (id, forid, labelText, style) => {
   retel.for = forid;
   retel.appendChild(document.createTextNode(labelText));
   retel.style = style;
+  retel.className = "form-label"
   return retel;
 }
 
 const createWarningText = (warningtext, style) => {
-  let retel = document.createElement('p');
+  let retel = document.createElement('div');
+  retel.className = "form-text"
   retel.appendChild(document.createTextNode(warningtext));
   retel.style = style;
   return retel;
@@ -309,6 +312,7 @@ const createSelectInput = (id, style, value) => {
   retel.style = style;
   retel.id = id;
   retel.value = value;
+  retel.className = 'form-select';
   return retel;
 }
 
@@ -317,7 +321,7 @@ const createSelectOptions = (id, text, value, selected) => {
   retel.id = id;
   retel.value = value;
   retel.appendChild(document.createTextNode(text));
-  if(selected) retel.selected = true;
+  if (selected) retel.selected = true;
   return retel;
 }
 
@@ -329,18 +333,16 @@ const createHrSeparator = () => {
 const createForm = () => {
 
   // basic styles : reused
-  let textLabelStyles = "color: black; padding-left: 1%;";
-  let inputStyles = "color: black; background: white;";
-  let warnLabelStyles = "color: red; padding-left: 1%;";
+  let textLabelStyles = "color: black";
+  let warnLabelStyles = "color: red";
 
   // parent div for form
   let wrapperDiv = document.createElement("div");
   wrapperDiv.id = "formWrapper";
-  wrapperDiv.style = "position: fixed; background: white; top: 12.5%; width: 75%; left: 12.5%; border: 3px solid #73AD21; overflow:scroll; height: 80%"
 
   // mobile number input field
   let mobileinputid = "data-mob";
-  let mobileInput = createInput(mobileinputid, inputStyles, "number", mobilenumber);
+  let mobileInput = createInput(mobileinputid, "", "number", mobilenumber, 'form-control');
   let mobileLabel = createLabel("mobileinputlabel", mobileinputid, "Mobile number (first 9 digits): ", textLabelStyles);
   let mobileNumberWarn = createWarningText(
     "You will have to enter the 10th digit in the actual website form to proceed with automation.",
@@ -349,26 +351,26 @@ const createForm = () => {
 
   // pin code field
   let pincodeinputid = "pincodeinput";
-  let pincodeinput = createInput(pincodeinputid, inputStyles, "number", first_5_pin_digits);
+  let pincodeinput = createInput(pincodeinputid, "", "number", first_5_pin_digits, 'form-control');
   let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code (First 5 digits): ", textLabelStyles);
   let pincodewarn = createWarningText("You will have to enter the 6th digit in the actual website form manually to proceed with automation.", warnLabelStyles);
 
   let centerprefinputid = "centerprefinput";
-  let centerprefinput = createInput(centerprefinputid, inputStyles, "text", center_prefs_string);
+  let centerprefinput = createInput(centerprefinputid, "", "text", center_prefs_string, 'form-control');
   let centerprefinputlabel = createLabel("centerprefinputlabel", centerprefinputid, "Enter comma separated words or pincodes preferred: ", textLabelStyles);
   let centerprefinputwarn = createWarningText("Each word separated by comma is treated as independent preference. If the center name is 'Jijamata Hospital, Gandhi Marg' entering 'jijamata' should work. You can also enter comma separated pincodes here and only the centers with one of these words in their name/address/pincode will be considered for booking. If you don't want to prefer anything, leave this blank. This preferrence is considered only in search by district.", warnLabelStyles);
 
   // state name input field
   let stateinputid = "data-state";
-  let stateInput = createInput(stateinputid, inputStyles, "text", state_name);
+  let stateInput = createInput(stateinputid, "", "text", state_name, 'form-control');
   let stateLabel = createLabel("stateinputlabel", stateinputid, "Name of the state: ", textLabelStyles)
 
   // district name input field
   let districtinputid = "data-district";
-  let districInput = createInput(districtinputid, inputStyles, "text", district_name);
+  let districInput = createInput(districtinputid, "", "text", district_name, 'form-control');
   let districLabel = createLabel("districtinputlabel", districtinputid, "District name: ", textLabelStyles);
 
-  let ageSelector = createSelectInput("ageselect", inputStyles, ageSelectorText);
+  let ageSelector = createSelectInput("ageselect", "", ageSelectorText);
   let age18 = createSelectOptions("age18", "Age 18+", "Age 18+", ageSelectorText === "Age 18+");
   let age45 = createSelectOptions("age45", "Age 45+", "Age 45+", ageSelectorText === "Age 45+");
   ageSelector.appendChild(age18);
@@ -378,109 +380,102 @@ const createForm = () => {
 
   // multiple members allow checkbox
   // let allowMultipleid = "allowMultiple";
-  // let allowMultipleInput = createInput(allowMultipleid, inputStyles, "checkbox", "");
+  // let allowMultipleInput = createInput(allowMultipleid, "", "checkbox", "");
   // allowMultipleInput.checked = allow_multiple;
   // let allowMultipleInputLabel = createLabel("multipleinputlabel", allowMultipleid, "Allow multiple members ", textLabelStyles);
   // let allowMultipleWarn = createWarningText("This will prevent automatic click on the Schedule Now button", warnLabelStyles);
 
   let continuousretryid = "continuousretry";
-  let continuousretryinput = createInput(continuousretryid, inputStyles, "checkbox", "");
+  let continuousretryinput = createInput(continuousretryid, "", "checkbox", "", 'form-check-input');
   continuousretryinput.checked = keeptryingcontinuously;
   let continuousretrylabel = createLabel("continuousretrylabel", continuousretryid, "Attempt to book continuosly ", textLabelStyles);
   let continuousretryWarn = createWarningText("This will keep looking for available slots on screen continously and automatically attempt to book a slot randomly, please check appointment details on the captcha page. FIRST AVAILABLE SLOT ON THE PAGE WILL BE SELECTED. Automatic captcha detection is supported only if this is checked/selected.", warnLabelStyles);
 
   let enableautorefreshid = "enableautorefresh";
-  let enableautorefreshinput = createInput(enableautorefreshid, inputStyles, "checkbox", "");
+  let enableautorefreshinput = createInput(enableautorefreshid, "", "checkbox", "", 'form-check-input');
   enableautorefreshinput.checked = enableAutoRefresh;
   let enableautorefreshlabel = createLabel("enableautorefreshlabel", enableautorefreshid, "Enable Auto Refresh on search by district ", textLabelStyles);
   let enableautorefreshWarn = createWarningText("Keep auto refreshing every 2 seconds in search with district. This work only if 'Attempt to book continuosly is selected' and search preference is set to District. Use this option carefully. Your access to cowin portal may be blocked if you send too many request during a short duration.", warnLabelStyles);
 
-
   let timeslotinputid = "timeslotinput";
-  let timeslotinput = createInput(timeslotinputid, inputStyles, "number", timeslotind);
+  let timeSlotSelector = createSelectInput(timeslotinputid, "", timeslotind)
+  let one = createSelectOptions("timeSlot-1", "Slot 1: 9:00 am to 11:00 am", '1', timeslotind === '1')
+  let two = createSelectOptions("timeSlot-2", "Slot 2: 11:00 am to 1:00 pm", '2', timeslotind === '2')
+  let three = createSelectOptions("timeSlot-3", "Slot 3: 1:00 pm to 3:00 pm", '3', timeslotind === '3')
+  let four = createSelectOptions("timeSlot-4", "Slot 4: 3:00 pm to 5:00 pm", '4', timeslotind === '4')
+  timeSlotSelector.appendChild(one)
+  timeSlotSelector.appendChild(two)
+  timeSlotSelector.appendChild(three)
+  timeSlotSelector.appendChild(four)
   let timeslotlabel = createLabel("timeslotinputlabel", timeslotinputid, "Enter time slot preference: ", textLabelStyles);
-  let timeslotwarn = createWarningText("Write a number between 1 and 4 corresponding to slots below. There are 4 time slots available in general. Select one of these (1) 9-11 (2) 11-1 (3) 1-3 (4) 3-5. If these are not the cases available there, slot number two will be selected automatically. You can change this slot manually on the captcha screen.", warnLabelStyles);
-  timeslotinput.min = 1;
-  timeslotinput.max = 4;
+  let timeslotwarn = createWarningText("Select a slot between 1 and 4 corresponding to slots below. There are 4 time slots available in general. Select one of these (1) 9-11 (2) 11-1 (3) 1-3 (4) 3-5. If these are not the cases available there, slot number two will be selected automatically. You can change this slot manually on the captcha screen.", warnLabelStyles);
 
   let minavailabilityinputid = "minavailabilityinput";
-  let minavailabilityinput = createInput(minavailabilityinputid, inputStyles, "number", minavailability);
+  let minavailabilityinput = createInput(minavailabilityinputid, "", "number", minavailability, 'form-control');
   let minavailabilityinputlabel = createLabel("minavailabilityinputlabel", minavailabilityinputid, "Select only if number of available slots is more than: ", textLabelStyles);
   let minavailabilityinputwarn = createWarningText("Write a number here. If you leave this empty, any center with min 1 available can be selected.", warnLabelStyles);
 
   // search preferrance
   let searchprefid = "searchpref";
-  let searchPrefSelector = createSelectInput(searchprefid, inputStyles, searchByDistrictFlag?"district":"pincode");
+  let searchPrefSelector = createSelectInput(searchprefid, "", searchByDistrictFlag ? "district" : "pincode");
   let districtoption = createSelectOptions("districtoption", "District", "district", searchByDistrictFlag);
   let pincodeoption = createSelectOptions("pincodeoption", "PIN code", "pincode", !!!searchByDistrictFlag);
   searchPrefSelector.appendChild(districtoption);
   searchPrefSelector.appendChild(pincodeoption);
   let searchPrefLabel = createLabel("searchpreflabel", searchprefid, "Search by: ", textLabelStyles);
 
-  // submit button
-  let submitButton = document.createElement("button");
-  submitButton.appendChild(document.createTextNode("Save inputs"));
-  submitButton.id = "data-submit";
-  submitButton.style = "color: black; background: #c2d6d6; font-size:20px; border-radius: 10px;"
-
-  // cancel button
-  let cancelbutton = document.createElement("button");
-  cancelbutton.id = "cancelbutton";
-  cancelbutton.appendChild(document.createTextNode("Cancel"));
-  cancelbutton.style = "color: white; background: black; font-size:20px; border-radius: 10px;";
-
   // add components to wrapper div
-  wrapperDiv.appendChild(mobileLabel);
-  wrapperDiv.appendChild(mobileInput);
-  wrapperDiv.appendChild(mobileNumberWarn);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(pincodelabel);
-  wrapperDiv.appendChild(pincodeinput);
-  wrapperDiv.appendChild(pincodewarn);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(centerprefinputlabel);
-  wrapperDiv.appendChild(centerprefinput);
-  wrapperDiv.appendChild(centerprefinputwarn);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(stateLabel);
-  wrapperDiv.appendChild(stateInput);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(districLabel);
-  wrapperDiv.appendChild(districInput);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(AgeSelectLabel);
-  wrapperDiv.appendChild(ageSelector);
-  wrapperDiv.appendChild(createHrSeparator());
+
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
+      wrapInDivWithClassName([mobileLabel, mobileInput, mobileNumberWarn], "col"),
+      wrapInDivWithClassName([pincodelabel, pincodeinput, pincodewarn], "col")
+    ], 'row mb-3'))
+
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
+      wrapInDivWithClassName([stateLabel, stateInput], 'col'),
+      wrapInDivWithClassName([districLabel, districInput], 'col'),
+      wrapInDivWithClassName([AgeSelectLabel, ageSelector], 'col')
+    ], 'row mb-3'))
+
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
+      wrapInDivWithClassName([timeslotlabel, timeSlotSelector, timeslotwarn], "col")
+    ], "row mb-3"))
+
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
+      wrapInDivWithClassName([searchPrefLabel, searchPrefSelector], 'col')
+    ], 'row mb-3'))
+
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
+      wrapInDivWithClassName([centerprefinputlabel, centerprefinput, centerprefinputwarn], "col"),
+      wrapInDivWithClassName([minavailabilityinputlabel, minavailabilityinput, minavailabilityinputwarn], "col")
+    ], 'row mb-3'))
+
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
+      wrapInDivWithClassName([wrapInDivWithClassName([continuousretryinput, continuousretrylabel, continuousretryWarn], 'form-check')], "col"),
+      wrapInDivWithClassName([wrapInDivWithClassName([enableautorefreshinput, enableautorefreshlabel, enableautorefreshWarn], 'form-check')], "col")
+    ], 'row mb-3'))
 
   // wrapperDiv.appendChild(allowMultipleInputLabel);
   // wrapperDiv.appendChild(allowMultipleInput);
   // wrapperDiv.appendChild(document.createElement('br'));
   // wrapperDiv.appendChild(allowMultipleWarn);
   // wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(continuousretrylabel);
-  wrapperDiv.appendChild(continuousretryinput);
-  wrapperDiv.appendChild(continuousretryWarn);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(timeslotlabel);
-  wrapperDiv.appendChild(timeslotinput);
-  wrapperDiv.appendChild(timeslotwarn);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(minavailabilityinputlabel);
-  wrapperDiv.appendChild(minavailabilityinput);
-  wrapperDiv.appendChild(minavailabilityinputwarn);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(searchPrefLabel);
-  wrapperDiv.appendChild(searchPrefSelector);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(enableautorefreshlabel);
-  wrapperDiv.appendChild(enableautorefreshinput);
-  wrapperDiv.appendChild(enableautorefreshWarn);
-  wrapperDiv.appendChild(createHrSeparator());
-  wrapperDiv.appendChild(submitButton);
-  wrapperDiv.appendChild(cancelbutton)
 
   // add form
-  document.body.appendChild(wrapperDiv);
+  document.getElementById('form-modal-body').appendChild(wrapperDiv)
+}
+
+const wrapInDivWithClassName = (children, className) => {
+  let divWrapper = document.createElement('div')
+  divWrapper.className = className;
+  for (var i = 0; i < children.length; i++) divWrapper.appendChild(children[i])
+  return divWrapper;
 }
 
 const createHideShowButton = () => {
@@ -490,17 +485,13 @@ const createHideShowButton = () => {
   formShowHide.appendChild(document.createTextNode("click to edit the autofill inputs"));
   formShowHide.style = "background: red; position: sticky; top:0; left: 0; font-size: 32px; border-radius: 20px;";
   document.body.appendChild(formShowHide);
-  $('#formshowhidebutton').on('click', ()=>{
+  $('#formshowhidebutton').on('click', () => {
     $("#formWrapper").toggle();
   })
 }
 
 const bindSubmitButtonToSaveInfo = () => {
   let submitbtn = document.getElementById("data-submit");
-  let cancelbutton = document.getElementById("cancelbutton");
-  cancelbutton.addEventListener("click", () => {
-    $("#formWrapper").toggle();
-  });
   submitbtn.addEventListener("click", () => {
     mobilenumber = document.getElementById("data-mob").value;
     state_name = document.getElementById("data-state").value;
@@ -514,14 +505,13 @@ const bindSubmitButtonToSaveInfo = () => {
     timeslotind = document.getElementById("timeslotinput").value;
     center_prefs_string = document.getElementById("centerprefinput").value;
     minavailability = document.getElementById("minavailabilityinput").value;
-    $("#formWrapper").hide();
     window.localStorage.setItem("mobile", mobilenumber);
     window.localStorage.setItem("state", state_name);
     window.localStorage.setItem("district", district_name);
     // window.localStorage.setItem("allow_multiple", allow_multiple);
     window.localStorage.setItem("keeptryingcontinuously", keeptryingcontinuously);
     window.localStorage.setItem("autorefresh", enableAutoRefresh);
-    
+
     window.localStorage.setItem("age", ageSelectorText);
     window.localStorage.setItem("searchpref", searchPreftext);
     window.localStorage.setItem("pincode", first_5_pin_digits);
@@ -532,9 +522,44 @@ const bindSubmitButtonToSaveInfo = () => {
   })
 }
 
+const createModal = () => {
+  let wrapperDiv = document.createElement("div");
+  wrapperDiv.className = "modal fade";
+  wrapperDiv.id = 'form-modal'
+  let modal = `
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Autofill Input Form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="form-modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="data-submit" data-bs-dismiss="modal">Save changes</button>
+      </div>
+    </div>
+  </div>
+  `
+  wrapperDiv.innerHTML = modal;
+
+  document.body.appendChild(wrapperDiv);
+}
+
+const createModalHideShowButton = () => {
+  let wrapperDiv = document.createElement("div");
+  let button = `
+  <button type="button" class="btn btn-danger btn-lg" style="position:absolute; top:2%; left: 2%; font-size: 2em;" data-bs-toggle="modal" data-bs-target="#form-modal">Edit Auto Fill Inputs</button>`
+  wrapperDiv.innerHTML = button;
+  document.body.appendChild(wrapperDiv);
+}
+
+
 const createFormAndOthers = () => {
+  createModal();
+  createModalHideShowButton();
   createForm();
-  createHideShowButton();
   bindSubmitButtonToSaveInfo();
 }
 
