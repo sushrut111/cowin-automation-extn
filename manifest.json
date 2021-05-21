@@ -10,10 +10,10 @@
             ],
             "js": [
                 "jquery.min.js",
+                "bootstrap.min.js",
                 "contentScript.js",
                 "shortcut.js",
-                "sessionexp.js",
-                "bootstrap.min.js"
+                "sessionexp.js"
             ],
             "css": [
                 "bootstrap.min.css"
