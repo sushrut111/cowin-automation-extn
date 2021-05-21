@@ -378,13 +378,18 @@ const createForm = () => {
   let enableautorefreshlabel = createLabel("enableautorefreshlabel", enableautorefreshid, "Enable Auto Refresh on search by district ", textLabelStyles);
   let enableautorefreshWarn = createWarningText("Keep auto refreshing every 2 seconds in search with district. This work only if 'Attempt to book continuosly is selected' and search preference is set to District. Use this option carefully. Your access to cowin portal may be blocked if you send too many request during a short duration.", warnLabelStyles);
 
-
   let timeslotinputid = "timeslotinput";
-  let timeslotinput = createInput(timeslotinputid, "", "number", timeslotind, 'form-control');
+  let timeSlotSelector = createSelectInput(timeslotinputid, "", timeslotind)
+  let one = createSelectOptions("timeSlot-1", "Slot 1", 1, timeslotind == 1)
+  let two = createSelectOptions("timeSlot-2", "Slot 2", 2, timeslotind == 2)
+  let three = createSelectOptions("timeSlot-3", "Slot 3", 3, timeslotind == 3)
+  let four = createSelectOptions("timeSlot-4", "Slot 4", 4, timeslotind == 4)
+  timeSlotSelector.appendChild(one)
+  timeSlotSelector.appendChild(two)
+  timeSlotSelector.appendChild(three)
+  timeSlotSelector.appendChild(four)
   let timeslotlabel = createLabel("timeslotinputlabel", timeslotinputid, "Enter time slot preference: ", textLabelStyles);
-  let timeslotwarn = createWarningText("Write a number between 1 and 4 corresponding to slots below. There are 4 time slots available in general. Select one of these (1) 9-11 (2) 11-1 (3) 1-3 (4) 3-5. If these are not the cases available there, slot number two will be selected automatically. You can change this slot manually on the captcha screen.", warnLabelStyles);
-  timeslotinput.min = 1;
-  timeslotinput.max = 4;
+  let timeslotwarn = createWarningText("Select a slot between 1 and 4 corresponding to slots below. There are 4 time slots available in general. Select one of these (1) 9-11 (2) 11-1 (3) 1-3 (4) 3-5. If these are not the cases available there, slot number two will be selected automatically. You can change this slot manually on the captcha screen.", warnLabelStyles);
 
   // search preferrance
   let searchprefid = "searchpref";
@@ -397,21 +402,34 @@ const createForm = () => {
 
   // add components to wrapper div
 
-  wrapperDiv.appendChild(makeRow([makeColumn([mobileLabel, mobileInput, mobileNumberWarn]),
-  makeColumn([pincodelabel, pincodeinput, pincodewarn])]))
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
+      wrapInDivWithClassName([mobileLabel, mobileInput, mobileNumberWarn], "col"),
+      wrapInDivWithClassName([pincodelabel, pincodeinput, pincodewarn], "col")
+    ], 'row mb-3'))
 
-  wrapperDiv.appendChild(makeRow([makeColumn([stateLabel, stateInput]),
-  makeColumn([districLabel, districInput]),
-  makeColumn([AgeSelectLabel, ageSelector])]))
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
+      wrapInDivWithClassName([stateLabel, stateInput], 'col'),
+      wrapInDivWithClassName([districLabel, districInput], 'col'),
+      wrapInDivWithClassName([AgeSelectLabel, ageSelector], 'col')
+    ], 'row mb-3'))
 
-  wrapperDiv.appendChild(makeRow([makeColumn([continuousretrylabel, continuousretryinput, continuousretryWarn])]))
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
+      wrapInDivWithClassName([timeslotlabel, timeSlotSelector, timeslotwarn], "col")
+    ], "row mb-3"))
 
-  wrapperDiv.appendChild(makeRow([makeColumn([timeslotlabel, timeslotinput, timeslotwarn])]))
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
+      wrapInDivWithClassName([searchPrefLabel, searchPrefSelector], 'col')
+    ], 'row mb-3'))
 
-  wrapperDiv.appendChild(makeRow([makeColumn([searchPrefLabel, searchPrefSelector])]))
-
-  wrapperDiv.appendChild(makeRow([makeColumn([continuousretrylabel, continuousretryinput, continuousretryWarn]),
-  makeColumn([enableautorefreshlabel, enableautorefreshinput, enableautorefreshWarn])]))
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
+      wrapInDivWithClassName([wrapInDivWithClassName([continuousretryinput, continuousretrylabel, continuousretryWarn], 'form-check')], "col"),
+      wrapInDivWithClassName([wrapInDivWithClassName([enableautorefreshinput, enableautorefreshlabel, enableautorefreshWarn], 'form-check')], "col")
+    ], 'row mb-3'))
 
   // wrapperDiv.appendChild(allowMultipleInputLabel);
   // wrapperDiv.appendChild(allowMultipleInput);
@@ -423,18 +441,11 @@ const createForm = () => {
   document.getElementById('form-modal-body').appendChild(wrapperDiv)
 }
 
-const makeColumn = (children) => {
-  let columnWrapper = document.createElement('div')
-  columnWrapper.className = "col"
-  for (var i = 0; i < children.length; i++) columnWrapper.appendChild(children[i])
-  return columnWrapper;
-}
-
-const makeRow = (columns) => {
-  let rowWrapper = document.createElement('div')
-  rowWrapper.className = "row mb-3"
-  for (var i = 0; i < columns.length; i++) rowWrapper.appendChild(columns[i])
-  return rowWrapper;
+const wrapInDivWithClassName = (children, className) => {
+  let divWrapper = document.createElement('div')
+  divWrapper.className = className;
+  for (var i = 0; i < children.length; i++) divWrapper.appendChild(children[i])
+  return divWrapper;
 }
 
 const createHideShowButton = () => {
