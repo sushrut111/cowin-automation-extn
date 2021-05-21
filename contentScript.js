@@ -356,7 +356,7 @@ const createForm = () => {
   let pincodewarn = createWarningText("You will have to enter the 6th digit in the actual website form manually to proceed with automation.", warnLabelStyles);
 
   let centerprefinputid = "centerprefinput";
-  let centerprefinput = createInput(centerprefinputid, "", "text", center_prefs_string);
+  let centerprefinput = createInput(centerprefinputid, "", "text", center_prefs_string, 'form-control');
   let centerprefinputlabel = createLabel("centerprefinputlabel", centerprefinputid, "Enter comma separated words or pincodes preferred: ", textLabelStyles);
   let centerprefinputwarn = createWarningText("Each word separated by comma is treated as independent preference. If the center name is 'Jijamata Hospital, Gandhi Marg' entering 'jijamata' should work. You can also enter comma separated pincodes here and only the centers with one of these words in their name/address/pincode will be considered for booking. If you don't want to prefer anything, leave this blank. This preferrence is considered only in search by district.", warnLabelStyles);
 
@@ -451,13 +451,14 @@ const createForm = () => {
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
+      wrapInDivWithClassName([centerprefinputlabel, centerprefinput, centerprefinputwarn], "col")
+    ], 'row mb-3'))
+
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
       wrapInDivWithClassName([wrapInDivWithClassName([continuousretryinput, continuousretrylabel, continuousretryWarn], 'form-check')], "col"),
       wrapInDivWithClassName([wrapInDivWithClassName([enableautorefreshinput, enableautorefreshlabel, enableautorefreshWarn], 'form-check')], "col")
     ], 'row mb-3'))
-  wrapperDiv.appendChild(centerprefinputlabel);
-  wrapperDiv.appendChild(centerprefinput);
-  wrapperDiv.appendChild(centerprefinputwarn);
-  wrapperDiv.appendChild(createHrSeparator());
 
   // wrapperDiv.appendChild(allowMultipleInputLabel);
   // wrapperDiv.appendChild(allowMultipleInput);
