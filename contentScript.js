@@ -544,7 +544,7 @@ const createModal = () => {
 const createModalHideShowButton = () => {
   let wrapperDiv = document.createElement("div");
   let button = `
-  <button type="button" class="btn btn-warning" style="position:absolute;" data-bs-toggle="modal" data-bs-target="#form-modal">Edit</button>
+  <button type="button" class="btn btn-primary btn-lg" style="position:absolute; bottom:2%; left: 2%" data-bs-toggle="modal" data-bs-target="#form-modal">Edit Auto Fill Inputs</button>
   `
   wrapperDiv.innerHTML = button;
   document.body.appendChild(wrapperDiv);
