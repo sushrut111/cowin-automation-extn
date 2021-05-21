@@ -399,10 +399,10 @@ const createForm = () => {
 
   let timeslotinputid = "timeslotinput";
   let timeSlotSelector = createSelectInput(timeslotinputid, "", timeslotind)
-  let one = createSelectOptions("timeSlot-1", "Slot 1", '1', timeslotind === '1')
-  let two = createSelectOptions("timeSlot-2", "Slot 2", '2', timeslotind === '2')
-  let three = createSelectOptions("timeSlot-3", "Slot 3", '3', timeslotind === '3')
-  let four = createSelectOptions("timeSlot-4", "Slot 4", '4', timeslotind === '4')
+  let one = createSelectOptions("timeSlot-1", "Slot 1: 9:00 am to 11:00 am", '1', timeslotind === '1')
+  let two = createSelectOptions("timeSlot-2", "Slot 2: 11:00 am to 1:00 pm", '2', timeslotind === '2')
+  let three = createSelectOptions("timeSlot-3", "Slot 3: 1:00 pm to 3:00 pm", '3', timeslotind === '3')
+  let four = createSelectOptions("timeSlot-4", "Slot 4: 3:00 pm to 5:00 pm", '4', timeslotind === '4')
   timeSlotSelector.appendChild(one)
   timeSlotSelector.appendChild(two)
   timeSlotSelector.appendChild(three)
