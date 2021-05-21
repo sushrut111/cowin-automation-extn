@@ -1,16 +1,21 @@
 {
     "manifest_version": 2,
-
     "name": "Cowin Booking",
     "description": "automatically fill data on cowin portal to speed up covid vaccine slot booking",
     "version": "2.0.6",
     "content_scripts": [
         {
-            "matches": ["https://selfregistration.cowin.gov.in/*"],
+            "matches": [
+                "https://selfregistration.cowin.gov.in/*"
+            ],
             "js": [
                 "jquery.min.js",
                 "contentScript.js",
-                "shortcut.js"
+                "shortcut.js",
+                "bootstrap.min.js"
+            ],
+            "css": [
+                "bootstrap.min.css"
             ]
         }
     ],
