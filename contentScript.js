@@ -320,7 +320,6 @@ const createForm = () => {
 
   // basic styles : reused
   let textLabelStyles = "color: black";
-  let inputStyles = "";
   let warnLabelStyles = "color: red";
 
   // parent div for form
@@ -329,7 +328,7 @@ const createForm = () => {
 
   // mobile number input field
   let mobileinputid = "data-mob";
-  let mobileInput = createInput(mobileinputid, inputStyles, "number", mobilenumber, 'form-control');
+  let mobileInput = createInput(mobileinputid, "", "number", mobilenumber, 'form-control');
   let mobileLabel = createLabel("mobileinputlabel", mobileinputid, "Mobile number (first 9 digits): ", textLabelStyles);
   let mobileNumberWarn = createWarningText(
     "You will have to enter the 10th digit in the actual website form to proceed with automation.",
@@ -338,21 +337,21 @@ const createForm = () => {
 
   // pin code field
   let pincodeinputid = "pincodeinput";
-  let pincodeinput = createInput(pincodeinputid, inputStyles, "number", first_5_pin_digits, 'form-control');
+  let pincodeinput = createInput(pincodeinputid, "", "number", first_5_pin_digits, 'form-control');
   let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code (First 5 digits): ", textLabelStyles);
   let pincodewarn = createWarningText("You will have to enter the 6th digit in the actual website form manually to proceed with automation.", warnLabelStyles);
 
   // state name input field
   let stateinputid = "data-state";
-  let stateInput = createInput(stateinputid, inputStyles, "text", state_name, 'form-control');
+  let stateInput = createInput(stateinputid, "", "text", state_name, 'form-control');
   let stateLabel = createLabel("stateinputlabel", stateinputid, "Name of the state: ", textLabelStyles)
 
   // district name input field
   let districtinputid = "data-district";
-  let districInput = createInput(districtinputid, inputStyles, "text", district_name, 'form-control');
+  let districInput = createInput(districtinputid, "", "text", district_name, 'form-control');
   let districLabel = createLabel("districtinputlabel", districtinputid, "District name: ", textLabelStyles);
 
-  let ageSelector = createSelectInput("ageselect", inputStyles, ageSelectorText);
+  let ageSelector = createSelectInput("ageselect", "", ageSelectorText);
   let age18 = createSelectOptions("age18", "Age 18+", "Age 18+", ageSelectorText === "Age 18+");
   let age45 = createSelectOptions("age45", "Age 45+", "Age 45+", ageSelectorText === "Age 45+");
   ageSelector.appendChild(age18);
@@ -362,26 +361,26 @@ const createForm = () => {
 
   // multiple members allow checkbox
   // let allowMultipleid = "allowMultiple";
-  // let allowMultipleInput = createInput(allowMultipleid, inputStyles, "checkbox", "");
+  // let allowMultipleInput = createInput(allowMultipleid, "", "checkbox", "");
   // allowMultipleInput.checked = allow_multiple;
   // let allowMultipleInputLabel = createLabel("multipleinputlabel", allowMultipleid, "Allow multiple members ", textLabelStyles);
   // let allowMultipleWarn = createWarningText("This will prevent automatic click on the Schedule Now button", warnLabelStyles);
 
   let continuousretryid = "continuousretry";
-  let continuousretryinput = createInput(continuousretryid, inputStyles, "checkbox", "", 'form-check-input');
+  let continuousretryinput = createInput(continuousretryid, "", "checkbox", "", 'form-check-input');
   continuousretryinput.checked = keeptryingcontinuously;
   let continuousretrylabel = createLabel("continuousretrylabel", continuousretryid, "Attempt to book continuosly ", textLabelStyles);
   let continuousretryWarn = createWarningText("This will keep looking for available slots on screen continously and automatically attempt to book a slot randomly, please check appointment details on the captcha page. FIRST AVAILABLE SLOT ON THE PAGE WILL BE SELECTED. Automatic captcha detection is supported only if this is checked/selected.", warnLabelStyles);
 
   let enableautorefreshid = "enableautorefresh";
-  let enableautorefreshinput = createInput(enableautorefreshid, inputStyles, "checkbox", "", 'form-check-input');
+  let enableautorefreshinput = createInput(enableautorefreshid, "", "checkbox", "", 'form-check-input');
   enableautorefreshinput.checked = enableAutoRefresh;
   let enableautorefreshlabel = createLabel("enableautorefreshlabel", enableautorefreshid, "Enable Auto Refresh on search by district ", textLabelStyles);
   let enableautorefreshWarn = createWarningText("Keep auto refreshing every 2 seconds in search with district. This work only if 'Attempt to book continuosly is selected' and search preference is set to District. Use this option carefully. Your access to cowin portal may be blocked if you send too many request during a short duration.", warnLabelStyles);
 
 
   let timeslotinputid = "timeslotinput";
-  let timeslotinput = createInput(timeslotinputid, inputStyles, "number", timeslotind, 'form-control');
+  let timeslotinput = createInput(timeslotinputid, "", "number", timeslotind, 'form-control');
   let timeslotlabel = createLabel("timeslotinputlabel", timeslotinputid, "Enter time slot preference: ", textLabelStyles);
   let timeslotwarn = createWarningText("Write a number between 1 and 4 corresponding to slots below. There are 4 time slots available in general. Select one of these (1) 9-11 (2) 11-1 (3) 1-3 (4) 3-5. If these are not the cases available there, slot number two will be selected automatically. You can change this slot manually on the captcha screen.", warnLabelStyles);
   timeslotinput.min = 1;
@@ -389,7 +388,7 @@ const createForm = () => {
 
   // search preferrance
   let searchprefid = "searchpref";
-  let searchPrefSelector = createSelectInput(searchprefid, inputStyles, searchByDistrictFlag ? "district" : "pincode");
+  let searchPrefSelector = createSelectInput(searchprefid, "", searchByDistrictFlag ? "district" : "pincode");
   let districtoption = createSelectOptions("districtoption", "District", "district", searchByDistrictFlag);
   let pincodeoption = createSelectOptions("pincodeoption", "PIN code", "pincode", !!!searchByDistrictFlag);
   searchPrefSelector.appendChild(districtoption);
@@ -546,7 +545,6 @@ const createFormAndOthers = () => {
   createModal();
   createModalHideShowButton();
   createForm();
-  // createHideShowButton();
   bindSubmitButtonToSaveInfo();
 }
 
