@@ -152,7 +152,11 @@ const repFun = () => {
     if (isNaN(slotind)) {
       slotind = 1;
     }
-    timeslots[slotind].click();
+    try{
+      timeslots[slotind].click();
+    } catch(e){
+      console.log("Requested timeslot is not available.");
+    }
 
     var svg = parser.parseFromString(atob($("img#captchaImage").attr("src").split("base64,")[1]), "image/svg+xml");
     $(svg).find('path').each((_, p) => { if ($(p).attr('stroke') != undefined) $(p).remove() })
