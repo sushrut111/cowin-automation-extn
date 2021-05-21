@@ -488,34 +488,6 @@ const bindSubmitButtonToSaveInfo = () => {
   })
 }
 
-const addBootstrap = () => {
-  addCss('https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css')
-  loadJS('https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js')
-}
-
-function addCss(fileName) {
-
-  var head = document.head;
-  var link = document.createElement("link");
-
-  link.type = "text/css";
-  link.rel = "stylesheet";
-  link.href = fileName;
-
-  head.appendChild(link);
-}
-
-function loadJS(file) {
-  // DOM: Create the script element
-  var jsElm = document.createElement("script");
-  // set the type attribute
-  jsElm.type = "application/javascript";
-  // make the script element load file
-  jsElm.src = file;
-  // finally insert the element to the body element in order to load the script
-  document.body.appendChild(jsElm);
-}
-
 const createModal = () => {
   let wrapperDiv = document.createElement("div");
   wrapperDiv.className = "modal fade";
@@ -552,7 +524,6 @@ const createModalHideShowButton = () => {
 
 
 const createFormAndOthers = () => {
-  addBootstrap();
   createModal();
   createModalHideShowButton();
   createForm();
