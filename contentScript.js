@@ -411,7 +411,7 @@ const createForm = () => {
   let timeslotwarn = createWarningText("Select a slot between 1 and 4 corresponding to slots below. There are 4 time slots available in general. Select one of these (1) 9-11 (2) 11-1 (3) 1-3 (4) 3-5. If these are not the cases available there, slot number two will be selected automatically. You can change this slot manually on the captcha screen.", warnLabelStyles);
 
   let minavailabilityinputid = "minavailabilityinput";
-  let minavailabilityinput = createInput(minavailabilityinputid, "", "number", minavailability);
+  let minavailabilityinput = createInput(minavailabilityinputid, "", "number", minavailability, 'form-control');
   let minavailabilityinputlabel = createLabel("minavailabilityinputlabel", minavailabilityinputid, "Select only if number of available slots is more than: ", textLabelStyles);
   let minavailabilityinputwarn = createWarningText("Write a number here. If you leave this empty, any center with min 1 available can be selected.", warnLabelStyles);
 
@@ -451,7 +451,8 @@ const createForm = () => {
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
-      wrapInDivWithClassName([centerprefinputlabel, centerprefinput, centerprefinputwarn], "col")
+      wrapInDivWithClassName([centerprefinputlabel, centerprefinput, centerprefinputwarn], "col"),
+      wrapInDivWithClassName([minavailabilityinputlabel, minavailabilityinput, minavailabilityinputwarn], "col")
     ], 'row mb-3'))
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
