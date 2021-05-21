@@ -80,6 +80,7 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 2. I do not guarantee a confirm slot.
 
 3. I am an independent developer and have no affiliations with the developers of cowin application.
+4. I work at Microsoft India and this project has nothing to do with my employer and I have worked on this outside of my commitment to my employer.
 
 ## Mutual support
 1. Should you need any help or face troubles using this extension, reach out to me via this telegram channel: [https://t.me/joinchat/2l17jl8xYRM1NTdl](https://t.me/joinchat/2l17jl8xYRM1NTdl)
