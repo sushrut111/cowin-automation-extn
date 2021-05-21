@@ -74,13 +74,14 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 1. CAPTCHA Decoder inspired from [@ayushchd](https://github.com/ayushchd)'s code
 2. Icons made by [mavadee](https://www.flaticon.com/authors/mavadee) from [www.flaticon.com](https://www.flaticon.com/)
 
-## Misc
+## Declarations
 1. I do not intend to collect any personal information and do not intend to cause any harm to you. This extension is just another helper utility. Should you not trust this, feel free to back out and not use the extension.
 
 2. I do not guarantee a confirm slot.
 
 3. I am an independent developer and have no affiliations with the developers of cowin application.
 
-4. Should you need any help or face troubles using this extension, reach out to me via this telegram channel: [https://t.me/joinchat/2l17jl8xYRM1NTdl](https://t.me/joinchat/2l17jl8xYRM1NTdl)
+## Mutual support
+1. Should you need any help or face troubles using this extension, reach out to me via this telegram channel: [https://t.me/joinchat/2l17jl8xYRM1NTdl](https://t.me/joinchat/2l17jl8xYRM1NTdl)
 
-5. If this extension helped you, you can support my work [here](https://www.buymeacoffee.com/sushrut)
+2. If this extension helped you, you can support my work [here](https://www.buymeacoffee.com/sushrut)
