@@ -542,7 +542,6 @@ const createModal = () => {
     </div>
   </div>
   `
-  $("#form-modal").modal();
   wrapperDiv.innerHTML = modal;
 
   document.body.appendChild(wrapperDiv);
