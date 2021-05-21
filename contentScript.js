@@ -13,6 +13,32 @@ let searchByDistrictFlag = window.localStorage.getItem("searchpref")==="district
 let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously")==="true"?true:false;
 let timeslotind = window.localStorage.getItem("timeslot");
 let enableAutoRefresh = window.localStorage.getItem("autorefresh")==="true"?true:false;
+let minavailability = window.localStorage.getItem("minavailability");
+let center_prefs_string = window.localStorage.getItem("centerprefs");
+let center_prefs_dirty = center_prefs_string?center_prefs_string.split(","):"";
+let center_prefs = [];
+for(let i=0;i<center_prefs_dirty.length;i++){
+  let t = center_prefs_dirty[i].trim();
+  if(t!==""){
+    center_prefs.push(t);
+  }
+}
+if(center_prefs.length===0){
+  center_prefs = [""];
+}
+
+
+let booking_lower_lim = 1;
+try{
+  booking_lower_lim = parseInt(minavailability);
+} catch(e) {
+  booking_lower_lim = 1;
+} finally {
+  if(isNaN(booking_lower_lim)){
+    booking_lower_lim = 1;
+  }
+}
+
 
 var waitForEl = function(selector, callback) {
   if ($(selector).length) {
@@ -67,13 +93,33 @@ const repFun = () => {
   const findSlotsAndBook = () => {
     let foundslot = false;
     var slotRows = $("ul.slot-available-wrap")
+    var centerNameRows = $("ion-col.main-slider-wrap");
     if(slotRows.length===0) return;
-    let slots = $(slotRows).find("li a");
-    for(let i=0; i<slots.length; i++){
-      let avail = parseInt(slots[i].text.trim());
-      if(avail>0){
-        slots[i].click();
-        foundslot = true;
+    
+    let centerTitles = $(centerNameRows).find(".center-name-title");
+    let centerAddresses = $(centerNameRows).find(".center-name-text");
+    
+    for(let i=0; i<slotRows.length; i++){
+      
+      let center_text = centerTitles[i].innerText.trim() + " " + centerAddresses[i].innerText.trim();
+      center_text = center_text.toLocaleLowerCase();
+      let found_center_match = false;
+      for(let jj=0; jj<center_prefs.length; jj++) {
+        if(center_text.includes(center_prefs[jj].toLocaleLowerCase())) found_center_match = true;
+      }
+      if(!found_center_match){
+        if(searchByDistrictFlag) continue;
+      }
+      let slots = $(slotRows[i]).find("li a");
+      for(let slotIter=0; slotIter<slots.length; slotIter++){
+        let avail = parseInt(slots[slotIter].text.trim());
+        if(avail>=booking_lower_lim){
+          slots[slotIter].click();
+          foundslot = true;
+          break;
+        }
+      }
+      if(foundslot){
         break;
       }
     }
@@ -208,38 +254,6 @@ let focus_ids = ["[formcontrolname=otp]", "[formcontrolname=mobile_number]", "[f
 if (window.location.hash) {
   $(window).trigger('hashchange')
 }
-const parseJwt = (token) => {
-  try {
-    return JSON.parse(atob(token.split('.')[1]));
-  } catch (e) {
-    return null;
-  }
-};
-
-const get_mins = (tm) => {
-  let mins = Math.floor(tm/60);
-  let secs = Math.floor(tm - mins * 60);
-  return `${mins}:${secs}`
-}
-
-const expirationUpdate = () => {
-  let token = window.sessionStorage["userToken"];
-  if(token===undefined){
-    return;
-  }
-  let parsed = parseJwt(token);
-  if(!!!parsed){
-    return;
-  }
-  let exp = parsed.exp;
-  let curr = new Date();
-  let expd = new Date(0);
-  expd.setUTCSeconds(exp);
-  document.title = get_mins((expd - curr)/1000);
-}
-
-setInterval(expirationUpdate, 5000);
-
 
 var current_href = location.href;
 setInterval(function(){
@@ -339,6 +353,11 @@ const createForm = () => {
   let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code (First 5 digits): ", textLabelStyles);
   let pincodewarn = createWarningText("You will have to enter the 6th digit in the actual website form manually to proceed with automation.", warnLabelStyles);
 
+  let centerprefinputid = "centerprefinput";
+  let centerprefinput = createInput(centerprefinputid, inputStyles, "text", center_prefs_string);
+  let centerprefinputlabel = createLabel("centerprefinputlabel", centerprefinputid, "Enter comma separated words or pincodes preferred: ", textLabelStyles);
+  let centerprefinputwarn = createWarningText("Each word separated by comma is treated as independent preference. If the center name is 'Jijamata Hospital, Gandhi Marg' entering 'jijamata' should work. You can also enter comma separated pincodes here and only the centers with one of these words in their name/address/pincode will be considered for booking. If you don't want to prefer anything, leave this blank. This preferrence is considered only in search by district.", warnLabelStyles);
+
   // state name input field
   let stateinputid = "data-state";
   let stateInput = createInput(stateinputid, inputStyles, "text", state_name);
@@ -384,6 +403,11 @@ const createForm = () => {
   timeslotinput.min = 1;
   timeslotinput.max = 4;
 
+  let minavailabilityinputid = "minavailabilityinput";
+  let minavailabilityinput = createInput(minavailabilityinputid, inputStyles, "number", minavailability);
+  let minavailabilityinputlabel = createLabel("minavailabilityinputlabel", minavailabilityinputid, "Select only if number of available slots is more than: ", textLabelStyles);
+  let minavailabilityinputwarn = createWarningText("Write a number here. If you leave this empty, any center with min 1 available can be selected.", warnLabelStyles);
+
   // search preferrance
   let searchprefid = "searchpref";
   let searchPrefSelector = createSelectInput(searchprefid, inputStyles, searchByDistrictFlag?"district":"pincode");
@@ -414,7 +438,10 @@ const createForm = () => {
   wrapperDiv.appendChild(pincodeinput);
   wrapperDiv.appendChild(pincodewarn);
   wrapperDiv.appendChild(createHrSeparator());
-
+  wrapperDiv.appendChild(centerprefinputlabel);
+  wrapperDiv.appendChild(centerprefinput);
+  wrapperDiv.appendChild(centerprefinputwarn);
+  wrapperDiv.appendChild(createHrSeparator());
   wrapperDiv.appendChild(stateLabel);
   wrapperDiv.appendChild(stateInput);
   wrapperDiv.appendChild(createHrSeparator());
@@ -437,6 +464,10 @@ const createForm = () => {
   wrapperDiv.appendChild(timeslotlabel);
   wrapperDiv.appendChild(timeslotinput);
   wrapperDiv.appendChild(timeslotwarn);
+  wrapperDiv.appendChild(createHrSeparator());
+  wrapperDiv.appendChild(minavailabilityinputlabel);
+  wrapperDiv.appendChild(minavailabilityinput);
+  wrapperDiv.appendChild(minavailabilityinputwarn);
   wrapperDiv.appendChild(createHrSeparator());
   wrapperDiv.appendChild(searchPrefLabel);
   wrapperDiv.appendChild(searchPrefSelector);
@@ -481,6 +512,8 @@ const bindSubmitButtonToSaveInfo = () => {
     let searchPreftext = document.getElementById("searchpref").value;
     first_5_pin_digits = document.getElementById("pincodeinput").value;
     timeslotind = document.getElementById("timeslotinput").value;
+    center_prefs_string = document.getElementById("centerprefinput").value;
+    minavailability = document.getElementById("minavailabilityinput").value;
     $("#formWrapper").hide();
     window.localStorage.setItem("mobile", mobilenumber);
     window.localStorage.setItem("state", state_name);
@@ -493,6 +526,8 @@ const bindSubmitButtonToSaveInfo = () => {
     window.localStorage.setItem("searchpref", searchPreftext);
     window.localStorage.setItem("pincode", first_5_pin_digits);
     window.localStorage.setItem("timeslot", timeslotind);
+    window.localStorage.setItem("centerprefs", center_prefs_string);
+    window.localStorage.setItem("minavailability", minavailability);
     window.location.reload();
   })
 }
