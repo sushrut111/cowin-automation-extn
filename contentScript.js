@@ -7,59 +7,59 @@ let mobilenumber = window.localStorage.getItem("mobile");
 let state_name = window.localStorage.getItem("state");
 let district_name = window.localStorage.getItem("district");
 let first_5_pin_digits = window.localStorage.getItem("pincode");
-let allow_multiple = window.localStorage.getItem("allow_multiple")==="true"?true:false;
+let allow_multiple = window.localStorage.getItem("allow_multiple") === "true" ? true : false;
 let ageSelectorText = window.localStorage.getItem("age");
-let searchByDistrictFlag = window.localStorage.getItem("searchpref")==="district"?true:false;
-let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously")==="true"?true:false;
+let searchByDistrictFlag = window.localStorage.getItem("searchpref") === "district" ? true : false;
+let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously") === "true" ? true : false;
 let timeslotind = window.localStorage.getItem("timeslot");
-let enableAutoRefresh = window.localStorage.getItem("autorefresh")==="true"?true:false;
+let enableAutoRefresh = window.localStorage.getItem("autorefresh") === "true" ? true : false;
 
-var waitForEl = function(selector, callback) {
+var waitForEl = function (selector, callback) {
   if ($(selector).length) {
     callback();
-    
+
   } else {
-    setTimeout(function() {
+    setTimeout(function () {
       waitForEl(selector, callback);
     }, 100);
   }
 };
 
-var waitForElAgain = function(selector, callback) {
+var waitForElAgain = function (selector, callback) {
   if ($(selector).length) {
     callback();
     waitForElAgain(selector, callback);
   } else {
-    setTimeout(function() {
+    setTimeout(function () {
       waitForEl(selector, callback);
     }, 100);
   }
 };
 
 const repFun = () => {
-  waitForEl("[formcontrolname=mobile_number]", function() {
+  waitForEl("[formcontrolname=mobile_number]", function () {
     $("[formcontrolname=mobile_number]").val(mobilenumber);
     $("[formcontrolname=mobile_number]").on('input', (e) => {
-      if(e.target.value.length===10){
+      if (e.target.value.length === 10) {
         $('.login-btn').trigger('click');
       }
     })
   });
-  
-  waitForEl("[formcontrolname=otp]", function() {
+
+  waitForEl("[formcontrolname=otp]", function () {
     $("[formcontrolname=otp]").on('input', (e) => {
-      if(e.target.value.length===6){
+      if (e.target.value.length === 6) {
         $('.vac-btn').trigger('click');
       }
     })
   });
-  
+
   // waitForEl(".register-btn", () => {
   //   if(!!!allow_multiple) $('.register-btn').trigger('click');
   // })
 
   const dispatchAgeSelectorClick = () => {
-    setTimeout(()=>{
+    setTimeout(() => {
       $(`label:contains(${ageSelectorText})`).trigger('click');
     }, 500);
   }
@@ -67,24 +67,24 @@ const repFun = () => {
   const findSlotsAndBook = () => {
     let foundslot = false;
     var slotRows = $("ul.slot-available-wrap")
-    if(slotRows.length===0) return;
+    if (slotRows.length === 0) return;
     let slots = $(slotRows).find("li a");
-    for(let i=0; i<slots.length; i++){
+    for (let i = 0; i < slots.length; i++) {
       let avail = parseInt(slots[i].text.trim());
-      if(avail>0){
+      if (avail > 0) {
         slots[i].click();
         foundslot = true;
         break;
       }
     }
-    if(foundslot){
+    if (foundslot) {
       setTimeout(enterCaptcha, 1000);
     } else {
 
-      if(searchByDistrictFlag && enableAutoRefresh){
-        if($('.pin-search-btn').length!==0){
-            $('.pin-search-btn').trigger('click');
-            dispatchAgeSelectorClick();  
+      if (searchByDistrictFlag && enableAutoRefresh) {
+        if ($('.pin-search-btn').length !== 0) {
+          $('.pin-search-btn').trigger('click');
+          dispatchAgeSelectorClick();
         }
       }
 
@@ -92,67 +92,67 @@ const repFun = () => {
   }
 
   const enterCaptcha = () => {
-    
+
     let timeslots = $('.time-slot');
     let slotind = 1;
-    if(timeslots.length===0) return;
-    if(timeslots.length===4){
+    if (timeslots.length === 0) return;
+    if (timeslots.length === 4) {
       try {
         slotind = parseInt(timeslotind) - 1;
-      } catch(e){
+      } catch (e) {
         slotind = 1;
       }
     }
-    if(isNaN(slotind)){
+    if (isNaN(slotind)) {
       slotind = 1;
     }
     timeslots[slotind].click();
 
     var svg = parser.parseFromString(atob($("img#captchaImage").attr("src").split("base64,")[1]), "image/svg+xml");
-    $(svg).find('path').each((_, p) => { if($(p).attr('stroke') != undefined) $(p).remove()})
+    $(svg).find('path').each((_, p) => { if ($(p).attr('stroke') != undefined) $(p).remove() })
     vals = []
     $(svg).find('path').each(
-        (_, p) => { 
-            idx = parseInt($(p).attr("d").split(".")[0].replace("M", ""))
-            vals.push(idx)
-        }
+      (_, p) => {
+        idx = parseInt($(p).attr("d").split(".")[0].replace("M", ""))
+        vals.push(idx)
+      }
     )
-    var sorted = [...vals].sort(function(a,b) { return a - b; })
+    var sorted = [...vals].sort(function (a, b) { return a - b; })
     var solution = ['', '', '', '', '']
 
     $(svg).find('path').each(
-        (idx, p) => { 
-            var pattern = $(p).attr('d').replace(/[\d\.\s]/g, "")
+      (idx, p) => {
+        var pattern = $(p).attr('d').replace(/[\d\.\s]/g, "")
 
-            solution[sorted.indexOf(vals[idx])] = parsed_model[pattern]
-        })
-    
+        solution[sorted.indexOf(vals[idx])] = parsed_model[pattern]
+      })
+
     $($(".captcha-style input")[0]).focus();
-    
-    for (var ii=0; ii<5; ii++) {
-        $($(".captcha-style input")[0]).val(solution.join("").substr(0, ii+1));
-        
-        $(".captcha-style input")[0].dispatchEvent(new Event("keyup", { bubbles: true }));
-        
+
+    for (var ii = 0; ii < 5; ii++) {
+      $($(".captcha-style input")[0]).val(solution.join("").substr(0, ii + 1));
+
+      $(".captcha-style input")[0].dispatchEvent(new Event("keyup", { bubbles: true }));
+
     }
 
-    setTimeout(()=>{
+    setTimeout(() => {
       // $("ion-button.confirm-btn")[0].click();
     }, 500);
 
   }
   const keepTryingToBook = () => {
-    setInterval(()=>{
-      if(keeptryingcontinuously) findSlotsAndBook();
+    setInterval(() => {
+      if (keeptryingcontinuously) findSlotsAndBook();
     }, 2000);
   }
   keepTryingToBook();
   const dispatchStateDistrictClick = () => {
     // checked = district
     // unchecked = pincode
-    setTimeout(()=>{
-      if(searchByDistrictFlag) {
-        if($("[formcontrolname=searchType]")[0] && !!!$("[formcontrolname=searchType]")[0].checked)
+    setTimeout(() => {
+      if (searchByDistrictFlag) {
+        if ($("[formcontrolname=searchType]")[0] && !!!$("[formcontrolname=searchType]")[0].checked)
           $("[formcontrolname=searchType]").trigger('click')
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
@@ -160,25 +160,25 @@ const repFun = () => {
     }, 500);
   }
 
-  waitForEl("[formcontrolname=searchType]", function() {
+  waitForEl("[formcontrolname=searchType]", function () {
 
     dispatchStateDistrictClick();
     $("[formcontrolname=pincode]").on('input', (e) => {
-      if(e.target.value.length===6){
+      if (e.target.value.length === 6) {
         $('.pin-search-btn').trigger('click');
         dispatchAgeSelectorClick();
       }
     })
-    
+
     $("[formcontrolname=searchType]").on('change', () => {
       let searchByDistrict = $("[formcontrolname=searchType]")[0].checked;
-      if(searchByDistrict  && state_name.trim()!=="" && district_name.trim()!==""){
+      if (searchByDistrict && state_name.trim() !== "" && district_name.trim() !== "") {
         $("[formcontrolname=state_id]").trigger('click');
         $(`span:contains(${state_name})`).trigger('click');
-        setTimeout(()=>{
+        setTimeout(() => {
           $("[formcontrolname=district_id]").trigger('click');
-          $("span").filter((ind, spn)=> spn.innerText===district_name).trigger("click");
-          setTimeout(()=>{
+          $("span").filter((ind, spn) => spn.innerText === district_name).trigger("click");
+          setTimeout(() => {
             $('.pin-search-btn').trigger('click');
           }, 500);
           dispatchAgeSelectorClick();
@@ -186,14 +186,14 @@ const repFun = () => {
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
         $("[formcontrolname=pincode]").on('input', (e) => {
-          if(e.target.value.length===6){
+          if (e.target.value.length === 6) {
             $('.pin-search-btn').trigger('click');
             dispatchAgeSelectorClick();
           }
         })
-      
+
       }
-  
+
     })
   })
 
@@ -217,49 +217,49 @@ const parseJwt = (token) => {
 };
 
 const get_mins = (tm) => {
-  let mins = Math.floor(tm/60);
+  let mins = Math.floor(tm / 60);
   let secs = Math.floor(tm - mins * 60);
   return `${mins}:${secs}`
 }
 
 const expirationUpdate = () => {
   let token = window.sessionStorage["userToken"];
-  if(token===undefined){
+  if (token === undefined) {
     return;
   }
   let parsed = parseJwt(token);
-  if(!!!parsed){
+  if (!!!parsed) {
     return;
   }
   let exp = parsed.exp;
   let curr = new Date();
   let expd = new Date(0);
   expd.setUTCSeconds(exp);
-  document.title = get_mins((expd - curr)/1000);
+  document.title = get_mins((expd - curr) / 1000);
 }
 
 setInterval(expirationUpdate, 5000);
 
 
 var current_href = location.href;
-setInterval(function(){
-    if(current_href !== location.href){
-        repFun();
-        current_href = location.href;
-    }else{
-    }
-},100);
+setInterval(function () {
+  if (current_href !== location.href) {
+    repFun();
+    current_href = location.href;
+  } else {
+  }
+}, 100);
 
 
 const keep_focusing = () => {
 
-  setInterval(()=>{
+  setInterval(() => {
     focus_ids.forEach(element => {
-      
-      if($("#formWrapper").is(":hidden")) if($(element).length!==0) $(element).focus();
+
+      if ($("#formWrapper").is(":hidden")) if ($(element).length !== 0) $(element).focus();
     });
-    
-  }, 1000);  
+
+  }, 1000);
 }
 
 
@@ -303,7 +303,7 @@ const createSelectOptions = (id, text, value, selected) => {
   retel.id = id;
   retel.value = value;
   retel.appendChild(document.createTextNode(text));
-  if(selected) retel.selected = true;
+  if (selected) retel.selected = true;
   return retel;
 }
 
@@ -386,7 +386,7 @@ const createForm = () => {
 
   // search preferrance
   let searchprefid = "searchpref";
-  let searchPrefSelector = createSelectInput(searchprefid, inputStyles, searchByDistrictFlag?"district":"pincode");
+  let searchPrefSelector = createSelectInput(searchprefid, inputStyles, searchByDistrictFlag ? "district" : "pincode");
   let districtoption = createSelectOptions("districtoption", "District", "district", searchByDistrictFlag);
   let pincodeoption = createSelectOptions("pincodeoption", "PIN code", "pincode", !!!searchByDistrictFlag);
   searchPrefSelector.appendChild(districtoption);
@@ -459,7 +459,7 @@ const createHideShowButton = () => {
   formShowHide.appendChild(document.createTextNode("click to edit the autofill inputs"));
   formShowHide.style = "background: red; position: sticky; top:0; left: 0; font-size: 32px; border-radius: 20px;";
   document.body.appendChild(formShowHide);
-  $('#formshowhidebutton').on('click', ()=>{
+  $('#formshowhidebutton').on('click', () => {
     $("#formWrapper").toggle();
   })
 }
@@ -488,7 +488,7 @@ const bindSubmitButtonToSaveInfo = () => {
     // window.localStorage.setItem("allow_multiple", allow_multiple);
     window.localStorage.setItem("keeptryingcontinuously", keeptryingcontinuously);
     window.localStorage.setItem("autorefresh", enableAutoRefresh);
-    
+
     window.localStorage.setItem("age", ageSelectorText);
     window.localStorage.setItem("searchpref", searchPreftext);
     window.localStorage.setItem("pincode", first_5_pin_digits);
@@ -497,10 +497,77 @@ const bindSubmitButtonToSaveInfo = () => {
   })
 }
 
+const addBootstrap = () => {
+  addCss('https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css')
+  loadJS('https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js')
+}
+
+function addCss(fileName) {
+
+  var head = document.head;
+  var link = document.createElement("link");
+
+  link.type = "text/css";
+  link.rel = "stylesheet";
+  link.href = fileName;
+
+  head.appendChild(link);
+}
+
+function loadJS(file) {
+  // DOM: Create the script element
+  var jsElm = document.createElement("script");
+  // set the type attribute
+  jsElm.type = "application/javascript";
+  // make the script element load file
+  jsElm.src = file;
+  // finally insert the element to the body element in order to load the script
+  document.body.appendChild(jsElm);
+}
+
+const createModal = () => {
+  let wrapperDiv = document.createElement("div");
+  let modal = `
+  <div class="modal fade" id="form-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+  `
+  wrapperDiv.innerHTML = modal;
+
+  document.body.appendChild(wrapperDiv);
+}
+
+const createModalHideShowButton = () => {
+  let wrapperDiv = document.createElement("div");
+  let button = `
+  <button type="button" class="btn btn-warning" style="position:absolute;" data-bs-toggle="modal" data-bs-target="#form-modal">Edit</button>
+  `
+  wrapperDiv.innerHTML = button;
+  document.body.appendChild(wrapperDiv);
+}
+
+
 const createFormAndOthers = () => {
-  createForm();
-  createHideShowButton();
-  bindSubmitButtonToSaveInfo();
+  addBootstrap();
+  createModal();
+  createModalHideShowButton();
+  // createForm();
+  // createHideShowButton();
+  // bindSubmitButtonToSaveInfo();
 }
 
 createFormAndOthers();
