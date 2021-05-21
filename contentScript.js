@@ -13,6 +13,7 @@ let searchByDistrictFlag = window.localStorage.getItem("searchpref") === "distri
 let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously") === "true" ? true : false;
 let timeslotind = window.localStorage.getItem("timeslot");
 let enableAutoRefresh = window.localStorage.getItem("autorefresh") === "true" ? true : false;
+let enableautoconfirm = window.localStorage.getItem("autoconfirm") === "true" ? true : false;
 let minavailability = window.localStorage.getItem("minavailability");
 let center_prefs_string = window.localStorage.getItem("centerprefs");
 let center_prefs_dirty = center_prefs_string ? center_prefs_string.split(",") : "";
@@ -140,17 +141,17 @@ const repFun = () => {
   const enterCaptcha = () => {
 
     let timeslots = $('.time-slot');
-    let slotind = 1;
+    let slotind = 0;
     if (timeslots.length === 0) return;
     if (timeslots.length === 4) {
       try {
         slotind = parseInt(timeslotind) - 1;
       } catch (e) {
-        slotind = 1;
+        slotind = 0;
       }
     }
     if (isNaN(slotind)) {
-      slotind = 1;
+      slotind = 0;
     }
     try{
       timeslots[slotind].click();
@@ -187,7 +188,7 @@ const repFun = () => {
     }
 
     setTimeout(() => {
-      // $("ion-button.confirm-btn")[0].click();
+      if(enableautoconfirm) $("ion-button.confirm-btn")[0].click();
     }, 500);
 
   }
@@ -361,8 +362,8 @@ const createForm = () => {
 
   let centerprefinputid = "centerprefinput";
   let centerprefinput = createInput(centerprefinputid, "", "text", center_prefs_string, 'form-control');
-  let centerprefinputlabel = createLabel("centerprefinputlabel", centerprefinputid, "Enter comma separated words or pincodes preferred: ", textLabelStyles);
-  let centerprefinputwarn = createWarningText("Each word separated by comma is treated as independent preference. If the center name is 'Jijamata Hospital, Gandhi Marg' entering 'jijamata' should work. You can also enter comma separated pincodes here and only the centers with one of these words in their name/address/pincode will be considered for booking. If you don't want to prefer anything, leave this blank. This preferrence is considered only in search by district.", warnLabelStyles);
+  let centerprefinputlabel = createLabel("centerprefinputlabel", centerprefinputid, "Comma separated center preferences: ", textLabelStyles);
+  let centerprefinputwarn = createWarningText("Only those centers will be considered for booking, which have at least one of the comma separated words given in this box, in their names or addresses (case insensitive)", warnLabelStyles);
 
   // state name input field
   let stateinputid = "data-state";
@@ -393,13 +394,20 @@ const createForm = () => {
   let continuousretryinput = createInput(continuousretryid, "", "checkbox", "", 'form-check-input');
   continuousretryinput.checked = keeptryingcontinuously;
   let continuousretrylabel = createLabel("continuousretrylabel", continuousretryid, "Attempt to book continuosly ", textLabelStyles);
-  let continuousretryWarn = createWarningText("This will keep looking for available slots on screen continously and automatically attempt to book a slot randomly, please check appointment details on the captcha page. FIRST AVAILABLE SLOT ON THE PAGE WILL BE SELECTED. Automatic captcha detection is supported only if this is checked/selected.", warnLabelStyles);
+  let continuousretryWarn = createWarningText("First available slot in the centers which satisfy the center preference will be selected automatically.", warnLabelStyles);
 
   let enableautorefreshid = "enableautorefresh";
   let enableautorefreshinput = createInput(enableautorefreshid, "", "checkbox", "", 'form-check-input');
   enableautorefreshinput.checked = enableAutoRefresh;
-  let enableautorefreshlabel = createLabel("enableautorefreshlabel", enableautorefreshid, "Enable Auto Refresh on search by district ", textLabelStyles);
-  let enableautorefreshWarn = createWarningText("Keep auto refreshing every 2 seconds in search with district. This work only if 'Attempt to book continuosly is selected' and search preference is set to District. Use this option carefully. Your access to cowin portal may be blocked if you send too many request during a short duration.", warnLabelStyles);
+  let enableautorefreshlabel = createLabel("enableautorefreshlabel", enableautorefreshid, "Enable Auto Refresh ", textLabelStyles);
+  let enableautorefreshWarn = createWarningText("Keep refreshing the search results every 2 seconds. Works only with search by district ", warnLabelStyles);
+
+  let enableautoconfirmid = "enableautoconfirm";
+  let enableautoconfirminput = createInput(enableautoconfirmid, "", "checkbox", "", 'form-check-input');
+  enableautoconfirminput.checked = enableautoconfirm;
+  let enableautoconfirmlabel = createLabel("enableautoconfirmlabel", enableautoconfirmid, "Confirm booking automatically on captcha page ", textLabelStyles);
+  let enableautoconfirmWarn = createWarningText("With this selected, you will NOT have to press Confirm button after captcha gets entered automatically.", warnLabelStyles);
+
 
   let timeslotinputid = "timeslotinput";
   let timeSlotSelector = createSelectInput(timeslotinputid, "", timeslotind)
@@ -412,7 +420,7 @@ const createForm = () => {
   timeSlotSelector.appendChild(three)
   timeSlotSelector.appendChild(four)
   let timeslotlabel = createLabel("timeslotinputlabel", timeslotinputid, "Enter time slot preference: ", textLabelStyles);
-  let timeslotwarn = createWarningText("Select a slot between 1 and 4 corresponding to slots below. There are 4 time slots available in general. Select one of these (1) 9-11 (2) 11-1 (3) 1-3 (4) 3-5. If these are not the cases available there, slot number two will be selected automatically. You can change this slot manually on the captcha screen.", warnLabelStyles);
+  let timeslotwarn = createWarningText("If these are not the cases available there, first slot will be selected automatically.", warnLabelStyles);
 
   let minavailabilityinputid = "minavailabilityinput";
   let minavailabilityinput = createInput(minavailabilityinputid, "", "number", minavailability, 'form-control');
@@ -445,11 +453,7 @@ const createForm = () => {
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
-      wrapInDivWithClassName([timeslotlabel, timeSlotSelector, timeslotwarn], "col")
-    ], "row mb-3"))
-
-  wrapperDiv.appendChild(wrapInDivWithClassName(
-    [
+      wrapInDivWithClassName([timeslotlabel, timeSlotSelector, timeslotwarn], "col"),
       wrapInDivWithClassName([searchPrefLabel, searchPrefSelector], 'col')
     ], 'row mb-3'))
 
@@ -462,7 +466,8 @@ const createForm = () => {
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
       wrapInDivWithClassName([wrapInDivWithClassName([continuousretryinput, continuousretrylabel, continuousretryWarn], 'form-check')], "col"),
-      wrapInDivWithClassName([wrapInDivWithClassName([enableautorefreshinput, enableautorefreshlabel, enableautorefreshWarn], 'form-check')], "col")
+      wrapInDivWithClassName([wrapInDivWithClassName([enableautorefreshinput, enableautorefreshlabel, enableautorefreshWarn], 'form-check')], "col"),
+      wrapInDivWithClassName([wrapInDivWithClassName([enableautoconfirminput, enableautoconfirmlabel, enableautoconfirmWarn], 'form-check')], "col")
     ], 'row mb-3'))
 
   // wrapperDiv.appendChild(allowMultipleInputLabel);
@@ -503,6 +508,7 @@ const bindSubmitButtonToSaveInfo = () => {
     // allow_multiple = document.getElementById("allowMultiple").checked;
     keeptryingcontinuously = document.getElementById("continuousretry").checked;
     enableAutoRefresh = document.getElementById("enableautorefresh").checked;
+    enableautoconfirm = document.getElementById("enableautoconfirm").checked;
     ageSelectorText = document.getElementById("ageselect").value;
     let searchPreftext = document.getElementById("searchpref").value;
     first_5_pin_digits = document.getElementById("pincodeinput").value;
@@ -522,6 +528,7 @@ const bindSubmitButtonToSaveInfo = () => {
     window.localStorage.setItem("timeslot", timeslotind);
     window.localStorage.setItem("centerprefs", center_prefs_string);
     window.localStorage.setItem("minavailability", minavailability);
+    window.localStorage.setItem("autoconfirm", enableautoconfirm);
     window.location.reload();
   })
 }
