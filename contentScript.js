@@ -46,12 +46,9 @@ let state_name = window.localStorage.getItem("state");
 let district_name = window.localStorage.getItem("district");
 let first_5_pin_digits = window.localStorage.getItem("pincode");
 let allow_multiple = window.localStorage.getItem("allow_multiple") === "true" ? true : false;
-let ageSelectorText = window.localStorage.getItem("age");
 let searchByDistrictFlag = window.localStorage.getItem("searchpref") === "district" ? true : false;
 let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously") === "true" ? true : false;
 let timeslotind = window.localStorage.getItem("timeslot");
-let costPreferenceValue = window.localStorage.getItem("costpreference");
-let vaccinePreferenceValue = window.localStorage.getItem("vaccinepreference");
 let enableAutoRefresh = window.localStorage.getItem("autorefresh") === "true" ? true : false;
 let enableautoconfirm = window.localStorage.getItem("autoconfirm") === "true" ? true : false;
 let minavailability = window.localStorage.getItem("minavailability");
@@ -81,9 +78,11 @@ const setCheckedButtons = (selected_button_checkbox) => {
   }
 }
 
-if (selected_button_checkbox && selected_button_checkbox.split(",") && selected_button_checkbox.split(",").length > 0) {
-  selected_button_checkbox = selected_button_checkbox.split(",")
+try {
+  selected_button_checkbox = JSON.parse(selected_button_checkbox)
   setCheckedButtons(selected_button_checkbox)
+} catch (error) {
+  console.log('There was an error setting the filter checkboxes')
 }
 
 
@@ -577,14 +576,12 @@ const bindSubmitButtonToSaveInfo = () => {
     timeslotind = document.getElementById("timeslotinput").value;
     center_prefs_string = document.getElementById("centerprefinput").value;
     minavailability = document.getElementById("minavailabilityinput").value;
-    let temp_checked_buttons = [];
     selected_button_checkbox = []
     for (const key in buttonCheckboxMapping) {
       let button_checkbox = document.getElementById(key);
       buttonCheckboxMapping[key].checked = button_checkbox.checked;
       if (button_checkbox.checked) {
         selected_button_checkbox.push(key)
-        temp_checked_buttons.push(buttonCheckboxMapping[key].label)
       }
     }
     window.localStorage.setItem("mobile", mobilenumber);
@@ -593,17 +590,13 @@ const bindSubmitButtonToSaveInfo = () => {
     // window.localStorage.setItem("allow_multiple", allow_multiple);
     window.localStorage.setItem("keeptryingcontinuously", keeptryingcontinuously);
     window.localStorage.setItem("autorefresh", enableAutoRefresh);
-
-    window.localStorage.setItem("age", ageSelectorText);
     window.localStorage.setItem("searchpref", searchPreftext);
     window.localStorage.setItem("pincode", first_5_pin_digits);
     window.localStorage.setItem("timeslot", timeslotind);
-    window.localStorage.setItem("costpreference", costPreferenceValue);
-    window.localStorage.setItem("vaccinepreference", vaccinePreferenceValue)
     window.localStorage.setItem("centerprefs", center_prefs_string);
     window.localStorage.setItem("minavailability", minavailability);
     window.localStorage.setItem("autoconfirm", enableautoconfirm);
-    window.localStorage.setItem("selectedbuttoncheckboxes", selected_button_checkbox)
+    window.localStorage.setItem("selectedbuttoncheckboxes", JSON.stringify(selected_button_checkbox))
     window.location.reload();
   })
 }
