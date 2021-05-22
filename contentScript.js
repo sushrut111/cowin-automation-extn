@@ -425,8 +425,8 @@ const createForm = () => {
 
   let costpreferenceid = "costpreference";
   let costPreferenceSelector = createSelectInput(costpreferenceid, "", constPreferenceValue)
-  let free = createSelectOptions('select-free', 'Free', 'free', constPreferenceValue === 'free')
-  let paid = createSelectOptions('select-paid', 'Paid', 'paid', constPreferenceValue === 'paid')
+  let free = createSelectOptions('select-free', 'Free', 'Free', constPreferenceValue === 'Free')
+  let paid = createSelectOptions('select-paid', 'Paid', 'Paid', constPreferenceValue === 'Paid')
   costPreferenceSelector.appendChild(free);
   costPreferenceSelector.appendChild(paid);
   let costpreferencelabel = createLabel('costpreferencelabel', costpreferenceid, "Select cost preference", textLabelStyles);
