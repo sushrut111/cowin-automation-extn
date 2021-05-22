@@ -1,5 +1,16 @@
 # You can now install this extension directly from chrome extensions store [here](https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm)
 
+## Disclaimer
+Many other developers have created scripts to book vaccine slots automatically -  due to this, those who do not know how to use those scripts are facing issues while searching for vaccine slots. 
+I made this extension to counter that - anyone will be able to use this extension very easily even if they do not know how it works.
+I am not charging anything for this - this will be FREE of cost forever. I also have created support channel to help people use this extension if they have difficulties.
+
+
+Because everyone has equal right to get vaccinated on time!
+
+
+**Never pay anyone to book a vaccine slot**
+
 # Extension in action
 https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-9447-f64cb6326931.mp4
 
@@ -17,50 +28,6 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 6. The extension is now ready to use.
 7. Go to [https://selfregistration.cowin.gov.in/](https://selfregistration.cowin.gov.in/) directly and use the extension. 
 8. When you open the page, you should see `click to edit autofill inputs` button in red at the top of page. Click on it and fill in the data.
-    ```txt
-    1. Mobile number :
-        Enter only 9 digits, the extension will press submit button when you put 10th digit in the input box on actual website
-    2. Name of the state : Make sure you input correct spelling with first letter capital
-            Andaman and Nicobar Islands
-            Andhra Pradesh
-            Arunachal Pradesh
-            Assam
-            Bihar
-            Chandigarh
-            Chhattisgarh
-            Dadra and Nagar Haveli
-            Daman and Diu
-            Delhi
-            Goa
-            Gujarat
-            Haryana
-            Himachal Pradesh
-            Jammu and Kashmir
-            Jharkhand
-            Karnataka
-            Kerala
-            Ladakh
-            Lakshadweep
-            Madhya Pradesh
-            Maharashtra
-            Manipur
-            Meghalaya
-            Mizoram
-            Nagaland
-            Odisha
-            Puducherry
-            Punjab
-            Rajasthan
-            Sikkim
-            Tamil Nadu
-            Telangana
-            Tripura
-            Uttar Pradesh
-            Uttarakhand
-            West Bengal
-    3. District name : Kindly write the correct case-senstive (capital letters and small letters)
-    district name. You might want to go and check the spelling by going to portal once.
-    ```
 9. To change autofill data, just click on the Red button on the top.
 
 ## What does it do?
