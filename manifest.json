@@ -12,7 +12,7 @@
                 "jquery.min.js",
                 "bootstrap.min.js",
                 "contentScript.js",
-                "shortcut.js",
+                "eventListeners.js",
                 "sessionexp.js"
             ],
             "css": [

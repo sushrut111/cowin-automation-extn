@@ -153,9 +153,9 @@ const repFun = () => {
     if (isNaN(slotind)) {
       slotind = 0;
     }
-    try{
+    try {
       timeslots[slotind].click();
-    } catch(e){
+    } catch (e) {
       console.log("Requested timeslot is not available.");
     }
 
@@ -188,7 +188,7 @@ const repFun = () => {
     }
 
     setTimeout(() => {
-      if(enableautoconfirm) $("ion-button.confirm-btn")[0].click();
+      if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
     }, 500);
 
   }
@@ -542,13 +542,13 @@ const createModal = () => {
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Autofill Input Form</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <button type="button" class="toggle-modal btn-close"></button>
       </div>
       <div class="modal-body" id="form-modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="data-submit" data-bs-dismiss="modal">Save changes</button>
+        <button type="button" class="toggle-modal btn btn-secondary">Close</button>
+        <button type="button" class="toggle-modal btn btn-primary" id="data-submit">Save changes</button>
       </div>
     </div>
   </div>
@@ -561,7 +561,7 @@ const createModal = () => {
 const createModalHideShowButton = () => {
   let wrapperDiv = document.createElement("div");
   let button = `
-  <button type="button" class="btn btn-danger btn-lg" style="position:absolute; top:2%; left: 2%; font-size: 2em;" data-bs-toggle="modal" data-bs-target="#form-modal">Edit Auto Fill Inputs</button>`
+  <button type="button" class="toggle-modal btn btn-danger btn-lg" style="position:absolute; top:2%; left: 2%; font-size: 2em;">Edit Auto Fill Inputs</button>`
   wrapperDiv.innerHTML = button;
   document.body.appendChild(wrapperDiv);
 }
