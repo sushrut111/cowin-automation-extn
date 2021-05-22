@@ -13,6 +13,7 @@ let searchByDistrictFlag = window.localStorage.getItem("searchpref") === "distri
 let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously") === "true" ? true : false;
 let timeslotind = window.localStorage.getItem("timeslot");
 let costPreferenceValue = window.localStorage.getItem("costpreference");
+let vaccinePreferenceValue = window.localStorage.getItem("vaccinepreference");
 let enableAutoRefresh = window.localStorage.getItem("autorefresh") === "true" ? true : false;
 let enableautoconfirm = window.localStorage.getItem("autoconfirm") === "true" ? true : false;
 let minavailability = window.localStorage.getItem("minavailability");
@@ -98,6 +99,12 @@ const repFun = () => {
     }, 500);
   }
 
+  const dispatchVaccinePreferenceClick = () => {
+    setTimeout(() => {
+      $(`label:contains(${vaccinePreferenceValue})`).trigger('click');
+    }, 500);
+  }
+
   const findSlotsAndBook = () => {
     let foundslot = false;
     var slotRows = $("ul.slot-available-wrap")
@@ -140,6 +147,7 @@ const repFun = () => {
           $('.pin-search-btn').trigger('click');
           dispatchAgeSelectorClick();
           dispatchCostPreferenceClick();
+          dispatchVaccinePreferenceClick();
         }
       }
 
@@ -227,6 +235,7 @@ const repFun = () => {
         $('.pin-search-btn').trigger('click');
         dispatchAgeSelectorClick();
         dispatchCostPreferenceClick();
+        dispatchVaccinePreferenceClick();
       }
     })
 
@@ -243,6 +252,7 @@ const repFun = () => {
           }, 500);
           dispatchAgeSelectorClick();
           dispatchCostPreferenceClick();
+          dispatchVaccinePreferenceClick();
         }, 500);
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
@@ -251,6 +261,7 @@ const repFun = () => {
             $('.pin-search-btn').trigger('click');
             dispatchAgeSelectorClick();
             dispatchCostPreferenceClick();
+            dispatchVaccinePreferenceClick();
           }
         })
 
@@ -439,7 +450,17 @@ const createForm = () => {
   let paid = createSelectOptions('select-paid', 'Paid', 'Paid', costPreferenceValue === 'Paid')
   costPreferenceSelector.appendChild(free);
   costPreferenceSelector.appendChild(paid);
-  let costpreferencelabel = createLabel('costpreferencelabel', costpreferenceid, "Select cost preference", textLabelStyles);
+  let costpreferencelabel = createLabel('costpreferencelabel', costpreferenceid, "Select Cost preference", textLabelStyles);
+
+  let vaccinepreferenceid = "vaccinepreference";
+  let vaccinePreferenceSelector = createSelectInput(vaccinepreferenceid, "", vaccinePreferenceValue)
+  let covishield = createSelectOptions('select-covishield', 'Covishield', 'Covishield', vaccinePreferenceValue === 'Covishield')
+  let covaxin = createSelectOptions('select-covaxin', 'Covaxin', 'Covaxin', vaccinePreferenceValue === 'Covaxin')
+  let sputnik = createSelectOptions('select-sputnik-V', 'Sputnik V', 'Sputnik V', vaccinePreferenceValue === 'Sputnik V')
+  vaccinePreferenceSelector.appendChild(covishield);
+  vaccinePreferenceSelector.appendChild(covaxin);
+  vaccinePreferenceSelector.appendChild(sputnik);
+  let vaccinepreferencelabel = createLabel('vaccinepreferencelabel', vaccinepreferenceid, "Select Vaccine preference", textLabelStyles);
 
   let minavailabilityinputid = "minavailabilityinput";
   let minavailabilityinput = createInput(minavailabilityinputid, "", "number", minavailability, 'form-control');
@@ -479,6 +500,7 @@ const createForm = () => {
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
+      wrapInDivWithClassName([vaccinepreferencelabel, vaccinePreferenceSelector], 'col'),
       wrapInDivWithClassName([centerprefinputlabel, centerprefinput, centerprefinputwarn], "col"),
       wrapInDivWithClassName([minavailabilityinputlabel, minavailabilityinput, minavailabilityinputwarn], "col")
     ], 'row mb-3'))
@@ -534,6 +556,7 @@ const bindSubmitButtonToSaveInfo = () => {
     first_5_pin_digits = document.getElementById("pincodeinput").value;
     timeslotind = document.getElementById("timeslotinput").value;
     costPreferenceValue = document.getElementById("costpreference").value;
+    vaccinePreferenceValue = document.getElementById("vaccinepreference").value;
     center_prefs_string = document.getElementById("centerprefinput").value;
     minavailability = document.getElementById("minavailabilityinput").value;
     window.localStorage.setItem("mobile", mobilenumber);
@@ -548,6 +571,7 @@ const bindSubmitButtonToSaveInfo = () => {
     window.localStorage.setItem("pincode", first_5_pin_digits);
     window.localStorage.setItem("timeslot", timeslotind);
     window.localStorage.setItem("costpreference", costPreferenceValue);
+    window.localStorage.setItem("vaccinepreference", vaccinePreferenceValue)
     window.localStorage.setItem("centerprefs", center_prefs_string);
     window.localStorage.setItem("minavailability", minavailability);
     window.localStorage.setItem("autoconfirm", enableautoconfirm);
