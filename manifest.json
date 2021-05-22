@@ -16,7 +16,8 @@
                 "sessionexp.js"
             ],
             "css": [
-                "bootstrap.min.css"
+                "bootstrap.min.css",
+                "custom.css"
             ]
         }
     ],
