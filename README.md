@@ -5,6 +5,10 @@ Many other developers have created scripts to book vaccine slots automatically -
 I made this extension to counter that - anyone will be able to use this extension very easily even if they do not know how it works.
 I am not charging anything for this - this will be FREE of cost forever. I also have created support channel to help people use this extension if they have difficulties.
 
+
+Because everyone has equal right to get vaccinated on time!
+
+
 **Never pay anyone to book a vaccine slot**
 
 # Extension in action
