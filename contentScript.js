@@ -29,16 +29,7 @@ if (center_prefs.length === 0) {
 }
 
 
-let booking_lower_lim = 1;
-try {
-  booking_lower_lim = parseInt(minavailability);
-} catch (e) {
-  booking_lower_lim = 1;
-} finally {
-  if (isNaN(booking_lower_lim)) {
-    booking_lower_lim = 1;
-  }
-}
+let booking_lower_lim = minavailability ? parseInt(minavailability) : 1;
 
 
 var waitForEl = function (selector, callback) {
