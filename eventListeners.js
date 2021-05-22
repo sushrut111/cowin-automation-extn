@@ -6,7 +6,6 @@ $(document).ready(function () {
         }
     });
 
-
     $(".toggle-modal").on('click', () => {
         $("#form-modal").modal('toggle');
     })
