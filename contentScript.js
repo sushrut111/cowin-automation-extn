@@ -436,14 +436,6 @@ const createForm = () => {
   let districInput = createInput(districtinputid, "", "text", district_name, 'form-control');
   let districLabel = createLabel("districtinputlabel", districtinputid, "District name: ", textLabelStyles);
 
-  let ageSelector = createSelectInput("ageselect", "", ageSelectorText);
-  let age18 = createSelectOptions("age18", "Age 18+", "Age 18+", ageSelectorText === "Age 18+");
-  let age45 = createSelectOptions("age45", "Age 45+", "Age 45+", ageSelectorText === "Age 45+");
-  ageSelector.appendChild(age18);
-  ageSelector.appendChild(age45);
-  let AgeSelectLabel = createLabel("ageselectlabel", "ageselect", "Age group: ", textLabelStyles)
-
-
   // multiple members allow checkbox
   // let allowMultipleid = "allowMultiple";
   // let allowMultipleInput = createInput(allowMultipleid, "", "checkbox", "");
@@ -482,24 +474,6 @@ const createForm = () => {
   timeSlotSelector.appendChild(four)
   let timeslotlabel = createLabel("timeslotinputlabel", timeslotinputid, "Select time slot preference: ", textLabelStyles);
   let timeslotwarn = createWarningText("If these are not the cases available there, first slot will be selected automatically.", warnLabelStyles);
-
-  let costpreferenceid = "costpreference";
-  let costPreferenceSelector = createSelectInput(costpreferenceid, "", costPreferenceValue)
-  let free = createSelectOptions('select-free', 'Free', 'Free', costPreferenceValue === 'Free')
-  let paid = createSelectOptions('select-paid', 'Paid', 'Paid', costPreferenceValue === 'Paid')
-  costPreferenceSelector.appendChild(free);
-  costPreferenceSelector.appendChild(paid);
-  let costpreferencelabel = createLabel('costpreferencelabel', costpreferenceid, "Select Cost preference", textLabelStyles);
-
-  let vaccinepreferenceid = "vaccinepreference";
-  let vaccinePreferenceSelector = createSelectInput(vaccinepreferenceid, "", vaccinePreferenceValue)
-  let covishield = createSelectOptions('select-covishield', 'Covishield', 'Covishield', vaccinePreferenceValue === 'Covishield')
-  let covaxin = createSelectOptions('select-covaxin', 'Covaxin', 'Covaxin', vaccinePreferenceValue === 'Covaxin')
-  let sputnik = createSelectOptions('select-sputnik-V', 'Sputnik V', 'Sputnik V', vaccinePreferenceValue === 'Sputnik V')
-  vaccinePreferenceSelector.appendChild(covishield);
-  vaccinePreferenceSelector.appendChild(covaxin);
-  vaccinePreferenceSelector.appendChild(sputnik);
-  let vaccinepreferencelabel = createLabel('vaccinepreferencelabel', vaccinepreferenceid, "Select Vaccine preference", textLabelStyles);
 
   let minavailabilityinputid = "minavailabilityinput";
   let minavailabilityinput = createInput(minavailabilityinputid, "", "number", minavailability, 'form-control');
