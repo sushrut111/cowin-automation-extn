@@ -79,7 +79,6 @@ const setCheckedButtons = (selected_button_checkbox) => {
       checked_buttons.push(buttonCheckboxMapping[selected_button_checkbox[i]].label)
     }
   }
-  console.log(checked_buttons)
 }
 
 if (selected_button_checkbox && selected_button_checkbox.split(",") && selected_button_checkbox.split(",").length > 0) {
