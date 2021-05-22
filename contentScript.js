@@ -12,7 +12,7 @@ let ageSelectorText = window.localStorage.getItem("age");
 let searchByDistrictFlag = window.localStorage.getItem("searchpref") === "district" ? true : false;
 let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously") === "true" ? true : false;
 let timeslotind = window.localStorage.getItem("timeslot");
-let constPreferenceValue = window.localStorage.getItem("constpreference");
+let costPreferenceValue = window.localStorage.getItem("costpreference");
 let enableAutoRefresh = window.localStorage.getItem("autorefresh") === "true" ? true : false;
 let enableautoconfirm = window.localStorage.getItem("autoconfirm") === "true" ? true : false;
 let minavailability = window.localStorage.getItem("minavailability");
@@ -92,6 +92,12 @@ const repFun = () => {
     }, 500);
   }
 
+  const dispatchCostPreferenceClick = () => {
+    setTimeout(() => {
+      $(`label:contains(${costPreferenceValue})`).trigger('click');
+    }, 500);
+  }
+
   const findSlotsAndBook = () => {
     let foundslot = false;
     var slotRows = $("ul.slot-available-wrap")
@@ -133,6 +139,7 @@ const repFun = () => {
         if ($('.pin-search-btn').length !== 0) {
           $('.pin-search-btn').trigger('click');
           dispatchAgeSelectorClick();
+          dispatchCostPreferenceClick();
         }
       }
 
@@ -219,6 +226,7 @@ const repFun = () => {
       if (e.target.value.length === 6) {
         $('.pin-search-btn').trigger('click');
         dispatchAgeSelectorClick();
+        dispatchCostPreferenceClick();
       }
     })
 
@@ -234,6 +242,7 @@ const repFun = () => {
             $('.pin-search-btn').trigger('click');
           }, 500);
           dispatchAgeSelectorClick();
+          dispatchCostPreferenceClick();
         }, 500);
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
@@ -241,6 +250,7 @@ const repFun = () => {
           if (e.target.value.length === 6) {
             $('.pin-search-btn').trigger('click');
             dispatchAgeSelectorClick();
+            dispatchCostPreferenceClick();
           }
         })
 
@@ -424,9 +434,9 @@ const createForm = () => {
   let timeslotwarn = createWarningText("If these are not the cases available there, first slot will be selected automatically.", warnLabelStyles);
 
   let costpreferenceid = "costpreference";
-  let costPreferenceSelector = createSelectInput(costpreferenceid, "", constPreferenceValue)
-  let free = createSelectOptions('select-free', 'Free', 'Free', constPreferenceValue === 'Free')
-  let paid = createSelectOptions('select-paid', 'Paid', 'Paid', constPreferenceValue === 'Paid')
+  let costPreferenceSelector = createSelectInput(costpreferenceid, "", costPreferenceValue)
+  let free = createSelectOptions('select-free', 'Free', 'Free', costPreferenceValue === 'Free')
+  let paid = createSelectOptions('select-paid', 'Paid', 'Paid', costPreferenceValue === 'Paid')
   costPreferenceSelector.appendChild(free);
   costPreferenceSelector.appendChild(paid);
   let costpreferencelabel = createLabel('costpreferencelabel', costpreferenceid, "Select cost preference", textLabelStyles);
@@ -523,7 +533,7 @@ const bindSubmitButtonToSaveInfo = () => {
     let searchPreftext = document.getElementById("searchpref").value;
     first_5_pin_digits = document.getElementById("pincodeinput").value;
     timeslotind = document.getElementById("timeslotinput").value;
-    constPreferenceValue = document.getElementById("costpreference").value;
+    costPreferenceValue = document.getElementById("costpreference").value;
     center_prefs_string = document.getElementById("centerprefinput").value;
     minavailability = document.getElementById("minavailabilityinput").value;
     window.localStorage.setItem("mobile", mobilenumber);
@@ -537,7 +547,7 @@ const bindSubmitButtonToSaveInfo = () => {
     window.localStorage.setItem("searchpref", searchPreftext);
     window.localStorage.setItem("pincode", first_5_pin_digits);
     window.localStorage.setItem("timeslot", timeslotind);
-    window.localStorage.setItem("costpreference", constPreferenceValue);
+    window.localStorage.setItem("costpreference", costPreferenceValue);
     window.localStorage.setItem("centerprefs", center_prefs_string);
     window.localStorage.setItem("minavailability", minavailability);
     window.localStorage.setItem("autoconfirm", enableautoconfirm);
