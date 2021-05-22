@@ -1,5 +1,12 @@
 # You can now install this extension directly from chrome extensions store [here](https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm)
 
+## Disclaimer
+Many other developers have created scripts to book vaccine automatically -  due to this, those who do not know how to use those scripts are facing issues while searching for vaccine slots. 
+I made this extension to counter that - anyone will be able to use this extension very easily even if they do not know how it works.
+I am not charging anything for this - this will be FREE forever. I also have created support channel to help people use this extension if they have difficulties.
+
+**Never pay anyone to book a vaccine slot**
+
 # Extension in action
 https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-9447-f64cb6326931.mp4
 
