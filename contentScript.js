@@ -12,6 +12,7 @@ let ageSelectorText = window.localStorage.getItem("age");
 let searchByDistrictFlag = window.localStorage.getItem("searchpref") === "district" ? true : false;
 let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously") === "true" ? true : false;
 let timeslotind = window.localStorage.getItem("timeslot");
+let constPreferenceValue = window.localStorage.getItem("constpreference");
 let enableAutoRefresh = window.localStorage.getItem("autorefresh") === "true" ? true : false;
 let enableautoconfirm = window.localStorage.getItem("autoconfirm") === "true" ? true : false;
 let minavailability = window.localStorage.getItem("minavailability");
@@ -153,9 +154,9 @@ const repFun = () => {
     if (isNaN(slotind)) {
       slotind = 0;
     }
-    try{
+    try {
       timeslots[slotind].click();
-    } catch(e){
+    } catch (e) {
       console.log("Requested timeslot is not available.");
     }
 
@@ -188,7 +189,7 @@ const repFun = () => {
     }
 
     setTimeout(() => {
-      if(enableautoconfirm) $("ion-button.confirm-btn")[0].click();
+      if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
     }, 500);
 
   }
@@ -419,8 +420,16 @@ const createForm = () => {
   timeSlotSelector.appendChild(two)
   timeSlotSelector.appendChild(three)
   timeSlotSelector.appendChild(four)
-  let timeslotlabel = createLabel("timeslotinputlabel", timeslotinputid, "Enter time slot preference: ", textLabelStyles);
+  let timeslotlabel = createLabel("timeslotinputlabel", timeslotinputid, "Select time slot preference: ", textLabelStyles);
   let timeslotwarn = createWarningText("If these are not the cases available there, first slot will be selected automatically.", warnLabelStyles);
+
+  let costpreferenceid = "costpreference";
+  let costPreferenceSelector = createSelectInput(costpreferenceid, "", constPreferenceValue)
+  let free = createSelectOptions('select-free', 'Free', 'free', constPreferenceValue === 'free')
+  let paid = createSelectOptions('select-paid', 'Paid', 'paid', constPreferenceValue === 'paid')
+  costPreferenceSelector.appendChild(free);
+  costPreferenceSelector.appendChild(paid);
+  let costpreferencelabel = createLabel('costpreferencelabel', costpreferenceid, "Select cost preference", textLabelStyles);
 
   let minavailabilityinputid = "minavailabilityinput";
   let minavailabilityinput = createInput(minavailabilityinputid, "", "number", minavailability, 'form-control');
@@ -454,7 +463,8 @@ const createForm = () => {
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
       wrapInDivWithClassName([timeslotlabel, timeSlotSelector, timeslotwarn], "col"),
-      wrapInDivWithClassName([searchPrefLabel, searchPrefSelector], 'col')
+      wrapInDivWithClassName([searchPrefLabel, searchPrefSelector], 'col'),
+      wrapInDivWithClassName([costpreferencelabel, costPreferenceSelector], 'col')
     ], 'row mb-3'))
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
@@ -513,6 +523,7 @@ const bindSubmitButtonToSaveInfo = () => {
     let searchPreftext = document.getElementById("searchpref").value;
     first_5_pin_digits = document.getElementById("pincodeinput").value;
     timeslotind = document.getElementById("timeslotinput").value;
+    constPreferenceValue = document.getElementById("costpreference").value;
     center_prefs_string = document.getElementById("centerprefinput").value;
     minavailability = document.getElementById("minavailabilityinput").value;
     window.localStorage.setItem("mobile", mobilenumber);
@@ -526,6 +537,7 @@ const bindSubmitButtonToSaveInfo = () => {
     window.localStorage.setItem("searchpref", searchPreftext);
     window.localStorage.setItem("pincode", first_5_pin_digits);
     window.localStorage.setItem("timeslot", timeslotind);
+    window.localStorage.setItem("costpreference", constPreferenceValue);
     window.localStorage.setItem("centerprefs", center_prefs_string);
     window.localStorage.setItem("minavailability", minavailability);
     window.localStorage.setItem("autoconfirm", enableautoconfirm);
