@@ -24,50 +24,6 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 6. The extension is now ready to use.
 7. Go to [https://selfregistration.cowin.gov.in/](https://selfregistration.cowin.gov.in/) directly and use the extension. 
 8. When you open the page, you should see `click to edit autofill inputs` button in red at the top of page. Click on it and fill in the data.
-    ```txt
-    1. Mobile number :
-        Enter only 9 digits, the extension will press submit button when you put 10th digit in the input box on actual website
-    2. Name of the state : Make sure you input correct spelling with first letter capital
-            Andaman and Nicobar Islands
-            Andhra Pradesh
-            Arunachal Pradesh
-            Assam
-            Bihar
-            Chandigarh
-            Chhattisgarh
-            Dadra and Nagar Haveli
-            Daman and Diu
-            Delhi
-            Goa
-            Gujarat
-            Haryana
-            Himachal Pradesh
-            Jammu and Kashmir
-            Jharkhand
-            Karnataka
-            Kerala
-            Ladakh
-            Lakshadweep
-            Madhya Pradesh
-            Maharashtra
-            Manipur
-            Meghalaya
-            Mizoram
-            Nagaland
-            Odisha
-            Puducherry
-            Punjab
-            Rajasthan
-            Sikkim
-            Tamil Nadu
-            Telangana
-            Tripura
-            Uttar Pradesh
-            Uttarakhand
-            West Bengal
-    3. District name : Kindly write the correct case-senstive (capital letters and small letters)
-    district name. You might want to go and check the spelling by going to portal once.
-    ```
 9. To change autofill data, just click on the Red button on the top.
 
 ## What does it do?
