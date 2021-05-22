@@ -66,6 +66,9 @@ var waitForElAgain = function (selector, callback) {
 const repFun = () => {
   waitForEl("[formcontrolname=mobile_number]", function () {
     $("[formcontrolname=mobile_number]").val(mobilenumber);
+    setTimeout(()=>{
+      $("[formcontrolname=mobile_number]")[0].dispatchEvent(new Event("input", {bubbles: true}));
+    }, 100);
     $("[formcontrolname=mobile_number]").on('input', (e) => {
       if (e.target.value.length === 10) {
         $('.login-btn').trigger('click');
@@ -95,7 +98,6 @@ const repFun = () => {
     let foundslot = false;
     var slotRows = $("ul.slot-available-wrap")
     var centerNameRows = $("ion-col.main-slider-wrap");
-    if (slotRows.length === 0) return;
 
     let centerTitles = $(centerNameRows).find(".center-name-title");
     let centerAddresses = $(centerNameRows).find(".center-name-text");
@@ -109,7 +111,7 @@ const repFun = () => {
         if (center_text.includes(center_prefs[jj].toLocaleLowerCase())) found_center_match = true;
       }
       if (!found_center_match) {
-        if (searchByDistrictFlag) continue;
+        continue;
       }
       let slots = $(slotRows[i]).find("li a");
       for (let slotIter = 0; slotIter < slots.length; slotIter++) {
@@ -128,7 +130,7 @@ const repFun = () => {
       setTimeout(enterCaptcha, 1000);
     } else {
 
-      if (searchByDistrictFlag && enableAutoRefresh) {
+      if (enableAutoRefresh) {
         if ($('.pin-search-btn').length !== 0) {
           $('.pin-search-btn').trigger('click');
           dispatchAgeSelectorClick();
@@ -207,6 +209,7 @@ const repFun = () => {
           $("[formcontrolname=searchType]").trigger('click')
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
+        $("[formcontrolname=pincode]")[0].dispatchEvent(new Event("input", {bubbles: true}));
       }
     }, 500);
   }
@@ -348,7 +351,7 @@ const createForm = () => {
   // mobile number input field
   let mobileinputid = "data-mob";
   let mobileInput = createInput(mobileinputid, "", "number", mobilenumber, 'form-control');
-  let mobileLabel = createLabel("mobileinputlabel", mobileinputid, "Mobile number (first 9 digits): ", textLabelStyles);
+  let mobileLabel = createLabel("mobileinputlabel", mobileinputid, "Mobile number", textLabelStyles);
   let mobileNumberWarn = createWarningText(
     "You will have to enter the 10th digit in the actual website form to proceed with automation.",
     warnLabelStyles
@@ -357,7 +360,7 @@ const createForm = () => {
   // pin code field
   let pincodeinputid = "pincodeinput";
   let pincodeinput = createInput(pincodeinputid, "", "number", first_5_pin_digits, 'form-control');
-  let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code (First 5 digits): ", textLabelStyles);
+  let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code", textLabelStyles);
   let pincodewarn = createWarningText("You will have to enter the 6th digit in the actual website form manually to proceed with automation.", warnLabelStyles);
 
   let centerprefinputid = "centerprefinput";
@@ -400,7 +403,7 @@ const createForm = () => {
   let enableautorefreshinput = createInput(enableautorefreshid, "", "checkbox", "", 'form-check-input');
   enableautorefreshinput.checked = enableAutoRefresh;
   let enableautorefreshlabel = createLabel("enableautorefreshlabel", enableautorefreshid, "Enable Auto Refresh ", textLabelStyles);
-  let enableautorefreshWarn = createWarningText("Keep refreshing the search results every 2 seconds. Works only with search by district ", warnLabelStyles);
+  let enableautorefreshWarn = createWarningText("Keep refreshing the search results every 2 seconds till a slot is found.", warnLabelStyles);
 
   let enableautoconfirmid = "enableautoconfirm";
   let enableautoconfirminput = createInput(enableautoconfirmid, "", "checkbox", "", 'form-check-input');
@@ -420,7 +423,7 @@ const createForm = () => {
   timeSlotSelector.appendChild(three)
   timeSlotSelector.appendChild(four)
   let timeslotlabel = createLabel("timeslotinputlabel", timeslotinputid, "Enter time slot preference: ", textLabelStyles);
-  let timeslotwarn = createWarningText("If these are not the cases available there, first slot will be selected automatically.", warnLabelStyles);
+  let timeslotwarn = createWarningText("If the preferred slot is not available, first slot will be selected automatically.", warnLabelStyles);
 
   let minavailabilityinputid = "minavailabilityinput";
   let minavailabilityinput = createInput(minavailabilityinputid, "", "number", minavailability, 'form-control');
@@ -440,8 +443,8 @@ const createForm = () => {
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
-      wrapInDivWithClassName([mobileLabel, mobileInput, mobileNumberWarn], "col"),
-      wrapInDivWithClassName([pincodelabel, pincodeinput, pincodewarn], "col")
+      wrapInDivWithClassName([mobileLabel, mobileInput], "col"),
+      wrapInDivWithClassName([pincodelabel, pincodeinput], "col")
     ], 'row mb-3'))
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
