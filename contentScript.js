@@ -148,7 +148,7 @@ const repFun = () => {
     for (let index = 0; index < checked_buttons.length; index++) {
       const element = checked_buttons[index];
       setTimeout(() => {
-        $(`label:contains(${element}):not(.button-checkbox-form)`).trigger('click');
+        $(`label:contains(${element}):not(.form-check-label)`).trigger('click');
       }, 500);
     }
   }
@@ -493,9 +493,9 @@ const createForm = () => {
   let buttonCheckBoxes = []
   for (const key in buttonCheckboxMapping) {
     //wrapInDivWithClassName([wrapInDivWithClassName([age18CheckboxButton, age18CheckboxLabel], 'form-check')], 'col')
-    let button = createInput(key, "", "checkbox", "", "btn-check");
+    let button = createInput(key, "", "checkbox", "", "form-check-input");
     button.checked = buttonCheckboxMapping[key].checked;
-    let label = createLabel(buttonCheckboxMapping[key].labelId, key, buttonCheckboxMapping[key].label, "width:100px", "btn btn-outline-primary button-checkbox-form")
+    let label = createLabel(buttonCheckboxMapping[key].labelId, key, buttonCheckboxMapping[key].label, textLabelStyles, "form-check-label")
     buttonCheckBoxes.push(wrapInDivWithClassName([wrapInDivWithClassName([button, label], 'form-check')], 'col'))
   }
   let buttonCheckboxLabel = createLabel("", "", "Select Filters", textLabelStyles)
