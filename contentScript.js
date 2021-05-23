@@ -470,7 +470,7 @@ const createForm = () => {
   let enableautorefreshinput = createInput(enableautorefreshid, "", "checkbox", "", 'form-check-input');
   enableautorefreshinput.checked = enableAutoRefresh;
   let enableautorefreshlabel = createLabel("enableautorefreshlabel", enableautorefreshid, "Enable Auto Refresh ", textLabelStyles);
-  let enableautorefreshWarn = createWarningText("Keep refreshing the search results every 2 seconds till a slot is found.", warnLabelStyles);
+  let enableautorefreshWarn = createWarningText("Keep refreshing the search results at an interval input in 'Refresh Interval' till a slot is found.", warnLabelStyles);
 
   let enableautoconfirmid = "enableautoconfirm";
   let enableautoconfirminput = createInput(enableautoconfirmid, "", "checkbox", "", 'form-check-input');
