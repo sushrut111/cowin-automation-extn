@@ -3,18 +3,56 @@ var model = "eyJNTExRTExRTExRTExMUUxMUUxMUVpNTExRTExRTExRTExRTExRTExRTExRWk1MTFF
 var parsed_model = JSON.parse(atob(model))
 var parser = new DOMParser();
 
+const buttonCheckboxMapping = {
+  age18checkbox: {
+    labelId: "age18checkboxlabel",
+    label: "Age 18+",
+    checked: false
+  },
+  age45checkbox: {
+    labelId: "age45checkboxlabel",
+    label: "Age 45+",
+    checked: false
+  },
+  covishieldcheckbox: {
+    labelId: "covishieldcheckboxlabel",
+    label: "Covishield",
+    checked: false
+  },
+  covaxincheckbox: {
+    labelId: "covaxincheckboxlabel",
+    label: "Covaxin",
+    checked: false
+  },
+  sputnikcheckbox: {
+    labelId: "sputnikcheckboxlabel",
+    label: "Sputnik V",
+    checked: false
+  },
+  freecheckbox: {
+    labelId: "freecheckboxlabel",
+    label: "Free",
+    checked: false
+  },
+  paidcheckbox: {
+    labelId: "paidcheckboxlabel",
+    label: "Paid",
+    checked: false
+  }
+}
+
 let mobilenumber = window.localStorage.getItem("mobile");
 let state_name = window.localStorage.getItem("state");
 let district_name = window.localStorage.getItem("district");
 let first_5_pin_digits = window.localStorage.getItem("pincode");
 let allow_multiple = window.localStorage.getItem("allow_multiple") === "true" ? true : false;
-let ageSelectorText = window.localStorage.getItem("age");
 let searchByDistrictFlag = window.localStorage.getItem("searchpref") === "district" ? true : false;
 let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously") === "true" ? true : false;
 let timeslotind = window.localStorage.getItem("timeslot");
 let enableAutoRefresh = window.localStorage.getItem("autorefresh") === "true" ? true : false;
 let enableautoconfirm = window.localStorage.getItem("autoconfirm") === "true" ? true : false;
 let minavailability = window.localStorage.getItem("minavailability");
+let selected_button_checkbox = window.localStorage.getItem("selectedbuttoncheckboxes")
 let center_prefs_string = window.localStorage.getItem("centerprefs");
 let center_prefs_dirty = center_prefs_string ? center_prefs_string.split(",") : "";
 let center_prefs = [];
@@ -28,6 +66,25 @@ if (center_prefs.length === 0) {
   center_prefs = [""];
 }
 
+let checked_buttons = [];
+
+const setCheckedButtons = (selected_button_checkbox) => {
+  checked_buttons = [];
+  for (let i = 0; i < selected_button_checkbox.length; i++) {
+    if (buttonCheckboxMapping[selected_button_checkbox[i]]) {
+      buttonCheckboxMapping[selected_button_checkbox[i]].checked = true;
+      checked_buttons.push(buttonCheckboxMapping[selected_button_checkbox[i]].label)
+    }
+  }
+}
+
+try {
+  selected_button_checkbox = JSON.parse(selected_button_checkbox)
+  setCheckedButtons(selected_button_checkbox)
+} catch (error) {
+  console.log('There was an error setting the filter checkboxes')
+}
+
 
 let booking_lower_lim = 1;
 try {
@@ -39,7 +96,6 @@ try {
     booking_lower_lim = 1;
   }
 }
-
 
 var waitForEl = function (selector, callback) {
   if ($(selector).length) {
@@ -66,8 +122,8 @@ var waitForElAgain = function (selector, callback) {
 const repFun = () => {
   waitForEl("[formcontrolname=mobile_number]", function () {
     $("[formcontrolname=mobile_number]").val(mobilenumber);
-    setTimeout(()=>{
-      $("[formcontrolname=mobile_number]")[0].dispatchEvent(new Event("input", {bubbles: true}));
+    setTimeout(() => {
+      $("[formcontrolname=mobile_number]")[0].dispatchEvent(new Event("input", { bubbles: true }));
     }, 100);
     $("[formcontrolname=mobile_number]").on('input', (e) => {
       if (e.target.value.length === 10) {
@@ -88,10 +144,13 @@ const repFun = () => {
   //   if(!!!allow_multiple) $('.register-btn').trigger('click');
   // })
 
-  const dispatchAgeSelectorClick = () => {
-    setTimeout(() => {
-      $(`label:contains(${ageSelectorText})`).trigger('click');
-    }, 500);
+  const dispatchSelectorClick = () => {
+    for (let index = 0; index < checked_buttons.length; index++) {
+      const element = checked_buttons[index];
+      setTimeout(() => {
+        $(`label:contains(${element}):not(.form-check-label)`).trigger('click');
+      }, 500);
+    }
   }
 
   const findSlotsAndBook = () => {
@@ -133,7 +192,7 @@ const repFun = () => {
       if (enableAutoRefresh) {
         if ($('.pin-search-btn').length !== 0) {
           $('.pin-search-btn').trigger('click');
-          dispatchAgeSelectorClick();
+          dispatchSelectorClick();
         }
       }
 
@@ -155,9 +214,9 @@ const repFun = () => {
     if (isNaN(slotind)) {
       slotind = 0;
     }
-    try{
+    try {
       timeslots[slotind].click();
-    } catch(e){
+    } catch (e) {
       console.log("Requested timeslot is not available.");
     }
 
@@ -190,7 +249,7 @@ const repFun = () => {
     }
 
     setTimeout(() => {
-      if(enableautoconfirm) $("ion-button.confirm-btn")[0].click();
+      if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
     }, 500);
 
   }
@@ -209,7 +268,7 @@ const repFun = () => {
           $("[formcontrolname=searchType]").trigger('click')
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
-        $("[formcontrolname=pincode]")[0].dispatchEvent(new Event("input", {bubbles: true}));
+        $("[formcontrolname=pincode]")[0].dispatchEvent(new Event("input", { bubbles: true }));
       }
     }, 500);
   }
@@ -220,7 +279,7 @@ const repFun = () => {
     $("[formcontrolname=pincode]").on('input', (e) => {
       if (e.target.value.length === 6) {
         $('.pin-search-btn').trigger('click');
-        dispatchAgeSelectorClick();
+        dispatchSelectorClick();
       }
     })
 
@@ -235,14 +294,14 @@ const repFun = () => {
           setTimeout(() => {
             $('.pin-search-btn').trigger('click');
           }, 500);
-          dispatchAgeSelectorClick();
+          dispatchSelectorClick();
         }, 500);
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
         $("[formcontrolname=pincode]").on('input', (e) => {
           if (e.target.value.length === 6) {
             $('.pin-search-btn').trigger('click');
-            dispatchAgeSelectorClick();
+            dispatchSelectorClick();
           }
         })
 
@@ -297,13 +356,13 @@ const createInput = (id, style, type, value, className) => {
   return retel;
 }
 
-const createLabel = (id, forid, labelText, style) => {
+const createLabel = (id, forid, labelText, style, className = "form-label") => {
   let retel = document.createElement("label");
   retel.id = id;
-  retel.for = forid;
+  retel.setAttribute("for", forid);
   retel.appendChild(document.createTextNode(labelText));
   retel.style = style;
-  retel.className = "form-label"
+  retel.className = className
   return retel;
 }
 
@@ -378,14 +437,6 @@ const createForm = () => {
   let districInput = createInput(districtinputid, "", "text", district_name, 'form-control');
   let districLabel = createLabel("districtinputlabel", districtinputid, "District name: ", textLabelStyles);
 
-  let ageSelector = createSelectInput("ageselect", "", ageSelectorText);
-  let age18 = createSelectOptions("age18", "Age 18+", "Age 18+", ageSelectorText === "Age 18+");
-  let age45 = createSelectOptions("age45", "Age 45+", "Age 45+", ageSelectorText === "Age 45+");
-  ageSelector.appendChild(age18);
-  ageSelector.appendChild(age45);
-  let AgeSelectLabel = createLabel("ageselectlabel", "ageselect", "Age group: ", textLabelStyles)
-
-
   // multiple members allow checkbox
   // let allowMultipleid = "allowMultiple";
   // let allowMultipleInput = createInput(allowMultipleid, "", "checkbox", "");
@@ -439,6 +490,16 @@ const createForm = () => {
   searchPrefSelector.appendChild(pincodeoption);
   let searchPrefLabel = createLabel("searchpreflabel", searchprefid, "Search by: ", textLabelStyles);
 
+  let buttonCheckBoxes = []
+  for (const key in buttonCheckboxMapping) {
+    //wrapInDivWithClassName([wrapInDivWithClassName([age18CheckboxButton, age18CheckboxLabel], 'form-check')], 'col')
+    let button = createInput(key, "", "checkbox", "", "form-check-input");
+    button.checked = buttonCheckboxMapping[key].checked;
+    let label = createLabel(buttonCheckboxMapping[key].labelId, key, buttonCheckboxMapping[key].label, textLabelStyles, "form-check-label")
+    buttonCheckBoxes.push(wrapInDivWithClassName([wrapInDivWithClassName([button, label], 'form-check')], 'col'))
+  }
+  let buttonCheckboxLabel = createLabel("", "", "Select Filters", textLabelStyles)
+
   // add components to wrapper div
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
@@ -450,8 +511,7 @@ const createForm = () => {
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
       wrapInDivWithClassName([stateLabel, stateInput], 'col'),
-      wrapInDivWithClassName([districLabel, districInput], 'col'),
-      wrapInDivWithClassName([AgeSelectLabel, ageSelector], 'col')
+      wrapInDivWithClassName([districLabel, districInput], 'col')
     ], 'row mb-3'))
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
@@ -465,6 +525,8 @@ const createForm = () => {
       wrapInDivWithClassName([centerprefinputlabel, centerprefinput, centerprefinputwarn], "col"),
       wrapInDivWithClassName([minavailabilityinputlabel, minavailabilityinput, minavailabilityinputwarn], "col")
     ], 'row mb-3'))
+
+  wrapperDiv.appendChild(wrapInDivWithClassName([buttonCheckboxLabel].concat(buttonCheckBoxes), 'row mb-3'))
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
@@ -512,26 +574,32 @@ const bindSubmitButtonToSaveInfo = () => {
     keeptryingcontinuously = document.getElementById("continuousretry").checked;
     enableAutoRefresh = document.getElementById("enableautorefresh").checked;
     enableautoconfirm = document.getElementById("enableautoconfirm").checked;
-    ageSelectorText = document.getElementById("ageselect").value;
     let searchPreftext = document.getElementById("searchpref").value;
     first_5_pin_digits = document.getElementById("pincodeinput").value;
     timeslotind = document.getElementById("timeslotinput").value;
     center_prefs_string = document.getElementById("centerprefinput").value;
     minavailability = document.getElementById("minavailabilityinput").value;
+    selected_button_checkbox = []
+    for (const key in buttonCheckboxMapping) {
+      let button_checkbox = document.getElementById(key);
+      buttonCheckboxMapping[key].checked = button_checkbox.checked;
+      if (button_checkbox.checked) {
+        selected_button_checkbox.push(key)
+      }
+    }
     window.localStorage.setItem("mobile", mobilenumber);
     window.localStorage.setItem("state", state_name);
     window.localStorage.setItem("district", district_name);
     // window.localStorage.setItem("allow_multiple", allow_multiple);
     window.localStorage.setItem("keeptryingcontinuously", keeptryingcontinuously);
     window.localStorage.setItem("autorefresh", enableAutoRefresh);
-
-    window.localStorage.setItem("age", ageSelectorText);
     window.localStorage.setItem("searchpref", searchPreftext);
     window.localStorage.setItem("pincode", first_5_pin_digits);
     window.localStorage.setItem("timeslot", timeslotind);
     window.localStorage.setItem("centerprefs", center_prefs_string);
     window.localStorage.setItem("minavailability", minavailability);
     window.localStorage.setItem("autoconfirm", enableautoconfirm);
+    window.localStorage.setItem("selectedbuttoncheckboxes", JSON.stringify(selected_button_checkbox))
     window.location.reload();
   })
 }
