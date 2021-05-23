@@ -17,7 +17,8 @@
             ],
             "css": [
                 "css/index.css",
-                "css/custom.css"
+                "css/custom.css",
+                "css/bootstrap.min.css"
             ]
         }
     ],
