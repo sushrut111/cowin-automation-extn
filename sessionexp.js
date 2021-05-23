@@ -1,3 +1,6 @@
+var mp3_url = 'https://media.geeksforgeeks.org/wp-content/uploads/20190531135120/beep.mp3';
+
+
 const parseJwt = (token) => {
     try {
       return JSON.parse(atob(token.split('.')[1]));
@@ -26,6 +29,13 @@ const parseJwt = (token) => {
     let expd = new Date(0);
     expd.setUTCSeconds(exp);
     document.title = get_mins((expd - curr)/1000);
+    if(expd - curr < 10000){
+      try{
+        (new Audio(mp3_url)).play();
+      } catch (e) {
+        alert("session is expiring");
+      }
+    }
   }
   
   setInterval(expirationUpdate, 5000);
