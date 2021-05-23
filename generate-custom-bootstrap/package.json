@@ -1,0 +1,15 @@
+{
+  "name": "generate-custom-bootstrap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "lessc custom/custom.less ../css/index.css"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "less": "^4.1.1"
+  }
+}
