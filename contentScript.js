@@ -89,7 +89,7 @@ try {
 let booking_lower_lim = 1;
 booking_lower_lim = parseInt(minavailability);
 if (isNaN(booking_lower_lim)) {
-    booking_lower_lim = 1;
+  booking_lower_lim = 1;
 }
 
 var waitForEl = function (selector, callback) {
@@ -143,7 +143,7 @@ const repFun = () => {
     for (let index = 0; index < checked_buttons.length; index++) {
       const element = checked_buttons[index];
       setTimeout(() => {
-        $(`label:contains(${element}):not(.form-check-label)`).trigger('click');
+        $(`label:contains(${element}):not(.btn.btn-outline-primary)`).trigger('click');
       }, 500);
     }
   }
@@ -488,9 +488,9 @@ const createForm = () => {
   let buttonCheckBoxes = []
   for (const key in buttonCheckboxMapping) {
     //wrapInDivWithClassName([wrapInDivWithClassName([age18CheckboxButton, age18CheckboxLabel], 'form-check')], 'col')
-    let button = createInput(key, "", "checkbox", "", "form-check-input");
+    let button = createInput(key, "", "checkbox", "", "btn-check");
     button.checked = buttonCheckboxMapping[key].checked;
-    let label = createLabel(buttonCheckboxMapping[key].labelId, key, buttonCheckboxMapping[key].label, textLabelStyles, "form-check-label")
+    let label = createLabel(buttonCheckboxMapping[key].labelId, key, buttonCheckboxMapping[key].label, "width:100px", "btn btn-outline-primary")
     buttonCheckBoxes.push(wrapInDivWithClassName([wrapInDivWithClassName([button, label], 'form-check')], 'col'))
   }
   let buttonCheckboxLabel = createLabel("", "", "Select Filters", textLabelStyles)

@@ -1,0 +1,5 @@
+#injected__extension .btn-outline-primary:hover {
+    color: rgb(13, 110, 253);
+    background-color: rgb(242, 247, 254);
+    border-color: rgb(113, 110, 253);
+}
