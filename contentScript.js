@@ -604,11 +604,11 @@ const bindSubmitButtonToSaveInfo = () => {
   })
 }
 
-const createModal = () => {
+const createModalAndShowButton = () => {
   let wrapperDiv = document.createElement("div");
-  wrapperDiv.className = "modal fade";
-  wrapperDiv.id = 'form-modal'
+  wrapperDiv.id = 'injected__extension'
   let modal = `
+  <div class="modal fade" id="form-modal">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-header">
@@ -623,24 +623,18 @@ const createModal = () => {
       </div>
     </div>
   </div>
+  </div>
   `
-  wrapperDiv.innerHTML = modal;
-
-  document.body.appendChild(wrapperDiv);
-}
-
-const createModalHideShowButton = () => {
-  let wrapperDiv = document.createElement("div");
   let button = `
   <button type="button" class="btn btn-danger btn-lg" style="position:absolute; top:2%; left: 2%; font-size: 2em;" data-bs-toggle="modal" data-bs-target="#form-modal">Edit Auto Fill Inputs</button>`
-  wrapperDiv.innerHTML = button;
+
+  wrapperDiv.innerHTML += modal;
+  wrapperDiv.innerHTML += button;
   document.body.appendChild(wrapperDiv);
 }
 
-
 const createFormAndOthers = () => {
-  createModal();
-  createModalHideShowButton();
+  createModalAndShowButton();
   createForm();
   bindSubmitButtonToSaveInfo();
 }
