@@ -87,14 +87,9 @@ try {
 
 
 let booking_lower_lim = 1;
-try {
-  booking_lower_lim = parseInt(minavailability);
-} catch (e) {
-  booking_lower_lim = 1;
-} finally {
-  if (isNaN(booking_lower_lim)) {
+booking_lower_lim = parseInt(minavailability);
+if (isNaN(booking_lower_lim)) {
     booking_lower_lim = 1;
-  }
 }
 
 var waitForEl = function (selector, callback) {
