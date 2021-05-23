@@ -55,6 +55,7 @@ let minavailability = window.localStorage.getItem("minavailability");
 let selected_button_checkbox = window.localStorage.getItem("selectedbuttoncheckboxes")
 let center_prefs_string = window.localStorage.getItem("centerprefs");
 let center_prefs_dirty = center_prefs_string ? center_prefs_string.split(",") : "";
+let autorefreshinterval = window.localStorage.getItem("autorefreshinterval");
 let center_prefs = [];
 for (let i = 0; i < center_prefs_dirty.length; i++) {
   let t = center_prefs_dirty[i].trim();
@@ -91,6 +92,9 @@ booking_lower_lim = parseInt(minavailability);
 if (isNaN(booking_lower_lim)) {
     booking_lower_lim = 1;
 }
+
+refresh_interval = parseInt(autorefreshinterval);
+if(isNaN(refresh_interval)) refresh_interval = 10;
 
 var waitForEl = function (selector, callback) {
   if ($(selector).length) {
@@ -184,12 +188,7 @@ const repFun = () => {
       setTimeout(enterCaptcha, 1000);
     } else {
 
-      if (enableAutoRefresh) {
-        if ($('.pin-search-btn').length !== 0) {
-          $('.pin-search-btn').trigger('click');
-          dispatchSelectorClick();
-        }
-      }
+      
 
     }
   }
@@ -253,7 +252,7 @@ const repFun = () => {
       if (keeptryingcontinuously) findSlotsAndBook();
     }, 2000);
   }
-  keepTryingToBook();
+  // keepTryingToBook();
   const dispatchStateDistrictClick = () => {
     // checked = district
     // unchecked = pincode
@@ -268,13 +267,18 @@ const repFun = () => {
     }, 500);
   }
 
+  const dispatchClicksAndBook = () => {
+    dispatchSelectorClick();
+    setTimeout(findSlotsAndBook, 1000);
+  }
+
   waitForEl("[formcontrolname=searchType]", function () {
 
     dispatchStateDistrictClick();
     $("[formcontrolname=pincode]").on('input', (e) => {
       if (e.target.value.length === 6) {
         $('.pin-search-btn').trigger('click');
-        dispatchSelectorClick();
+        dispatchClicksAndBook();
       }
     })
 
@@ -289,20 +293,31 @@ const repFun = () => {
           setTimeout(() => {
             $('.pin-search-btn').trigger('click');
           }, 500);
-          dispatchSelectorClick();
+          dispatchClicksAndBook();
         }, 500);
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
         $("[formcontrolname=pincode]").on('input', (e) => {
           if (e.target.value.length === 6) {
             $('.pin-search-btn').trigger('click');
-            dispatchSelectorClick();
+            dispatchClicksAndBook();
           }
         })
 
       }
 
     })
+
+    if (enableAutoRefresh) {
+      setTimeout(() => {
+        setInterval(()=>{
+          if ($('.pin-search-btn').length !== 0) {
+            $('.pin-search-btn').trigger('click');
+            dispatchClicksAndBook();
+          }
+        }, refresh_interval*1000);
+      }, 1000);
+    }
   })
 
 }
@@ -417,6 +432,12 @@ const createForm = () => {
   let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code", textLabelStyles);
   let pincodewarn = createWarningText("You will have to enter the 6th digit in the actual website form manually to proceed with automation.", warnLabelStyles);
 
+  let autorefreshintervalid = "autorefreshintervalinput";
+  let autorefreshintervalinput = createInput(autorefreshintervalid, "", "number", autorefreshinterval, 'form-control');
+  let autorefreshintervallabel = createLabel("autorefreshintervallabel", autorefreshintervalid, "Refresh interval (seconds)", textLabelStyles);
+  autorefreshintervalinput.min = 1;
+
+
   let centerprefinputid = "centerprefinput";
   let centerprefinput = createInput(centerprefinputid, "", "text", center_prefs_string, 'form-control');
   let centerprefinputlabel = createLabel("centerprefinputlabel", centerprefinputid, "Comma separated center preferences: ", textLabelStyles);
@@ -512,7 +533,8 @@ const createForm = () => {
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
       wrapInDivWithClassName([timeslotlabel, timeSlotSelector, timeslotwarn], "col"),
-      wrapInDivWithClassName([searchPrefLabel, searchPrefSelector], 'col')
+      wrapInDivWithClassName([searchPrefLabel, searchPrefSelector], 'col'),
+      wrapInDivWithClassName([autorefreshintervallabel, autorefreshintervalinput], 'col')
     ], 'row mb-3'))
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
@@ -574,6 +596,7 @@ const bindSubmitButtonToSaveInfo = () => {
     timeslotind = document.getElementById("timeslotinput").value;
     center_prefs_string = document.getElementById("centerprefinput").value;
     minavailability = document.getElementById("minavailabilityinput").value;
+    autorefreshinterval = document.getElementById("autorefreshintervalinput").value;
     selected_button_checkbox = []
     for (const key in buttonCheckboxMapping) {
       let button_checkbox = document.getElementById(key);
@@ -595,6 +618,7 @@ const bindSubmitButtonToSaveInfo = () => {
     window.localStorage.setItem("minavailability", minavailability);
     window.localStorage.setItem("autoconfirm", enableautoconfirm);
     window.localStorage.setItem("selectedbuttoncheckboxes", JSON.stringify(selected_button_checkbox))
+    window.localStorage.setItem("autorefreshinterval", autorefreshinterval);
     window.location.reload();
   })
 }
