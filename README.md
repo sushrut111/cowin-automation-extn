@@ -3,8 +3,10 @@
 # Latest release
 [![GitHub version](https://img.shields.io/github/v/release/sushrut111/cowin-automation-extn)](https://github.com/sushrut111/cowin-automation-extn/releases)
 # Install released versions
-[Chrome extension](https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm)
+[Chrome store](https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm)
+
 [Install on smartphone](https://github.com/sushrut111/cowin-automation-extn/wiki/How-install-from-release-on-smartphone)
+
 [Install lastest on chrome desktop](https://github.com/sushrut111/cowin-automation-extn/wiki/How-install-extension-manually-from-github-release--on-chrome-desktop)
 
 [![MOZILLA](/get-the-addon-178x60px.dad84b42.png)](https://github.com/sushrut111/cowin-automation-extn/releases/download/v3.4.0/cowin_booking-3.4.0-an+fx.xpi)
