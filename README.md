@@ -9,7 +9,7 @@
 
 [Install lastest on chrome desktop](https://github.com/sushrut111/cowin-automation-extn/wiki/How-install-extension-manually-from-github-release--on-chrome-desktop)
 
-[![MOZILLA](/get-the-addon-178x60px.dad84b42.png)](https://github.com/sushrut111/cowin-automation-extn/releases/download/v3.4.0/cowin_booking-3.4.0-an+fx.xpi)
+[![MOZILLA](/get-the-addon-178x60px.dad84b42.png)](https://addons.mozilla.org/en-US/firefox/addon/cowin-booking/)
 
 
 # Users and Ratings
