@@ -90,11 +90,11 @@ try {
 let booking_lower_lim = 1;
 booking_lower_lim = parseInt(minavailability);
 if (isNaN(booking_lower_lim)) {
-    booking_lower_lim = 1;
+  booking_lower_lim = 1;
 }
 
 refresh_interval = parseInt(autorefreshinterval);
-if(isNaN(refresh_interval)) refresh_interval = 10;
+if (isNaN(refresh_interval)) refresh_interval = 10;
 
 var waitForEl = function (selector, callback) {
   if ($(selector).length) {
@@ -188,7 +188,7 @@ const repFun = () => {
       setTimeout(enterCaptcha, 1000);
     } else {
 
-      
+
 
     }
   }
@@ -310,12 +310,12 @@ const repFun = () => {
 
     if (enableAutoRefresh) {
       setTimeout(() => {
-        setInterval(()=>{
+        setInterval(() => {
           if ($('.pin-search-btn').length !== 0) {
             $('.pin-search-btn').trigger('click');
             dispatchClicksAndBook();
           }
-        }, refresh_interval*1000);
+        }, refresh_interval * 1000);
       }, 1000);
     }
   })
@@ -407,7 +407,30 @@ const createHrSeparator = () => {
   retel.style = "background-color: black";
   return retel;
 }
-const createForm = () => {
+
+const getStatesData = async () => {
+  try {
+    let response = await fetch("https://cdn-api.co-vin.in/api/v2/admin/location/states")
+    response = await response.json();
+    return response.states
+  } catch (e) {
+    console.log(e)
+    return []
+  }
+}
+
+const getDistrictsData = async (state_id) => {
+  try {
+    let response = await fetch("https://cdn-api.co-vin.in/api/v2/admin/location/districts/" + state_id)
+    response = await response.json();
+    return response.districts
+  } catch (e) {
+    console.log(e)
+    return []
+  }
+}
+
+const createForm = async () => {
 
   // basic styles : reused
   let textLabelStyles = "color: black";
@@ -445,13 +468,35 @@ const createForm = () => {
 
   // state name input field
   let stateinputid = "data-state";
-  let stateInput = createInput(stateinputid, "", "text", state_name, 'form-control');
+  let stateInput, state_id;
+  const states = await getStatesData()
+  if (states.length === 0)
+    stateInput = createInput(stateinputid, "", "text", state_name, 'form-control');
+  else {
+    stateInput = createSelectInput(stateinputid, "", state_name)
+    for (let i = 0; i < states.length; i++) {
+      let state = states[i];
+      if (state_name === state.state_name) state_id = state.state_id;
+      stateInput.appendChild(createSelectOptions("state-" + state.state_id, state.state_name, state.state_name, state_name === state.state_name))
+    }
+    bindStateSelectButton()
+  }
   let stateLabel = createLabel("stateinputlabel", stateinputid, "Name of the state: ", textLabelStyles)
 
   // district name input field
   let districtinputid = "data-district";
-  let districInput = createInput(districtinputid, "", "text", district_name, 'form-control');
-  let districLabel = createLabel("districtinputlabel", districtinputid, "District name: ", textLabelStyles);
+  let districtInput;
+  const districts = await getDistrictsData(state_id)
+  if (districts.length === 0)
+    districtInput = createInput(districtinputid, "", "text", district_name, 'form-control');
+  else {
+    districtInput = createSelectInput(districtinputid, "", district_name)
+    for (let i = 0; i < districts.length; i++) {
+      let district = districts[i]
+      districtInput.appendChild(createSelectOptions("district-" + district.district_id, district.district_name, district.district_name, district_name === district.district_name))
+    }
+  }
+  let districtLabel = createLabel("districtinputlabel", districtinputid, "District name: ", textLabelStyles);
 
   // multiple members allow checkbox
   // let allowMultipleid = "allowMultiple";
@@ -527,7 +572,7 @@ const createForm = () => {
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
       wrapInDivWithClassName([stateLabel, stateInput], 'col'),
-      wrapInDivWithClassName([districLabel, districInput], 'col')
+      wrapInDivWithClassName([districtLabel, districtInput], 'col district-wrapper')
     ], 'row mb-3'))
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
@@ -578,6 +623,31 @@ const createHideShowButton = () => {
   document.body.appendChild(formShowHide);
   $('#formshowhidebutton').on('click', () => {
     $("#formWrapper").toggle();
+  })
+}
+
+const bindStateSelectButton = () => {
+  $(document).on('change', '#data-state', async function (event) {
+    let districtinputid = "data-district";
+    let districtInput;
+    districtInput = createInput(districtinputid, "", "text", "", 'form-control');
+    document.querySelector('.col.district-wrapper').replaceChild(districtInput, document.getElementById('data-district'));
+    try {
+      var id = $(this).children(":selected").attr("id").split('state-')[1];
+      const districts = await getDistrictsData(id)
+      if (districts.length === 0)
+        districtInput = createInput(districtinputid, "", "text", district_name, 'form-control');
+      else {
+        districtInput = createSelectInput(districtinputid, "", district_name)
+        for (let i = 0; i < districts.length; i++) {
+          let district = districts[i]
+          districtInput.appendChild(createSelectOptions("district-" + district.district_id, district.district_name, district.district_name, district_name === district.district_name))
+        }
+      }
+      document.querySelector('.col.district-wrapper').replaceChild(districtInput, document.getElementById('data-district'));
+    } catch (error) {
+      console.log(error)
+    }
   })
 }
 
@@ -655,7 +725,6 @@ const createModalHideShowButton = () => {
   wrapperDiv.innerHTML = button;
   document.body.appendChild(wrapperDiv);
 }
-
 
 const createFormAndOthers = () => {
   createModal();
