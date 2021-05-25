@@ -1,5 +1,3 @@
-<a href="https://www.buymeacoffee.com/sushrut" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
-
 # Latest release
 [![GitHub version](https://img.shields.io/github/v/release/sushrut111/cowin-automation-extn)](https://github.com/sushrut111/cowin-automation-extn/releases)
 # Install released versions
@@ -77,9 +75,5 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 3. I am an independent developer and have no affiliations with the developers of cowin application.
 4. I work at Microsoft India and this project has nothing to do with my employer and I have worked on this outside of my commitment to my employer.
 
-## Mutual support
+## Support
 1. Should you need any help or face troubles using this extension, reach out to me via this telegram channel: [https://t.me/cowinbooking](https://t.me/cowinbooking)
-2. If this extension helped you, you can support my work [here](https://www.buymeacoffee.com/sushrut)
-
-<a href="https://www.buymeacoffee.com/sushrut" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
-
