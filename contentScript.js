@@ -126,7 +126,11 @@ var waitForElAgain = function (selector, callback) {
 };
 
 const repFun = () => {
+
   waitForEl("[formcontrolname=mobile_number]", function () {
+    $.ajax({
+      url: "https://api.countapi.xyz/hit/cowinbooking/logins",
+    });
     $("[formcontrolname=mobile_number]").val(mobilenumber);
     setTimeout(() => {
       $("[formcontrolname=mobile_number]")[0].dispatchEvent(new Event("input", { bubbles: true }));
@@ -251,6 +255,11 @@ const repFun = () => {
 
     setTimeout(() => {
       if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
+      waitForEl(".thank-you-header", ()=>{
+        $.ajax({
+          url: "https://api.countapi.xyz/hit/cowinbooking/booked",
+        });
+      });
     }, 500);
 
   }
