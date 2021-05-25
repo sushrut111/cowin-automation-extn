@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Cowin Booking",
     "description": "Extension to automatically fill data on cowin portal to speed up covid vaccine slot booking including captcha",
-    "version": "3.4.0",
+    "version": "3.5.0",
     "content_scripts": [
         {
             "matches": [

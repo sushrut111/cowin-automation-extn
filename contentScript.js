@@ -56,6 +56,13 @@ let selected_button_checkbox = window.localStorage.getItem("selectedbuttoncheckb
 let center_prefs_string = window.localStorage.getItem("centerprefs");
 let center_prefs_dirty = center_prefs_string ? center_prefs_string.split(",") : "";
 let autorefreshinterval = window.localStorage.getItem("autorefreshinterval");
+let skipdays = window.localStorage.getItem("skipdays");
+
+if(isNaN(parseInt(skipdays))){
+  skipdays = 0;
+} else {
+  skipdays = parseInt(skipdays);
+}
 let center_prefs = [];
 for (let i = 0; i < center_prefs_dirty.length; i++) {
   let t = center_prefs_dirty[i].trim();
@@ -172,7 +179,7 @@ const repFun = () => {
         continue;
       }
       let slots = $(slotRows[i]).find("li a");
-      for (let slotIter = 0; slotIter < slots.length; slotIter++) {
+      for (let slotIter = skipdays; slotIter < slots.length; slotIter++) {
         let avail = parseInt(slots[slotIter].text.trim());
         if (avail >= booking_lower_lim) {
           slots[slotIter].click();
@@ -269,7 +276,7 @@ const repFun = () => {
 
   const dispatchClicksAndBook = () => {
     dispatchSelectorClick();
-    setTimeout(findSlotsAndBook, 1000);
+    if(keeptryingcontinuously) setTimeout(findSlotsAndBook, 1000);
   }
 
   waitForEl("[formcontrolname=searchType]", function () {
@@ -463,8 +470,8 @@ const createForm = () => {
   let continuousretryid = "continuousretry";
   let continuousretryinput = createInput(continuousretryid, "", "checkbox", "", 'form-check-input');
   continuousretryinput.checked = keeptryingcontinuously;
-  let continuousretrylabel = createLabel("continuousretrylabel", continuousretryid, "Attempt to book continuosly ", textLabelStyles);
-  let continuousretryWarn = createWarningText("First available slot in the centers which satisfy the center preference will be selected automatically.", warnLabelStyles);
+  let continuousretrylabel = createLabel("continuousretrylabel", continuousretryid, "Attempt to book automatically ", textLabelStyles);
+  let continuousretryWarn = createWarningText("First available slot in the centers which satisfy the center preference will be selected automatically. Captcha will be filled ONLY if this is selected.", warnLabelStyles);
 
   let enableautorefreshid = "enableautorefresh";
   let enableautorefreshinput = createInput(enableautorefreshid, "", "checkbox", "", 'form-check-input');
@@ -496,6 +503,13 @@ const createForm = () => {
   let minavailabilityinput = createInput(minavailabilityinputid, "", "number", minavailability, 'form-control');
   let minavailabilityinputlabel = createLabel("minavailabilityinputlabel", minavailabilityinputid, "Select only if number of available slots is more than: ", textLabelStyles);
   let minavailabilityinputwarn = createWarningText("Write a number here. If you leave this empty, any center with min 1 available can be selected.", warnLabelStyles);
+
+  let skipdaysinputid = "skipdaysinput";
+  let skipdaysinput = createInput(skipdaysinputid, "", "number", skipdays, 'form-control');
+  let skipdaysinputlabel = createLabel("skipdaysinputlabel", skipdaysinputid, "Skip days", textLabelStyles);
+  let skipdaysinputwarn = createWarningText("Only slots available after 'skip days' days will be booked. Enter 0 for today, 1 for tomorrow ...", warnLabelStyles);
+  skipdaysinput.min = 0;
+  skipdaysinput.max = 5;
 
   // search preferrance
   let searchprefid = "searchpref";
@@ -540,7 +554,8 @@ const createForm = () => {
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
       wrapInDivWithClassName([centerprefinputlabel, centerprefinput, centerprefinputwarn], "col"),
-      wrapInDivWithClassName([minavailabilityinputlabel, minavailabilityinput, minavailabilityinputwarn], "col")
+      wrapInDivWithClassName([minavailabilityinputlabel, minavailabilityinput, minavailabilityinputwarn], "col"),
+      wrapInDivWithClassName([skipdaysinputlabel, skipdaysinput, skipdaysinputwarn], "col")
     ], 'row mb-3'))
 
   wrapperDiv.appendChild(wrapInDivWithClassName([buttonCheckboxLabel].concat(buttonCheckBoxes), 'row mb-3'))
@@ -597,6 +612,7 @@ const bindSubmitButtonToSaveInfo = () => {
     center_prefs_string = document.getElementById("centerprefinput").value;
     minavailability = document.getElementById("minavailabilityinput").value;
     autorefreshinterval = document.getElementById("autorefreshintervalinput").value;
+    skipdays = document.getElementById("skipdaysinput").value;
     selected_button_checkbox = []
     for (const key in buttonCheckboxMapping) {
       let button_checkbox = document.getElementById(key);
@@ -619,6 +635,7 @@ const bindSubmitButtonToSaveInfo = () => {
     window.localStorage.setItem("autoconfirm", enableautoconfirm);
     window.localStorage.setItem("selectedbuttoncheckboxes", JSON.stringify(selected_button_checkbox))
     window.localStorage.setItem("autorefreshinterval", autorefreshinterval);
+    window.localStorage.setItem("skipdays", skipdays);
     window.location.reload();
   })
 }
