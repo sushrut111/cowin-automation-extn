@@ -58,6 +58,14 @@ let center_prefs_dirty = center_prefs_string ? center_prefs_string.split(",") : 
 let autorefreshinterval = window.localStorage.getItem("autorefreshinterval");
 let skipdays = window.localStorage.getItem("skipdays");
 
+const sleep = (delay) => {
+  return new Promise((resolve)=>{
+    setTimeout(()=>{
+      resolve(true);
+    }, delay);
+  })
+}
+
 if(isNaN(parseInt(skipdays))){
   skipdays = 0;
 } else {
@@ -93,6 +101,7 @@ try {
   console.log('There was an error setting the filter checkboxes')
 }
 
+const alreadySetIntervalsForEnableRefresh = [];
 
 let booking_lower_lim = 1;
 booking_lower_lim = parseInt(minavailability);
@@ -154,12 +163,12 @@ const repFun = () => {
   //   if(!!!allow_multiple) $('.register-btn').trigger('click');
   // })
 
-  const dispatchSelectorClick = () => {
+  const dispatchSelectorClick = async() => {
+    await sleep(500);
     for (let index = 0; index < checked_buttons.length; index++) {
       const element = checked_buttons[index];
-      setTimeout(() => {
-        $(`label:contains(${element}):not(.form-check-label)`).trigger('click');
-      }, 500);
+      await sleep(100);
+      $(`label:contains(${element}):not(.form-check-label)`).trigger('click'); 
     }
   }
 
@@ -283,7 +292,7 @@ const repFun = () => {
     }, 500);
   }
 
-  const dispatchClicksAndBook = () => {
+  const dispatchClicksAndBook = async() => {
     dispatchSelectorClick();
     if(keeptryingcontinuously) setTimeout(findSlotsAndBook, 1000);
   }
@@ -325,13 +334,21 @@ const repFun = () => {
     })
 
     if (enableAutoRefresh) {
+      for(let intind=0; intind < alreadySetIntervalsForEnableRefresh.length; intind++){
+        clearInterval(alreadySetIntervalsForEnableRefresh[intind]);
+      }
+      let dt = new Date();
+
       setTimeout(() => {
-        setInterval(()=>{
-          if ($('.pin-search-btn').length !== 0) {
-            $('.pin-search-btn').trigger('click');
-            dispatchClicksAndBook();
-          }
-        }, refresh_interval*1000);
+        alreadySetIntervalsForEnableRefresh.push(
+          setInterval(()=>{
+            console.log(dt)
+            if ($('.pin-search-btn').length !== 0) {
+              $('.pin-search-btn').trigger('click');
+              dispatchClicksAndBook();
+            }
+          }, refresh_interval*1000)
+        )
       }, 1000);
     }
   })
@@ -351,6 +368,9 @@ if (window.location.hash) {
 var current_href = location.href;
 setInterval(function () {
   if (current_href !== location.href) {
+    for(let intind=0; intind < alreadySetIntervalsForEnableRefresh.length; intind++){
+      clearInterval(alreadySetIntervalsForEnableRefresh[intind]);
+    }
     repFun();
     current_href = location.href;
   } else {
