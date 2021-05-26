@@ -162,21 +162,16 @@ const repFun = () => {
   //   if(!!!allow_multiple) $('.register-btn').trigger('click');
   // })
 
-  const dispatchSelectorClick = async () => {
-    return new Promise(async (resolve, reject) => {
-      await sleep(500);
-      for (let index = 0; index < checked_buttons.length; index++) {
-        const element = checked_buttons[index];
-        await sleep(100);
-        const id = $(`label:contains(${element}):not(.form-check-label)`).attr('for')
-        if (!($(`#${id}`).prop('checked'))) {
-          $(`label:contains(${element}):not(.form-check-label)`).trigger('click');
-          console.log(`${element} has been clicked`)
-        }
+  const dispatchSelectorClick = async() => {
+    await sleep(500);
+    for (let index = 0; index < checked_buttons.length; index++) {
+      const element = checked_buttons[index];
+      await sleep(5);
+      const id = $(`label:contains(${element}):not(.form-check-label)`).attr('for')
+      if (!($(`#${id}`).prop('checked'))) {
+        $(`label:contains(${element}):not(.form-check-label)`).trigger('click');
       }
-      resolve('DONE!')
-    })
-
+    }
   }
 
   const findSlotsAndBook = () => {
@@ -279,12 +274,7 @@ const repFun = () => {
     }, 500);
 
   }
-  const keepTryingToBook = () => {
-    setInterval(() => {
-      if (keeptryingcontinuously) findSlotsAndBook();
-    }, 2000);
-  }
-  // keepTryingToBook();
+
   const dispatchStateDistrictClick = () => {
     // checked = district
     // unchecked = pincode
@@ -301,8 +291,7 @@ const repFun = () => {
 
   const dispatchClicksAndBook = async () => {
     await dispatchSelectorClick();
-    console.log('GOING TO BOOK')
-    if (keeptryingcontinuously) setTimeout(findSlotsAndBook, 1000);
+    if (keeptryingcontinuously) setTimeout(findSlotsAndBook, 500);
   }
 
   waitForEl("[formcontrolname=searchType]", function () {
@@ -339,22 +328,18 @@ const repFun = () => {
     })
 
     if (enableAutoRefresh) {
-      for (let intind = 0; intind < alreadySetIntervalsForEnableRefresh.length; intind++) {
-        clearInterval(alreadySetIntervalsForEnableRefresh[intind]);
+      while(alreadySetIntervalsForEnableRefresh.length>0){
+        let interval = alreadySetIntervalsForEnableRefresh.pop();
+        clearInterval(interval);
       }
-      let dt = new Date();
-
-      setTimeout(() => {
-        alreadySetIntervalsForEnableRefresh.push(
-          setInterval(() => {
-            console.log(dt)
-            if ($('.pin-search-btn').length !== 0) {
-              $('.pin-search-btn').trigger('click');
-              dispatchClicksAndBook();
-            }
-          }, refresh_interval * 1000)
-        )
-      }, 1000);
+      alreadySetIntervalsForEnableRefresh.push(
+        setInterval(() => {
+          if ($('.pin-search-btn').length !== 0) {
+            $('.pin-search-btn').trigger('click');
+            dispatchClicksAndBook();
+          }
+        }, refresh_interval * 1000)
+      );
     }
   })
 
@@ -373,9 +358,11 @@ if (window.location.hash) {
 var current_href = location.href;
 setInterval(function () {
   if (current_href !== location.href) {
-    for (let intind = 0; intind < alreadySetIntervalsForEnableRefresh.length; intind++) {
-      clearInterval(alreadySetIntervalsForEnableRefresh[intind]);
+    while(alreadySetIntervalsForEnableRefresh.length>0){
+      let interval = alreadySetIntervalsForEnableRefresh.pop();
+      clearInterval(interval);
     }
+
     repFun();
     current_href = location.href;
   } else {
