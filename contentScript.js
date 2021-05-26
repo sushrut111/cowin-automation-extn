@@ -55,6 +55,14 @@ let minavailability = window.localStorage.getItem("minavailability");
 let selected_button_checkbox = window.localStorage.getItem("selectedbuttoncheckboxes")
 let center_prefs_string = window.localStorage.getItem("centerprefs");
 let center_prefs_dirty = center_prefs_string ? center_prefs_string.split(",") : "";
+let autorefreshinterval = window.localStorage.getItem("autorefreshinterval");
+let skipdays = window.localStorage.getItem("skipdays");
+
+if(isNaN(parseInt(skipdays))){
+  skipdays = 0;
+} else {
+  skipdays = parseInt(skipdays);
+}
 let center_prefs = [];
 for (let i = 0; i < center_prefs_dirty.length; i++) {
   let t = center_prefs_dirty[i].trim();
@@ -92,6 +100,9 @@ if (isNaN(booking_lower_lim)) {
   booking_lower_lim = 1;
 }
 
+refresh_interval = parseInt(autorefreshinterval);
+if(isNaN(refresh_interval)) refresh_interval = 10;
+
 var waitForEl = function (selector, callback) {
   if ($(selector).length) {
     callback();
@@ -115,7 +126,11 @@ var waitForElAgain = function (selector, callback) {
 };
 
 const repFun = () => {
+
   waitForEl("[formcontrolname=mobile_number]", function () {
+    $.ajax({
+      url: "https://api.countapi.xyz/hit/cowinbooking/logins",
+    });
     $("[formcontrolname=mobile_number]").val(mobilenumber);
     setTimeout(() => {
       $("[formcontrolname=mobile_number]")[0].dispatchEvent(new Event("input", { bubbles: true }));
@@ -168,7 +183,7 @@ const repFun = () => {
         continue;
       }
       let slots = $(slotRows[i]).find("li a");
-      for (let slotIter = 0; slotIter < slots.length; slotIter++) {
+      for (let slotIter = skipdays; slotIter < slots.length; slotIter++) {
         let avail = parseInt(slots[slotIter].text.trim());
         if (avail >= booking_lower_lim) {
           slots[slotIter].click();
@@ -184,12 +199,7 @@ const repFun = () => {
       setTimeout(enterCaptcha, 1000);
     } else {
 
-      if (enableAutoRefresh) {
-        if ($('.pin-search-btn').length !== 0) {
-          $('.pin-search-btn').trigger('click');
-          dispatchSelectorClick();
-        }
-      }
+      
 
     }
   }
@@ -245,6 +255,11 @@ const repFun = () => {
 
     setTimeout(() => {
       if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
+      waitForEl(".thank-you-header", ()=>{
+        $.ajax({
+          url: "https://api.countapi.xyz/hit/cowinbooking/booked",
+        });
+      });
     }, 500);
 
   }
@@ -253,7 +268,7 @@ const repFun = () => {
       if (keeptryingcontinuously) findSlotsAndBook();
     }, 2000);
   }
-  keepTryingToBook();
+  // keepTryingToBook();
   const dispatchStateDistrictClick = () => {
     // checked = district
     // unchecked = pincode
@@ -268,13 +283,18 @@ const repFun = () => {
     }, 500);
   }
 
+  const dispatchClicksAndBook = () => {
+    dispatchSelectorClick();
+    if(keeptryingcontinuously) setTimeout(findSlotsAndBook, 1000);
+  }
+
   waitForEl("[formcontrolname=searchType]", function () {
 
     dispatchStateDistrictClick();
     $("[formcontrolname=pincode]").on('input', (e) => {
       if (e.target.value.length === 6) {
         $('.pin-search-btn').trigger('click');
-        dispatchSelectorClick();
+        dispatchClicksAndBook();
       }
     })
 
@@ -289,20 +309,31 @@ const repFun = () => {
           setTimeout(() => {
             $('.pin-search-btn').trigger('click');
           }, 500);
-          dispatchSelectorClick();
+          dispatchClicksAndBook();
         }, 500);
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
         $("[formcontrolname=pincode]").on('input', (e) => {
           if (e.target.value.length === 6) {
             $('.pin-search-btn').trigger('click');
-            dispatchSelectorClick();
+            dispatchClicksAndBook();
           }
         })
 
       }
 
     })
+
+    if (enableAutoRefresh) {
+      setTimeout(() => {
+        setInterval(()=>{
+          if ($('.pin-search-btn').length !== 0) {
+            $('.pin-search-btn').trigger('click');
+            dispatchClicksAndBook();
+          }
+        }, refresh_interval*1000);
+      }, 1000);
+    }
   })
 
 }
@@ -417,6 +448,12 @@ const createForm = () => {
   let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code", textLabelStyles);
   let pincodewarn = createWarningText("You will have to enter the 6th digit in the actual website form manually to proceed with automation.", warnLabelStyles);
 
+  let autorefreshintervalid = "autorefreshintervalinput";
+  let autorefreshintervalinput = createInput(autorefreshintervalid, "", "number", autorefreshinterval, 'form-control');
+  let autorefreshintervallabel = createLabel("autorefreshintervallabel", autorefreshintervalid, "Refresh interval (seconds)", textLabelStyles);
+  autorefreshintervalinput.min = 1;
+
+
   let centerprefinputid = "centerprefinput";
   let centerprefinput = createInput(centerprefinputid, "", "text", center_prefs_string, 'form-control');
   let centerprefinputlabel = createLabel("centerprefinputlabel", centerprefinputid, "Comma separated center preferences: ", textLabelStyles);
@@ -442,14 +479,14 @@ const createForm = () => {
   let continuousretryid = "continuousretry";
   let continuousretryinput = createInput(continuousretryid, "", "checkbox", "", 'form-check-input');
   continuousretryinput.checked = keeptryingcontinuously;
-  let continuousretrylabel = createLabel("continuousretrylabel", continuousretryid, "Attempt to book continuosly ", textLabelStyles);
-  let continuousretryWarn = createWarningText("First available slot in the centers which satisfy the center preference will be selected automatically.", warnLabelStyles);
+  let continuousretrylabel = createLabel("continuousretrylabel", continuousretryid, "Attempt to book automatically ", textLabelStyles);
+  let continuousretryWarn = createWarningText("First available slot in the centers which satisfy the center preference will be selected automatically. Captcha will be filled ONLY if this is selected.", warnLabelStyles);
 
   let enableautorefreshid = "enableautorefresh";
   let enableautorefreshinput = createInput(enableautorefreshid, "", "checkbox", "", 'form-check-input');
   enableautorefreshinput.checked = enableAutoRefresh;
   let enableautorefreshlabel = createLabel("enableautorefreshlabel", enableautorefreshid, "Enable Auto Refresh ", textLabelStyles);
-  let enableautorefreshWarn = createWarningText("Keep refreshing the search results every 2 seconds till a slot is found.", warnLabelStyles);
+  let enableautorefreshWarn = createWarningText("Keep refreshing the search results at an interval input in 'Refresh Interval' till a slot is found.", warnLabelStyles);
 
   let enableautoconfirmid = "enableautoconfirm";
   let enableautoconfirminput = createInput(enableautoconfirmid, "", "checkbox", "", 'form-check-input');
@@ -475,6 +512,13 @@ const createForm = () => {
   let minavailabilityinput = createInput(minavailabilityinputid, "", "number", minavailability, 'form-control');
   let minavailabilityinputlabel = createLabel("minavailabilityinputlabel", minavailabilityinputid, "Select only if number of available slots is more than: ", textLabelStyles);
   let minavailabilityinputwarn = createWarningText("Write a number here. If you leave this empty, any center with min 1 available can be selected.", warnLabelStyles);
+
+  let skipdaysinputid = "skipdaysinput";
+  let skipdaysinput = createInput(skipdaysinputid, "", "number", skipdays, 'form-control');
+  let skipdaysinputlabel = createLabel("skipdaysinputlabel", skipdaysinputid, "Skip days", textLabelStyles);
+  let skipdaysinputwarn = createWarningText("Only slots available after 'skip days' days will be booked. Enter 0 for today, 1 for tomorrow ...", warnLabelStyles);
+  skipdaysinput.min = 0;
+  skipdaysinput.max = 5;
 
   // search preferrance
   let searchprefid = "searchpref";
@@ -512,13 +556,15 @@ const createForm = () => {
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
       wrapInDivWithClassName([timeslotlabel, timeSlotSelector, timeslotwarn], "col"),
-      wrapInDivWithClassName([searchPrefLabel, searchPrefSelector], 'col')
+      wrapInDivWithClassName([searchPrefLabel, searchPrefSelector], 'col'),
+      wrapInDivWithClassName([autorefreshintervallabel, autorefreshintervalinput], 'col')
     ], 'row mb-3'))
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
     [
       wrapInDivWithClassName([centerprefinputlabel, centerprefinput, centerprefinputwarn], "col"),
-      wrapInDivWithClassName([minavailabilityinputlabel, minavailabilityinput, minavailabilityinputwarn], "col")
+      wrapInDivWithClassName([minavailabilityinputlabel, minavailabilityinput, minavailabilityinputwarn], "col"),
+      wrapInDivWithClassName([skipdaysinputlabel, skipdaysinput, skipdaysinputwarn], "col")
     ], 'row mb-3'))
 
   wrapperDiv.appendChild(wrapInDivWithClassName([buttonCheckboxLabel].concat(buttonCheckBoxes), 'row mb-3'))
@@ -574,6 +620,8 @@ const bindSubmitButtonToSaveInfo = () => {
     timeslotind = document.getElementById("timeslotinput").value;
     center_prefs_string = document.getElementById("centerprefinput").value;
     minavailability = document.getElementById("minavailabilityinput").value;
+    autorefreshinterval = document.getElementById("autorefreshintervalinput").value;
+    skipdays = document.getElementById("skipdaysinput").value;
     selected_button_checkbox = []
     for (const key in buttonCheckboxMapping) {
       let button_checkbox = document.getElementById(key);
@@ -595,6 +643,8 @@ const bindSubmitButtonToSaveInfo = () => {
     window.localStorage.setItem("minavailability", minavailability);
     window.localStorage.setItem("autoconfirm", enableautoconfirm);
     window.localStorage.setItem("selectedbuttoncheckboxes", JSON.stringify(selected_button_checkbox))
+    window.localStorage.setItem("autorefreshinterval", autorefreshinterval);
+    window.localStorage.setItem("skipdays", skipdays);
     window.location.reload();
   })
 }

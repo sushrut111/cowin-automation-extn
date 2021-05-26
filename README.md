@@ -1,5 +1,18 @@
-# You can now install this extension directly from chrome extensions store [here](https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm)
-[![MOZILLA](/get-the-addon-178x60px.dad84b42.png)](https://github.com/sushrut111/cowin-automation-extn/releases/download/v3.3.0/cowin_booking-3.3.1-an+fx.xpi)
+# Latest release
+[![GitHub version](https://img.shields.io/github/v/release/sushrut111/cowin-automation-extn)](https://github.com/sushrut111/cowin-automation-extn/releases)
+# Install released versions
+[Chrome store](https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm)
+
+[Install on smartphone](https://github.com/sushrut111/cowin-automation-extn/wiki/How-install-from-release-on-smartphone)
+
+[Install lastest on chrome desktop](https://github.com/sushrut111/cowin-automation-extn/wiki/How-install-extension-manually-from-github-release--on-chrome-desktop)
+
+[![MOZILLA](/get-the-addon-178x60px.dad84b42.png)](https://addons.mozilla.org/en-US/firefox/addon/cowin-booking/)
+
+
+# Users and Ratings
+[![Chrome web store ratings](https://img.shields.io/chrome-web-store/rating/gemdkhkmcnifpfbfnhpbbhageflibppm)]()
+[![Chrome web store downloads](https://img.shields.io/chrome-web-store/users/gemdkhkmcnifpfbfnhpbbhageflibppm)]()
 ## Disclaimer
 Many other developers have created scripts to book vaccine slots automatically -  due to this, those who do not know how to use those scripts are facing issues while searching for vaccine slots. 
 I made this extension to counter that - anyone will be able to use this extension very easily even if they do not know how it works.
@@ -28,14 +41,27 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 6. The extension is now ready to use.
 7. Go to [https://selfregistration.cowin.gov.in/](https://selfregistration.cowin.gov.in/) directly and use the extension. 
 8. When you open the page, you should see `click to edit autofill inputs` button in red at the top of page. Click on it and fill in the data.
-9. To change autofill data, just click on the Red button on the top.
+9. To change autofill data, just click on the Red button at the top.
 
 ## What does it do?
-1. Fills in 9 digits of your phone number from the details you entered in autofill form and clicks `Get OTP` when you enter 10th digit
-2. Clicks `Verify & Proceed` when you enter 6 digits of OTP.
-3. Clicks on `Schedule Now` button once you select the member to be vaccinated.
-4. Automatically switches to `Search By District` and fills in State and District names from the details you filled into autofill form.
-5. **The title of chrome tab shows a timer**. This timer tells you the time left in this session. Once timer shows negative, you will have to log out and log in again as ***cowin portal allows users to book only upto 15 mins once they enter OTP.*** After 15 mins, the OTP again needs to be requested and entered.
+1. Allows you to store all the details for you to search and book vaccine with preference for (You will have to save this data in the extension)
+   
+   a. Vaccine
+   
+   b. Age
+   
+   c. Vaccine cost
+   
+   d. Vaccination center
+   
+   e. Slot time preference
+2. Fills in the mobile number and presses submit for you to get the OTP
+3. Clicks `Verify & Proceed` when you enter 6 digits of OTP.
+4. Automatically keeps searching for availability based on the data you entered in the form.
+5. As soon as preferred slot is found, it proceeds for booking.
+6. Selects the time slot preferred and enters captcha
+7. Enters Confirm button to book the slot
+8. **The title of chrome tab shows a timer**. This timer tells you the time left in this session. Once timer shows negative, you will have to log out and log in again as ***cowin portal allows users to book only upto 15 mins once they enter OTP.*** After 15 mins, the OTP again needs to be requested and entered.
 
 ## Credits
 1. CAPTCHA Decoder inspired from [@ayushchd](https://github.com/ayushchd)'s code
@@ -49,7 +75,5 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 3. I am an independent developer and have no affiliations with the developers of cowin application.
 4. I work at Microsoft India and this project has nothing to do with my employer and I have worked on this outside of my commitment to my employer.
 
-## Mutual support
-1. Should you need any help or face troubles using this extension, reach out to me via this telegram channel: [https://t.me/joinchat/2l17jl8xYRM1NTdl](https://t.me/joinchat/2l17jl8xYRM1NTdl)
-
-2. If this extension helped you, you can support my work [here](https://www.buymeacoffee.com/sushrut)
+## Support
+1. Should you need any help or face troubles using this extension, reach out to me via this telegram channel: [https://t.me/cowinbooking](https://t.me/cowinbooking)
