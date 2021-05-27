@@ -76,4 +76,4 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 4. I work at Microsoft India and this project has nothing to do with my employer and I have worked on this outside of my commitment to my employer.
 
 ## Support
-1. Should you need any help or face troubles using this extension, reach out to me via this telegram channel: [https://t.me/cowinbooking](https://t.me/cowinbooking)
+1. Should you need any help or face troubles using this extension, reach out to me via this telegram channel: [https://telegram.me/cowinbooking](https://telegram.me/cowinbooking)
