@@ -58,7 +58,15 @@ let center_prefs_dirty = center_prefs_string ? center_prefs_string.split(",") : 
 let autorefreshinterval = window.localStorage.getItem("autorefreshinterval");
 let skipdays = window.localStorage.getItem("skipdays");
 
-if(isNaN(parseInt(skipdays))){
+const sleep = (delay) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, delay);
+  })
+}
+
+if (isNaN(parseInt(skipdays))) {
   skipdays = 0;
 } else {
   skipdays = parseInt(skipdays);
@@ -93,15 +101,16 @@ try {
   console.log('There was an error setting the filter checkboxes')
 }
 
+const alreadySetIntervalsForEnableRefresh = [];
 
 let booking_lower_lim = 1;
 booking_lower_lim = parseInt(minavailability);
 if (isNaN(booking_lower_lim)) {
-    booking_lower_lim = 1;
+  booking_lower_lim = 1;
 }
 
 refresh_interval = parseInt(autorefreshinterval);
-if(isNaN(refresh_interval)) refresh_interval = 10;
+if (isNaN(refresh_interval)) refresh_interval = 10;
 
 var waitForEl = function (selector, callback) {
   if ($(selector).length) {
@@ -124,7 +133,6 @@ var waitForElAgain = function (selector, callback) {
     }, 100);
   }
 };
-
 const repFun = () => {
 
   waitForEl("[formcontrolname=mobile_number]", function () {
@@ -154,12 +162,15 @@ const repFun = () => {
   //   if(!!!allow_multiple) $('.register-btn').trigger('click');
   // })
 
-  const dispatchSelectorClick = () => {
+  const dispatchSelectorClick = async() => {
+    await sleep(500);
     for (let index = 0; index < checked_buttons.length; index++) {
       const element = checked_buttons[index];
-      setTimeout(() => {
+      await sleep(5);
+      const id = $(`label:contains(${element}):not(.form-check-label)`).attr('for')
+      if (!($(`#${id}`).prop('checked'))) {
         $(`label:contains(${element}):not(.form-check-label)`).trigger('click');
-      }, 500);
+      }
     }
   }
 
@@ -199,7 +210,7 @@ const repFun = () => {
       setTimeout(enterCaptcha, 1000);
     } else {
 
-      
+
 
     }
   }
@@ -255,7 +266,7 @@ const repFun = () => {
 
     setTimeout(() => {
       if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
-      waitForEl(".thank-you-header", ()=>{
+      waitForEl(".thank-you-header", () => {
         $.ajax({
           url: "https://api.countapi.xyz/hit/cowinbooking/booked",
         });
@@ -263,12 +274,7 @@ const repFun = () => {
     }, 500);
 
   }
-  const keepTryingToBook = () => {
-    setInterval(() => {
-      if (keeptryingcontinuously) findSlotsAndBook();
-    }, 2000);
-  }
-  // keepTryingToBook();
+
   const dispatchStateDistrictClick = () => {
     // checked = district
     // unchecked = pincode
@@ -283,13 +289,12 @@ const repFun = () => {
     }, 500);
   }
 
-  const dispatchClicksAndBook = () => {
-    dispatchSelectorClick();
-    if(keeptryingcontinuously) setTimeout(findSlotsAndBook, 1000);
+  const dispatchClicksAndBook = async () => {
+    await dispatchSelectorClick();
+    if (keeptryingcontinuously) setTimeout(findSlotsAndBook, 500);
   }
 
   waitForEl("[formcontrolname=searchType]", function () {
-
     dispatchStateDistrictClick();
     $("[formcontrolname=pincode]").on('input', (e) => {
       if (e.target.value.length === 6) {
@@ -298,19 +303,17 @@ const repFun = () => {
       }
     })
 
-    $("[formcontrolname=searchType]").on('change', () => {
+    $("[formcontrolname=searchType]").on('change', async () => {
       let searchByDistrict = $("[formcontrolname=searchType]")[0].checked;
       if (searchByDistrict && state_name.trim() !== "" && district_name.trim() !== "") {
         $("[formcontrolname=state_id]").trigger('click');
         $(`span:contains(${state_name})`).trigger('click');
-        setTimeout(() => {
-          $("[formcontrolname=district_id]").trigger('click');
-          $("span").filter((ind, spn) => spn.innerText === district_name).trigger("click");
-          setTimeout(() => {
-            $('.pin-search-btn').trigger('click');
-          }, 500);
-          dispatchClicksAndBook();
-        }, 500);
+        await sleep(500)
+        $("[formcontrolname=district_id]").trigger('click');
+        $("span").filter((ind, spn) => spn.innerText === district_name).trigger("click");
+        await sleep(500)
+        $('.pin-search-btn').trigger('click');
+        dispatchClicksAndBook();
       } else {
         $("[formcontrolname=pincode]").val(first_5_pin_digits);
         $("[formcontrolname=pincode]").on('input', (e) => {
@@ -325,14 +328,18 @@ const repFun = () => {
     })
 
     if (enableAutoRefresh) {
-      setTimeout(() => {
-        setInterval(()=>{
+      while(alreadySetIntervalsForEnableRefresh.length>0){
+        let interval = alreadySetIntervalsForEnableRefresh.pop();
+        clearInterval(interval);
+      }
+      alreadySetIntervalsForEnableRefresh.push(
+        setInterval(() => {
           if ($('.pin-search-btn').length !== 0) {
             $('.pin-search-btn').trigger('click');
             dispatchClicksAndBook();
           }
-        }, refresh_interval*1000);
-      }, 1000);
+        }, refresh_interval * 1000)
+      );
     }
   })
 
@@ -351,6 +358,11 @@ if (window.location.hash) {
 var current_href = location.href;
 setInterval(function () {
   if (current_href !== location.href) {
+    while(alreadySetIntervalsForEnableRefresh.length>0){
+      let interval = alreadySetIntervalsForEnableRefresh.pop();
+      clearInterval(interval);
+    }
+
     repFun();
     current_href = location.href;
   } else {
