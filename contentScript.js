@@ -108,7 +108,7 @@ if (isNaN(booking_lower_lim)) {
 }
 
 refresh_interval = parseInt(autorefreshinterval);
-if (isNaN(refresh_interval)) refresh_interval = 10;
+if (isNaN(refresh_interval)) refresh_interval = 15;
 
 var waitForEl = function (selector, callback) {
   if ($(selector).length) {
@@ -461,6 +461,7 @@ const createForm = () => {
   let autorefreshintervalid = "autorefreshintervalinput";
   let autorefreshintervalinput = createInput(autorefreshintervalid, "", "number", autorefreshinterval, 'form-control');
   let autorefreshintervallabel = createLabel("autorefreshintervallabel", autorefreshintervalid, "Refresh interval (seconds)", textLabelStyles);
+  let autorefreshintervalinputwarn = createWarningText("Setting this value to a very low number may cause too many refreshes in short time span leading to 'Something Went Wrong Errors'. Default = 15", warnLabelStyles);
   autorefreshintervalinput.min = 1;
 
 
@@ -526,7 +527,7 @@ const createForm = () => {
   let skipdaysinputid = "skipdaysinput";
   let skipdaysinput = createInput(skipdaysinputid, "", "number", skipdays, 'form-control');
   let skipdaysinputlabel = createLabel("skipdaysinputlabel", skipdaysinputid, "Skip days", textLabelStyles);
-  let skipdaysinputwarn = createWarningText("Only slots available after 'skip days' days will be booked. Enter 0 for today, 1 for tomorrow ...", warnLabelStyles);
+  let skipdaysinputwarn = createWarningText("0 skip days means search slots starting today. 1 skip days means search slots from tomorrow. Leave this empty to search slots including today.", warnLabelStyles);
   skipdaysinput.min = 0;
   skipdaysinput.max = 5;
 
@@ -567,7 +568,7 @@ const createForm = () => {
     [
       wrapInDivWithClassName([timeslotlabel, timeSlotSelector, timeslotwarn], "col"),
       wrapInDivWithClassName([searchPrefLabel, searchPrefSelector], 'col'),
-      wrapInDivWithClassName([autorefreshintervallabel, autorefreshintervalinput], 'col')
+      wrapInDivWithClassName([autorefreshintervallabel, autorefreshintervalinput, autorefreshintervalinputwarn], 'col')
     ], 'row mb-3'))
 
   wrapperDiv.appendChild(wrapInDivWithClassName(
@@ -667,7 +668,14 @@ const createModal = () => {
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Autofill Input Form</h5>
+        
+        <div clsss="row">
+          <div class="col">
+            <h5 class="modal-title">Autofill Input Form</h5>
+            <span style="font-size: xx-small;">BY USING THIS CHROME EXTENSION TO BOOK VACCINE SLOTS YOU AGREE TO THE <a href="https://github.com/sushrut111/cowin-automation-extn/wiki/Terms-of-use" target="_blank">TERMS OF SERVICE MENTIONED ON THIS PAGE (Click to view)</a></span>
+          </div>
+          
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body" id="form-modal-body">
