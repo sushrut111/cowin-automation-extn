@@ -1,8 +1,13 @@
+.carousel-item {
+    margin-right: inherit !important;
+}
+
 .btn-outline-primary {
     background-color: white;
     color: rgb(13, 110, 253);
     border-color: rgb(13, 110, 253);
 }
+
 .btn-outline-primary:hover {
     background-color: transparent;
     color: rgb(13, 110, 253);
