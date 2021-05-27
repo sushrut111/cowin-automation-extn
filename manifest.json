@@ -11,6 +11,7 @@
             "js": [
                 "jquery.min.js",
                 "bootstrap.min.js",
+                "model.js",
                 "contentScript.js",
                 "shortcut.js",
                 "sessionexp.js"
