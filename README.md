@@ -36,12 +36,13 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 1. Download zip of these files by clicking on the green "Code" button on this page at the top side and then selecting **Download ZIP** option from the options.
 2. Exctract the files.
 3. Open this url in chrome browser [chrome://extensions/](chrome://extensions/)
-4. In the second top bar on the page, click on "Load unpacked"
-5. Select the unzipped folder containing the files from this page. 
-6. The extension is now ready to use.
-7. Go to [https://selfregistration.cowin.gov.in/](https://selfregistration.cowin.gov.in/) directly and use the extension. 
-8. When you open the page, you should see `click to edit autofill inputs` button in red at the top of page. Click on it and fill in the data.
-9. To change autofill data, just click on the Red button at the top.
+4. In the top right corner, make sure "Developer Mode" switch is turned on.
+5. In the second top bar on the page, click on "Load unpacked"
+6. Select the unzipped folder containing the files from this page. 
+7. The extension is now ready to use.
+8. Go to [https://selfregistration.cowin.gov.in/](https://selfregistration.cowin.gov.in/) directly and use the extension. 
+9. When you open the page, you should see `click to edit autofill inputs` button in red at the top of page. Click on it and fill in the data.
+10. To change autofill data, just click on the Red button at the top.
 
 ## What does it do?
 1. Allows you to store all the details for you to search and book vaccine with preference for (You will have to save this data in the extension)
@@ -76,4 +77,6 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 4. I work at Microsoft India and this project has nothing to do with my employer and I have worked on this outside of my commitment to my employer.
 
 ## Support
-1. Should you need any help or face troubles using this extension, reach out to me via this telegram channel: [https://t.me/cowinbooking](https://t.me/cowinbooking)
+1. Should you need any help or face troubles using this extension, reach out to me via this telegram channel: 
+    - [https://telegram.me/cowinbooking](https://telegram.me/cowinbooking)
+    - [https://t.me/cowinbooking](https://t.me/cowinbooking)
