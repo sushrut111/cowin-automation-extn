@@ -28,7 +28,9 @@ const parseJwt = (token) => {
     let curr = new Date();
     let expd = new Date(0);
     expd.setUTCSeconds(exp);
-    document.title = get_mins((expd - curr)/1000);
+    let time_left_min = get_mins((expd - curr)/1000)
+    document.title = time_left_min;
+    $("#cb-timer").html(`Time left: ${time_left_min}`);
     if(expd - curr < 10000){
       try{
         (new Audio(mp3_url)).play();
