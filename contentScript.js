@@ -135,7 +135,7 @@ const repFun = () => {
 
   waitForEl("[formcontrolname=mobile_number]", function () {
     $.ajax({
-      url: "https://api.countapi.xyz/hit/cowinbooking/logins",
+      url: "https://api.countapi.xyz/hit/cowinbooking/logins370",
     });
     $("[formcontrolname=mobile_number]").val(mobilenumber);
     setTimeout(() => {
@@ -266,7 +266,7 @@ const repFun = () => {
       if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
       waitForEl(".thank-you-header", () => {
         $.ajax({
-          url: "https://api.countapi.xyz/hit/cowinbooking/booked",
+          url: "https://api.countapi.xyz/hit/cowinbooking/booked370",
         });
       });
     }, 500);
