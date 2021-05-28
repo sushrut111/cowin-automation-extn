@@ -1,0 +1,53 @@
+<head>
+    <meta name="robots" content="noindex">
+    <title>Cowin Booking Status [Since v3.5.1 - May 26, 2021]</title>
+    <style>
+        table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        }
+
+        td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        }
+
+        tr:nth-child(even) {
+        background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <td>Key</td>
+            <td>Value</td>
+        </thead>
+        <tbody id="counttable">
+
+        </tbody>
+    </table>
+</body>
+<script>
+    const BASE_URL = "https://api.countapi.xyz/get/cowinbooking/";
+    const get_and_show = (key, tableid) => {
+        let url = BASE_URL + key;
+        return fetch(url).then(r=>{
+            if(r.status!==200){
+                throw new Error(`Error occured: ${r.statusText}`);
+            } 
+            return r.json();
+        }).then(r=>{
+            document.getElementById(tableid).innerHTML += `<tr><td>${key}</td><td>${r.value}</td></tr>`;
+        }).catch(e=>{
+            window.alert(e.toString());
+        })
+    }
+    
+    const keys_to_check = ["booked", "booked370", "logins", "logins370"];
+    for(let i=0; i<keys_to_check.length; i++){
+        get_and_show(keys_to_check[i], "counttable");
+    }
+</script>
