@@ -121,16 +121,6 @@ var waitForEl = function (selector, callback) {
   }
 };
 
-var waitForElAgain = function (selector, callback) {
-  if ($(selector).length) {
-    callback();
-    waitForElAgain(selector, callback);
-  } else {
-    setTimeout(function () {
-      waitForEl(selector, callback);
-    }, 100);
-  }
-};
 const repFun = () => {
 
   waitForEl("[formcontrolname=mobile_number]", function () {
@@ -160,7 +150,7 @@ const repFun = () => {
   //   if(!!!allow_multiple) $('.register-btn').trigger('click');
   // })
 
-  const dispatchSelectorClick = async() => {
+  const dispatchSelectorClick = async () => {
     await sleep(500);
     for (let index = 0; index < checked_buttons.length; index++) {
       const element = checked_buttons[index];
@@ -326,7 +316,7 @@ const repFun = () => {
     })
 
     if (enableAutoRefresh) {
-      while(alreadySetIntervalsForEnableRefresh.length>0){
+      while (alreadySetIntervalsForEnableRefresh.length > 0) {
         let interval = alreadySetIntervalsForEnableRefresh.pop();
         clearInterval(interval);
       }
@@ -349,14 +339,12 @@ $(window).on("load", () => {
 
 let focus_ids = ["[formcontrolname=otp]", "[formcontrolname=mobile_number]", "[formcontrolname=pincode]"];
 
-if (window.location.hash) {
-  $(window).trigger('hashchange')
-}
-
 var current_href = location.href;
 setInterval(function () {
   if (current_href !== location.href) {
-    while(alreadySetIntervalsForEnableRefresh.length>0){
+    if (location.href === "https://selfregistration.cowin.gov.in/" || location.href === "https://selfregistration.cowin.gov.in") window.location.reload();
+    if (location.href === "https://selfregistration.cowin.gov.in/dashboard" || current_href === "https://selfregistration.cowin.gov.in/appointment") window.location.reload();
+    while (alreadySetIntervalsForEnableRefresh.length > 0) {
       let interval = alreadySetIntervalsForEnableRefresh.pop();
       clearInterval(interval);
     }
@@ -695,7 +683,7 @@ const createModal = () => {
 const createModalHideShowButton = () => {
   let wrapperDiv = document.createElement("div");
   let button = `
-  <button type="button" class="btn btn-danger btn-lg" style="position:absolute; top:2%; left: 2%; font-size: 2em;" data-bs-toggle="modal" data-bs-target="#form-modal">Edit Auto Fill Inputs</button>`
+  <button type="button" class="btn btn-danger btn-lg" style="position:absolute; top:2%; left: 2%; font-size: 2em;" data-bs-toggle="modal" data-bs-target="#form-modal"><span class="row"><span id="cb-btn-title">Edit Auto Fill Inputs</span><span id="cb-timer"></span></span></button>`
   wrapperDiv.innerHTML = button;
   document.body.appendChild(wrapperDiv);
 }
