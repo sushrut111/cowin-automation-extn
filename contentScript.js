@@ -283,6 +283,8 @@ const repFun = () => {
   }
 
   waitForEl("[formcontrolname=searchType]", function () {
+    if($("[formcontrolname=searchType]").attr("cb-done")==="yes") return;
+    $("[formcontrolname=searchType]")[0].setAttribute("cb-done", "yes");
     dispatchStateDistrictClick();
     $("[formcontrolname=pincode]").on('input', (e) => {
       if (e.target.value.length === 6) {
@@ -339,13 +341,10 @@ $(window).on("load", () => {
 
 let focus_ids = ["[formcontrolname=otp]", "[formcontrolname=mobile_number]", "[formcontrolname=pincode]"];
 
-if (window.location.hash) {
-  $(window).trigger('hashchange')
-}
-
 var current_href = location.href;
 setInterval(function () {
   if (current_href !== location.href) {
+    if(location.href==="https://selfregistration.cowin.gov.in/" || location.href==="https://selfregistration.cowin.gov.in") window.location.reload();
     while(alreadySetIntervalsForEnableRefresh.length>0){
       let interval = alreadySetIntervalsForEnableRefresh.pop();
       clearInterval(interval);
