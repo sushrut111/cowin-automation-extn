@@ -150,7 +150,7 @@ const repFun = () => {
   //   if(!!!allow_multiple) $('.register-btn').trigger('click');
   // })
 
-  const dispatchSelectorClick = async() => {
+  const dispatchSelectorClick = async () => {
     await sleep(500);
     for (let index = 0; index < checked_buttons.length; index++) {
       const element = checked_buttons[index];
@@ -316,7 +316,7 @@ const repFun = () => {
     })
 
     if (enableAutoRefresh) {
-      while(alreadySetIntervalsForEnableRefresh.length>0){
+      while (alreadySetIntervalsForEnableRefresh.length > 0) {
         let interval = alreadySetIntervalsForEnableRefresh.pop();
         clearInterval(interval);
       }
@@ -342,8 +342,9 @@ let focus_ids = ["[formcontrolname=otp]", "[formcontrolname=mobile_number]", "[f
 var current_href = location.href;
 setInterval(function () {
   if (current_href !== location.href) {
-    if(location.href==="https://selfregistration.cowin.gov.in/" || location.href==="https://selfregistration.cowin.gov.in") window.location.reload();
-    while(alreadySetIntervalsForEnableRefresh.length>0){
+    if (location.href === "https://selfregistration.cowin.gov.in/" || location.href === "https://selfregistration.cowin.gov.in") window.location.reload();
+    if (location.href === "https://selfregistration.cowin.gov.in/dashboard" || current_href === "https://selfregistration.cowin.gov.in/appointment") window.location.reload();
+    while (alreadySetIntervalsForEnableRefresh.length > 0) {
       let interval = alreadySetIntervalsForEnableRefresh.pop();
       clearInterval(interval);
     }
