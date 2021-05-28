@@ -121,16 +121,6 @@ var waitForEl = function (selector, callback) {
   }
 };
 
-var waitForElAgain = function (selector, callback) {
-  if ($(selector).length) {
-    callback();
-    waitForElAgain(selector, callback);
-  } else {
-    setTimeout(function () {
-      waitForEl(selector, callback);
-    }, 100);
-  }
-};
 const repFun = () => {
 
   waitForEl("[formcontrolname=mobile_number]", function () {
@@ -695,7 +685,7 @@ const createModal = () => {
 const createModalHideShowButton = () => {
   let wrapperDiv = document.createElement("div");
   let button = `
-  <button type="button" class="btn btn-danger btn-lg" style="position:absolute; top:2%; left: 2%; font-size: 2em;" data-bs-toggle="modal" data-bs-target="#form-modal">Edit Auto Fill Inputs</button>`
+  <button type="button" class="btn btn-danger btn-lg" style="position:absolute; top:2%; left: 2%; font-size: 2em;" data-bs-toggle="modal" data-bs-target="#form-modal"><span class="row"><span id="cb-btn-title">Edit Auto Fill Inputs</span><span id="cb-timer"></span></span></button>`
   wrapperDiv.innerHTML = button;
   document.body.appendChild(wrapperDiv);
 }
