@@ -283,8 +283,6 @@ const repFun = () => {
   }
 
   waitForEl("[formcontrolname=searchType]", function () {
-    if($("[formcontrolname=searchType]").attr("cb-done")==="yes") return;
-    $("[formcontrolname=searchType]")[0].setAttribute("cb-done", "yes");
     dispatchStateDistrictClick();
     $("[formcontrolname=pincode]").on('input', (e) => {
       if (e.target.value.length === 6) {
