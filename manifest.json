@@ -13,6 +13,7 @@
                 "bootstrap.min.js",
                 "model.js",
                 "contentScript.js",
+                "captcha-dispatch-event.js",
                 "shortcut.js",
                 "sessionexp.js"
             ],

@@ -121,6 +121,68 @@ var waitForEl = function (selector, callback) {
   }
 };
 
+
+
+const enterCaptcha = () => {
+
+  let timeslots = $('.time-slot');
+  let slotind = 0;
+  if (timeslots.length === 0) return;
+  if (timeslots.length === 4) {
+    try {
+      slotind = parseInt(timeslotind) - 1;
+    } catch (e) {
+      slotind = 0;
+    }
+  }
+  if (isNaN(slotind)) {
+    slotind = 0;
+  }
+  try {
+    timeslots[slotind].click();
+  } catch (e) {
+    console.log("Requested timeslot is not available.");
+  }
+
+  var svg = parser.parseFromString(atob($("img#captchaImage").attr("src").split("base64,")[1]), "image/svg+xml");
+  $(svg).find('path').each((_, p) => { if ($(p).attr('stroke') != undefined) $(p).remove() })
+  vals = []
+  $(svg).find('path').each(
+    (_, p) => {
+      idx = parseInt($(p).attr("d").split(".")[0].replace("M", ""))
+      vals.push(idx)
+    }
+  )
+  var sorted = [...vals].sort(function (a, b) { return a - b; })
+  var solution = ['', '', '', '', '']
+
+  $(svg).find('path').each(
+    (idx, p) => {
+      var pattern = $(p).attr('d').replace(/[\d\.\s]/g, "")
+
+      solution[sorted.indexOf(vals[idx])] = parsed_model[pattern]
+    })
+
+  $($(".captcha-style input")[0]).focus();
+
+  for (var ii = 0; ii < 5; ii++) {
+    $($(".captcha-style input")[0]).val(solution.join("").substr(0, ii + 1));
+
+    $(".captcha-style input")[0].dispatchEvent(new Event("keyup", { bubbles: true }));
+
+  }
+
+  setTimeout(() => {
+    if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
+    waitForEl(".thank-you-header", () => {
+      $.ajax({
+        url: "https://api.countapi.xyz/hit/cowinbooking/booked370",
+      });
+    });
+  }, 500);
+
+}
+
 const repFun = () => {
 
   waitForEl("[formcontrolname=mobile_number]", function () {
@@ -194,73 +256,6 @@ const repFun = () => {
         break;
       }
     }
-    if (foundslot) {
-      setTimeout(enterCaptcha, 1000);
-    } else {
-
-
-
-    }
-  }
-
-  const enterCaptcha = () => {
-
-    let timeslots = $('.time-slot');
-    let slotind = 0;
-    if (timeslots.length === 0) return;
-    if (timeslots.length === 4) {
-      try {
-        slotind = parseInt(timeslotind) - 1;
-      } catch (e) {
-        slotind = 0;
-      }
-    }
-    if (isNaN(slotind)) {
-      slotind = 0;
-    }
-    try {
-      timeslots[slotind].click();
-    } catch (e) {
-      console.log("Requested timeslot is not available.");
-    }
-
-    var svg = parser.parseFromString(atob($("img#captchaImage").attr("src").split("base64,")[1]), "image/svg+xml");
-    $(svg).find('path').each((_, p) => { if ($(p).attr('stroke') != undefined) $(p).remove() })
-    vals = []
-    $(svg).find('path').each(
-      (_, p) => {
-        idx = parseInt($(p).attr("d").split(".")[0].replace("M", ""))
-        vals.push(idx)
-      }
-    )
-    var sorted = [...vals].sort(function (a, b) { return a - b; })
-    var solution = ['', '', '', '', '']
-
-    $(svg).find('path').each(
-      (idx, p) => {
-        var pattern = $(p).attr('d').replace(/[\d\.\s]/g, "")
-
-        solution[sorted.indexOf(vals[idx])] = parsed_model[pattern]
-      })
-
-    $($(".captcha-style input")[0]).focus();
-
-    for (var ii = 0; ii < 5; ii++) {
-      $($(".captcha-style input")[0]).val(solution.join("").substr(0, ii + 1));
-
-      $(".captcha-style input")[0].dispatchEvent(new Event("keyup", { bubbles: true }));
-
-    }
-
-    setTimeout(() => {
-      if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
-      waitForEl(".thank-you-header", () => {
-        $.ajax({
-          url: "https://api.countapi.xyz/hit/cowinbooking/booked370",
-        });
-      });
-    }, 500);
-
   }
 
   const dispatchStateDistrictClick = () => {
