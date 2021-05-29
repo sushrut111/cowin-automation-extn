@@ -1,4 +1,4 @@
-$(document).on('click', 'ul.slot-available-wrap li a', async function (e) {
+$(document).on('click', 'div.slots-box:not(.no-available)', async function (e) {
     await sleep(1000)
-    waitForEl('.time-slot', enterCaptcha)
+    waitForEl('.appoint-success', enterCaptcha)
 })
