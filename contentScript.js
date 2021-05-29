@@ -213,7 +213,7 @@ const repFun = () => {
   // })
 
   const dispatchSelectorClick = async () => {
-    await sleep(500);
+    await sleep(50);
     for (let index = 0; index < checked_buttons.length; index++) {
       const element = checked_buttons[index];
       await sleep(5);
@@ -294,7 +294,6 @@ const repFun = () => {
         await sleep(500)
         $("[formcontrolname=district_id]").trigger('click');
         $("span").filter((ind, spn) => spn.innerText === district_name).trigger("click");
-        await sleep(500)
         $('.pin-search-btn').trigger('click');
         dispatchClicksAndBook();
       } else {
