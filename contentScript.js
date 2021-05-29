@@ -176,7 +176,7 @@ const enterCaptcha = () => {
     if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
     waitForEl(".thank-you-header", () => {
       $.ajax({
-        url: "https://api.countapi.xyz/hit/cowinbooking/booked370",
+        url: "https://api.countapi.xyz/hit/cowinbooking/booked4",
       });
     });
   }, 500);
@@ -187,7 +187,7 @@ const repFun = () => {
 
   waitForEl("[formcontrolname=mobile_number]", function () {
     $.ajax({
-      url: "https://api.countapi.xyz/hit/cowinbooking/logins370",
+      url: "https://api.countapi.xyz/hit/cowinbooking/logins4",
     });
     $("[formcontrolname=mobile_number]").val(mobilenumber);
     setTimeout(() => {
@@ -677,7 +677,7 @@ const createModal = () => {
 const createModalHideShowButton = () => {
   let wrapperDiv = document.createElement("div");
   let button = `
-  <button type="button" class="btn btn-danger btn-lg" style="position:absolute; top:2%; left: 2%; font-size: 2em;" data-bs-toggle="modal" data-bs-target="#form-modal"><span class="row"><span id="cb-btn-title">Edit Auto Fill Inputs</span><span id="cb-timer"></span></span></button>`
+  <button type="button" class="btn btn-danger btn-lg" style="position:absolute; top:2%; left: 2%;" data-bs-toggle="modal" data-bs-target="#form-modal"><span class="row"><span id="cb-btn-title">Edit Auto Fill Inputs</span><span id="cb-timer"></span></span></button>`
   wrapperDiv.innerHTML = button;
   document.body.appendChild(wrapperDiv);
 }
