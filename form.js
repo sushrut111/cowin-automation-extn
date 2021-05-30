@@ -40,7 +40,7 @@ const buttonCheckboxMapping = {
 let mobilenumber = window.localStorage.getItem("mobile");
 let state_name = window.localStorage.getItem("state");
 let district_name = window.localStorage.getItem("district");
-let first_5_pin_digits = window.localStorage.getItem("pincode");
+let pincode = window.localStorage.getItem("pincode");
 let allow_multiple = window.localStorage.getItem("allow_multiple") === "true" ? true : false;
 let searchByDistrictFlag = window.localStorage.getItem("searchpref") === "district" ? true : false;
 let keeptryingcontinuously = window.localStorage.getItem("keeptryingcontinuously") === "true" ? true : false;
@@ -71,8 +71,24 @@ if (center_prefs.length === 0) {
     center_prefs = [""];
 }
 
+let checked_buttons = [];
 
-const alreadySetIntervalsForEnableRefresh = [];
+const setCheckedButtons = (selected_button_checkbox) => {
+    checked_buttons = [];
+    for (let i = 0; i < selected_button_checkbox.length; i++) {
+        if (buttonCheckboxMapping[selected_button_checkbox[i]]) {
+            buttonCheckboxMapping[selected_button_checkbox[i]].checked = true;
+            checked_buttons.push(buttonCheckboxMapping[selected_button_checkbox[i]].label)
+        }
+    }
+}
+
+try {
+    selected_button_checkbox = JSON.parse(selected_button_checkbox)
+    setCheckedButtons(selected_button_checkbox)
+} catch (error) {
+    console.log('There was an error setting the filter checkboxes')
+}
 
 let booking_lower_lim = 1;
 booking_lower_lim = parseInt(minavailability);
@@ -82,13 +98,6 @@ if (isNaN(booking_lower_lim)) {
 
 refresh_interval = parseInt(autorefreshinterval);
 if (isNaN(refresh_interval)) refresh_interval = 15;
-const sleep = (delay) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(true);
-        }, delay);
-    })
-}
 
 const createInput = (id, style, type, value, className) => {
     let retel = document.createElement("input");
@@ -136,11 +145,6 @@ const createSelectOptions = (id, text, value, selected) => {
     return retel;
 }
 
-const createHrSeparator = () => {
-    let retel = document.createElement("hr");
-    retel.style = "background-color: black";
-    return retel;
-}
 const createForm = () => {
 
     // basic styles : reused
@@ -162,7 +166,7 @@ const createForm = () => {
 
     // pin code field
     let pincodeinputid = "pincodeinput";
-    let pincodeinput = createInput(pincodeinputid, "", "number", first_5_pin_digits, 'form-control');
+    let pincodeinput = createInput(pincodeinputid, "", "number", pincode, 'form-control');
     let pincodelabel = createLabel("pincodeinputlabel", pincodeinputid, "PIN Code", textLabelStyles);
     let pincodewarn = createWarningText("You will have to enter the 6th digit in the actual website form manually to proceed with automation.", warnLabelStyles);
 
@@ -321,7 +325,7 @@ const bindSubmitButtonToSaveInfo = () => {
         enableAutoRefresh = document.getElementById("enableautorefresh").checked;
         enableautoconfirm = document.getElementById("enableautoconfirm").checked;
         let searchPreftext = document.getElementById("searchpref").value;
-        first_5_pin_digits = document.getElementById("pincodeinput").value;
+        pincode = document.getElementById("pincodeinput").value;
         timeslotind = document.getElementById("timeslotinput").value;
         center_prefs_string = document.getElementById("centerprefinput").value;
         minavailability = document.getElementById("minavailabilityinput").value;
@@ -341,7 +345,7 @@ const bindSubmitButtonToSaveInfo = () => {
         window.localStorage.setItem("keeptryingcontinuously", keeptryingcontinuously);
         window.localStorage.setItem("autorefresh", enableAutoRefresh);
         window.localStorage.setItem("searchpref", searchPreftext);
-        window.localStorage.setItem("pincode", first_5_pin_digits);
+        window.localStorage.setItem("pincode", pincode);
         window.localStorage.setItem("timeslot", timeslotind);
         window.localStorage.setItem("centerprefs", center_prefs_string);
         window.localStorage.setItem("minavailability", minavailability);

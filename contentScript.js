@@ -1,27 +1,15 @@
 var parsed_model = JSON.parse(atob(model))
 var parser = new DOMParser();
 
+const alreadySetIntervalsForEnableRefresh = [];
 
-
-let checked_buttons = [];
-
-const setCheckedButtons = (selected_button_checkbox) => {
-  checked_buttons = [];
-  for (let i = 0; i < selected_button_checkbox.length; i++) {
-    if (buttonCheckboxMapping[selected_button_checkbox[i]]) {
-      buttonCheckboxMapping[selected_button_checkbox[i]].checked = true;
-      checked_buttons.push(buttonCheckboxMapping[selected_button_checkbox[i]].label)
-    }
-  }
+const sleep = (delay) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, delay);
+  })
 }
-
-try {
-  selected_button_checkbox = JSON.parse(selected_button_checkbox)
-  setCheckedButtons(selected_button_checkbox)
-} catch (error) {
-  console.log('There was an error setting the filter checkboxes')
-}
-
 
 var waitForEl = function (selector, callback) {
   if ($(selector).length) {
@@ -33,8 +21,6 @@ var waitForEl = function (selector, callback) {
     }, 100);
   }
 };
-
-
 
 const enterCaptcha = () => {
 
@@ -268,7 +254,7 @@ setInterval(function () {
 
     repFun();
     current_href = location.href;
-  } else {}
+  } else { }
 }, 100);
 
 
