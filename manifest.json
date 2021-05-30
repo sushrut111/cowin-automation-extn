@@ -12,10 +12,11 @@
                 "jquery.min.js",
                 "bootstrap.min.js",
                 "model.js",
+                "form.js",
                 "contentScript.js",
                 "captcha-dispatch-event.js",
                 "shortcut.js",
-                "sessionexp.js"
+                "sessionexp.js" 
             ],
             "css": [
                 "bootstrap.min.css",
