@@ -289,7 +289,7 @@ const repFun = () => {
     $("[formcontrolname=searchType]").on('change', async () => {
       let searchByDistrict = $("[formcontrolname=searchType]")[0].checked;
       if (searchByDistrict) {
-        if(state_name.trim() === "" || district_name.trim() === "") return;
+        if (state_name.trim() === "" || district_name.trim() === "") return;
         $("[formcontrolname=state_id]").trigger('click');
         $(`span:contains(${state_name})`).trigger('click');
         await sleep(500)
@@ -298,15 +298,14 @@ const repFun = () => {
         $('.pin-search-btn').trigger('click');
         dispatchClicksAndBook();
       } else {
-        $("[formcontrolname=pincode]").val(first_5_pin_digits);
-        $("[formcontrolname=pincode]")[0].dispatchEvent(new Event("input", { bubbles: true }));
         $("[formcontrolname=pincode]").on('input', (e) => {
           if (e.target.value.length === 6) {
             $('.pin-search-btn').trigger('click');
             dispatchClicksAndBook();
           }
         })
-
+        $("[formcontrolname=pincode]").val(first_5_pin_digits);
+        $("[formcontrolname=pincode]")[0].dispatchEvent(new Event("input", { bubbles: true }));
       }
 
     })
