@@ -52,6 +52,7 @@ let enableautoconfirm = window.localStorage.getItem("autoconfirm") === "true" ? 
 let minavailability = window.localStorage.getItem("minavailability");
 let selected_button_checkbox = window.localStorage.getItem("selectedbuttoncheckboxes")
 let center_prefs_string = window.localStorage.getItem("centerprefs");
+let sheet_link_string = window.localStorage.getItem("sheetlink");
 let center_prefs_dirty = center_prefs_string ? center_prefs_string.split(",") : "";
 let autorefreshinterval = window.localStorage.getItem("autorefreshinterval");
 let skipdays = window.localStorage.getItem("skipdays");
@@ -171,17 +172,22 @@ const enterCaptcha = () => {
     $(".captcha-style input")[0].dispatchEvent(new Event("keyup", { bubbles: true }));
 
   }
-
-  setTimeout(() => {
-    if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
-    waitForEl(".thank-you-header", () => {
-      $.ajax({
-        url: "https://api.countapi.xyz/hit/cowinbooking/booked4",
-      });
-    });
-  }, 500);
+  let count = 0;
+  const confirmInterval = setInterval(() => {
+    setTimeout(()=>{if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
+    if(!!document.getElementsByClassName('thank-you-header').length) clearInterval(confirmInterval)
+    // if(++count === 20) clearInterval(confirmInterval);
+    }, 500)
+    // waitForEl(".thank-you-header", () => {
+    //   $.ajax({
+    //     url: "https://api.countapi.xyz/hit/cowinbooking/booked4",
+    //   });
+    // });
+  }, 1000);
 
 }
+
+const getSheetId = (sheet_link_string = '') => sheet_link_string.split('spreadsheets/d/')[1].split('/')[0];
 
 const repFun = () => {
 
@@ -196,6 +202,25 @@ const repFun = () => {
     $("[formcontrolname=mobile_number]").on('input', (e) => {
       if (e.target.value.length === 10) {
         $('.login-btn').trigger('click');
+        let otp = '';
+        const otpValidateInterval = setInterval(async () => {
+          if($("[formcontrolname=otp]") && sheet_link_string) {
+            const otpResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${getSheetId(sheet_link_string)}/values/a1?key=%20AIzaSyDW-rYE1vkYaBwppN5fiwdyMhI0d-2u8_4`);
+            const data = await otpResponse.json();
+            const newotp = data?.values?.[0]?.[0]?.split('CoWIN is ')?.[1]?.split('. It will')?.[0];
+            if (otp === newotp) return;
+            else otp = newotp;
+            $("[formcontrolname=otp]").focus();
+            $("[formcontrolname=otp]").val(otp);
+            $("[formcontrolname=otp]")[0].dispatchEvent(new Event("input", { bubbles: true }));
+
+
+            // $('.vac-btn').trigger('click');
+            console.log(otpValidateInterval)
+          } else {
+            clearInterval(otpValidateInterval);
+          }
+        }, 7000)
       }
     })
   });
@@ -276,6 +301,10 @@ const repFun = () => {
     await dispatchSelectorClick();
     if (keeptryingcontinuously) setTimeout(findSlotsAndBook, 500);
   }
+
+  waitForEl(".calcls", function () {
+    $('.calcls').click()
+  })
 
   waitForEl("[formcontrolname=searchType]", function () {
     dispatchStateDistrictClick();
@@ -487,6 +516,10 @@ const createForm = () => {
   let enableautoconfirmlabel = createLabel("enableautoconfirmlabel", enableautoconfirmid, "Confirm booking automatically on captcha page ", textLabelStyles);
   let enableautoconfirmWarn = createWarningText("With this selected, you will NOT have to press Confirm button after captcha gets entered automatically.", warnLabelStyles);
 
+  let sheetlinkinputid = "sheetlinkinput";
+  let sheetlinkinput = createInput(sheetlinkinputid, "", "text", sheet_link_string, 'form-control');
+  let sheetlinkinputlabel = createLabel("sheetlinklabel", sheetlinkinputid, "OTP Google sheet link (Optional): ", textLabelStyles);
+  let sheetlinkinputwarn = createWarningText("Make sure to make your sheet access public. ex: https://docs.google.com/spreadsheets/d/######", warnLabelStyles);
 
   let timeslotinputid = "timeslotinput";
   let timeSlotSelector = createSelectInput(timeslotinputid, "", timeslotind)
@@ -569,6 +602,11 @@ const createForm = () => {
       wrapInDivWithClassName([wrapInDivWithClassName([enableautoconfirminput, enableautoconfirmlabel, enableautoconfirmWarn], 'form-check')], "col")
     ], 'row mb-3'))
 
+  wrapperDiv.appendChild(wrapInDivWithClassName(
+    [
+      wrapInDivWithClassName([wrapInDivWithClassName([sheetlinkinputlabel, sheetlinkinput, sheetlinkinputwarn], 'form-check')], "col"),
+    ], 'row mb-3'))
+
   // wrapperDiv.appendChild(allowMultipleInputLabel);
   // wrapperDiv.appendChild(allowMultipleInput);
   // wrapperDiv.appendChild(document.createElement('br'));
@@ -612,6 +650,7 @@ const bindSubmitButtonToSaveInfo = () => {
     first_5_pin_digits = document.getElementById("pincodeinput").value;
     timeslotind = document.getElementById("timeslotinput").value;
     center_prefs_string = document.getElementById("centerprefinput").value;
+    sheet_link_string = document.getElementById("sheetlinkinput").value;
     minavailability = document.getElementById("minavailabilityinput").value;
     autorefreshinterval = document.getElementById("autorefreshintervalinput").value;
     skipdays = document.getElementById("skipdaysinput").value;
@@ -633,6 +672,7 @@ const bindSubmitButtonToSaveInfo = () => {
     window.localStorage.setItem("pincode", first_5_pin_digits);
     window.localStorage.setItem("timeslot", timeslotind);
     window.localStorage.setItem("centerprefs", center_prefs_string);
+    window.localStorage.setItem("sheetlink", sheet_link_string);
     window.localStorage.setItem("minavailability", minavailability);
     window.localStorage.setItem("autoconfirm", enableautoconfirm);
     window.localStorage.setItem("selectedbuttoncheckboxes", JSON.stringify(selected_button_checkbox))
