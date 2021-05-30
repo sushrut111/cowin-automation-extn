@@ -31,6 +31,7 @@ const parseJwt = (token) => {
     let time_left_min = get_mins((expd - curr)/1000)
     document.title = time_left_min;
     $("#cb-timer").html(`Time left: ${time_left_min}`);
+    if(time_left_min.split(':')[0] === '2'  && window.location.href !== "https://selfregistration.cowin.gov.in/") window.location.href = '/logout';
     if(expd - curr < 10000){
       try{
         (new Audio(mp3_url)).play();
