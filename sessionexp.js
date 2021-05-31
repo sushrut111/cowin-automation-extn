@@ -1,6 +1,5 @@
-var mp3_url = 'https://media.geeksforgeeks.org/wp-content/uploads/20190531135120/beep.mp3';
-
-
+var mp3_url = "https://github.com/sushrut111/cowin-automation-extn/blob/gh-pages/sessionexpired.mp3?raw=true";
+let aud = new Audio(mp3_url);
 const parseJwt = (token) => {
     try {
       return JSON.parse(atob(token.split('.')[1]));
@@ -31,12 +30,8 @@ const parseJwt = (token) => {
     let time_left_min = get_mins((expd - curr)/1000)
     document.title = time_left_min;
     $("#cb-timer").html(`Time left: ${time_left_min}`);
-    if(expd - curr < 10000){
-      try{
-        (new Audio(mp3_url)).play();
-      } catch (e) {
-        alert("session is expiring");
-      }
+    if(Math.abs(expd - curr) < 10000){
+      aud.play().catch(e=>{alert("Session expired! Please logout and login again")});
     }
   }
   
