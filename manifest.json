@@ -12,6 +12,7 @@
                 "jquery.min.js",
                 "bootstrap.min.js",
                 "model.js",
+                "form.js",
                 "contentScript.js",
                 "captcha-dispatch-event.js",
                 "shortcut.js",
