@@ -33,6 +33,16 @@ const buttonCheckboxMapping = {
         labelId: "paidcheckboxlabel",
         label: "Paid",
         checked: false
+    },
+    autoRedirectCheckbox: {
+        labelId: "autoRedirectCheckboxlabel",
+        label: "Auto Redirect on Session timeout?",
+        checked: false
+    },
+    notificationBeep: {
+        labelId: "notificationBeepCheckboxlabel",
+        label: "Notification Beep on Session timeout?",
+        checked: false
     }
 }
 
@@ -406,3 +416,8 @@ const createFormAndOthers = () => {
 }
 
 createFormAndOthers();
+
+var autoRedirect = checked_buttons.includes("Auto Redirect on Session timeout?")?1:0 ;
+var notificationBeep = checked_buttons.includes("Notification Beep on Session timeout?")?1:0 ;
+localStorage.setItem("redirect",autoRedirect);
+localStorage.setItem("notification",notificationBeep);
