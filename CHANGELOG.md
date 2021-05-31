@@ -5,7 +5,8 @@
 - Play voice for only 10 seconds before and after expiry
 - If voice fails, show alert
 
-[Changes][v4.0.3]
+[Changes][https://github.com/sushrut111/cowin-automation-extn/compare/v4.0.1...v4.0.2]
+
 
 <a name="v4.0.2"></a>
 # [Refactored code: Separate modules for form and booking logic (v4.0.2)](https://github.com/sushrut111/cowin-automation-extn/releases/tag/v4.0.2) - 31 May 2021
