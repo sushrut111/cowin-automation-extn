@@ -170,7 +170,7 @@ const repFun = () => {
         if ($("[formcontrolname=searchType]")[0] && !!!$("[formcontrolname=searchType]")[0].checked)
           $("[formcontrolname=searchType]").trigger('click')
       } else {
-        $("[formcontrolname=pincode]").val(first_5_pin_digits);
+        $("[formcontrolname=pincode]").val(pincode);
         $("[formcontrolname=pincode]")[0].dispatchEvent(new Event("input", {
           bubbles: true
         }));
@@ -210,7 +210,7 @@ const repFun = () => {
             dispatchClicksAndBook();
           }
         })
-        $("[formcontrolname=pincode]").val(first_5_pin_digits);
+        $("[formcontrolname=pincode]").val(pincode);
         $("[formcontrolname=pincode]")[0].dispatchEvent(new Event("input", {
           bubbles: true
         }));
