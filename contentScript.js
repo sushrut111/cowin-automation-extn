@@ -317,7 +317,8 @@ const repFun = () => {
 
     $("[formcontrolname=searchType]").on('change', async () => {
       let searchByDistrict = $("[formcontrolname=searchType]")[0].checked;
-      if (searchByDistrict && state_name.trim() !== "" && district_name.trim() !== "") {
+      if (searchByDistrict) {
+        if (state_name.trim() === "" || district_name.trim() === "") return;
         $("[formcontrolname=state_id]").trigger('click');
         $(`span:contains(${state_name})`).trigger('click');
         await sleep(500)
@@ -326,14 +327,14 @@ const repFun = () => {
         $('.pin-search-btn').trigger('click');
         dispatchClicksAndBook();
       } else {
-        $("[formcontrolname=pincode]").val(first_5_pin_digits);
         $("[formcontrolname=pincode]").on('input', (e) => {
           if (e.target.value.length === 6) {
             $('.pin-search-btn').trigger('click');
             dispatchClicksAndBook();
           }
         })
-
+        $("[formcontrolname=pincode]").val(first_5_pin_digits);
+        $("[formcontrolname=pincode]")[0].dispatchEvent(new Event("input", { bubbles: true }));
       }
 
     })
@@ -502,7 +503,7 @@ const createForm = () => {
   let continuousretryinput = createInput(continuousretryid, "", "checkbox", "", 'form-check-input');
   continuousretryinput.checked = keeptryingcontinuously;
   let continuousretrylabel = createLabel("continuousretrylabel", continuousretryid, "Attempt to book automatically ", textLabelStyles);
-  let continuousretryWarn = createWarningText("First available slot in the centers which satisfy the center preference will be selected automatically. Captcha will be filled ONLY if this is selected.", warnLabelStyles);
+  let continuousretryWarn = createWarningText("First available slot in the centers which satisfy the center preference will be selected automatically.", warnLabelStyles);
 
   let enableautorefreshid = "enableautorefresh";
   let enableautorefreshinput = createInput(enableautorefreshid, "", "checkbox", "", 'form-check-input');

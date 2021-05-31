@@ -1,0 +1,32 @@
+name: build-crx-package
+on:
+  release:
+    types: [published]
+jobs:
+  pack-and-upload-crx-to-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - name: Get release information
+        id: get_release
+        uses: bruceadams/get-release@v1.2.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      - run: npm install -g crx
+      - name: Pack crx file
+        env:
+          RELEASE_VERSION: cowin-booking-${{ steps.vars.outputs.tag }}.crx
+        run: crx pack -o $RELEASE_VERSION
+      - name: Upload release binary
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./cowin-booking-${{ steps.vars.outputs.tag }}.crx
+          asset_name: cowin-booking-${{ steps.vars.outputs.tag }}.crx
+          asset_content_type: application/x-chrome-extension
