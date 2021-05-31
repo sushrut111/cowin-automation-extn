@@ -79,7 +79,14 @@ const enterCaptcha = () => {
   }
 
   setTimeout(() => {
-    if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
+    if (enableautoconfirm) 
+      try{
+        $("ion-button.confirm-btn")[0].click();
+      }
+    catch (e) {
+      console.log("Vaccination center full after clicking confirm. Refreshing page.");
+      window.location.reload();
+    }
     waitForEl(".thank-you-header", () => {
       $.ajax({
         url: "https://api.countapi.xyz/hit/cowinbooking/booked4",
