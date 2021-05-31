@@ -1,3 +1,11 @@
+<a name="v4.0.3"></a>
+# [Better audio: Replace beep with audio message (v4.0.3)](https://github.com/sushrut111/cowin-automation-extn/releases/tag/v4.0.3) - 31 May 2021
+
+- Replaced beep with a voice saying "Session expired, please logout and login again"
+- Play voice for only 10 seconds before and after expiry
+- If voice fails, show alert
+
+
 <a name="v4.0.2"></a>
 # [Refactored code: Separate modules for form and booking logic (v4.0.2)](https://github.com/sushrut111/cowin-automation-extn/releases/tag/v4.0.2) - 31 May 2021
 
