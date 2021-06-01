@@ -42,7 +42,7 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 7. The extension is now ready to use.
 8. Go to [https://selfregistration.cowin.gov.in/](https://selfregistration.cowin.gov.in/) directly and use the extension. 
 9. When you open the page, you should see `Edit Auto Fill Inputs` button in red at the top left of the page. Click on it and fill in the data.
-10. To change autofill data, just click on the Red button at the top, add you entries and click on `Save Changes` button to save it.
+10. To change autofill data, just click on the Red button at the top, add your entries and click on `Save Changes` button to save it.
 
 ## What does it do?
 1. Allows you to store all the details for you to search and book vaccine with preference for (You will have to save this data in the extension)
