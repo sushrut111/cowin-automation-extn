@@ -88,7 +88,7 @@ const enterCaptcha = () => {
       });
     });
 
-    confirmAudio.play().catch(e => { alert("Your vaccination appointment is confirmed") });
+    confirmAudio.play().catch(_ => {});
   }, 500);
 
 }
