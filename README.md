@@ -41,8 +41,8 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 6. Select the unzipped folder containing the files from this page. 
 7. The extension is now ready to use.
 8. Go to [https://selfregistration.cowin.gov.in/](https://selfregistration.cowin.gov.in/) directly and use the extension. 
-9. When you open the page, you should see `click to edit autofill inputs` button in red at the top of page. Click on it and fill in the data.
-10. To change autofill data, just click on the Red button at the top.
+9. When you open the page, you should see `Edit Auto Fill Inputs` button in red at the top left of the page. Click on it and fill in the data.
+10. To change autofill data, just click on the Red button at the top, add you entries and click on `Save Changes` button to save it.
 
 ## What does it do?
 1. Allows you to store all the details for you to search and book vaccine with preference for (You will have to save this data in the extension)
@@ -62,7 +62,7 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 5. As soon as preferred slot is found, it proceeds for booking.
 6. Selects the time slot preferred and enters captcha
 7. Enters Confirm button to book the slot
-8. **The title of chrome tab shows a timer**. This timer tells you the time left in this session. Once timer shows negative, you will have to log out and log in again as ***cowin portal allows users to book only upto 15 mins once they enter OTP.*** After 15 mins, the OTP again needs to be requested and entered.
+8. **`Edit Auto Fill Inputs` button shows a timer**. This timer tells you the time left in this session. Once timer shows negative, you will have to log out and log in again as ***cowin portal allows users to book only upto 15 mins once they enter OTP.*** After 15 mins, the OTP again needs to be requested and entered.
 
 ## Credits
 1. CAPTCHA Decoder inspired from [@ayushchd](https://github.com/ayushchd)'s code
