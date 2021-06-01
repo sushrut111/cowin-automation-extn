@@ -1,3 +1,23 @@
+<a name="v4.0.3"></a>
+# [Added voice to notify session expiry (v4.0.3)](https://github.com/sushrut111/cowin-automation-extn/releases/tag/v4.0.3) - 31 May 2021
+
+- Replaced beep with a voice saying "Session expired, please logout and login again"
+- Play voice for only 10 seconds before and after expiry
+- If voice fails, show alert
+
+[Changes][v4.0.3]
+
+
+<a name="v4.0.2"></a>
+# [Refactored code: Separate modules for form and booking logic (v4.0.2)](https://github.com/sushrut111/cowin-automation-extn/releases/tag/v4.0.2) - 31 May 2021
+
+- Separated form creation logic into form.js
+- Remove unused and commented code
+- Refactor a few variable names to mean what they do
+
+[Changes][v4.0.2]
+
+
 <a name="v4.0.1"></a>
 # [Auto captcha in manual flow, lesser delays (v4.0.1)](https://github.com/sushrut111/cowin-automation-extn/releases/tag/v4.0.1) - 30 May 2021
 
@@ -192,6 +212,8 @@ The recent stable version before captcha detection was added
 [Changes][v1.4]
 
 
+[v4.0.3]: https://github.com/sushrut111/cowin-automation-extn/compare/v4.0.2...v4.0.3
+[v4.0.2]: https://github.com/sushrut111/cowin-automation-extn/compare/v4.0.1...v4.0.2
 [v4.0.1]: https://github.com/sushrut111/cowin-automation-extn/compare/v4.0.0...v4.0.1
 [v4.0.0]: https://github.com/sushrut111/cowin-automation-extn/compare/v3.8.0...v4.0.0
 [v3.8.0]: https://github.com/sushrut111/cowin-automation-extn/compare/v3.7.0...v3.8.0

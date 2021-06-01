@@ -80,11 +80,6 @@ const enterCaptcha = () => {
 
   setTimeout(() => {
     if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
-    waitForEl(".thank-you-header", () => {
-      $.ajax({
-        url: "https://api.countapi.xyz/hit/cowinbooking/booked4",
-      });
-    });
   }, 500);
 
 }
@@ -147,12 +142,18 @@ const repFun = () => {
       if (!found_center_match) {
         continue;
       }
-      let slots = $(slotRows[i]).find("li a");
-      for (let slotIter = skipdays; slotIter < slots.length; slotIter++) {
-        let avail = parseInt(slots[slotIter].text.trim());
-        if (avail >= booking_lower_lim) {
-          slots[slotIter].click();
-          foundslot = true;
+      let slotCols = $(slotRows[i]).find("li");
+      for (let slotIter = skipdays; slotIter < slotCols.length; slotIter++) {
+        let slot = $(slotCols[slotIter]).find('a')
+        for (let j = 0; j < slot.length; j++) {
+          let avail = parseInt(slot[j].text.trim());
+          if (avail >= booking_lower_lim) {
+            slot[j].click();
+            foundslot = true;
+            break;
+          }
+        }
+        if (foundslot) {
           break;
         }
       }
@@ -250,6 +251,12 @@ setInterval(function () {
     while (alreadySetIntervalsForEnableRefresh.length > 0) {
       let interval = alreadySetIntervalsForEnableRefresh.pop();
       clearInterval(interval);
+    }
+    if(location.href === "https://selfregistration.cowin.gov.in/appointment/success"){
+        $.ajax({
+          url: "https://api.countapi.xyz/hit/cowinbooking/booked4",
+        });
+        // play apointment confirm sound here
     }
 
     repFun();
