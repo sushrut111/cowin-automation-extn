@@ -82,13 +82,6 @@ const enterCaptcha = () => {
 
   setTimeout(() => {
     if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
-    waitForEl(".thank-you-header", () => {
-      $.ajax({
-        url: "https://api.countapi.xyz/hit/cowinbooking/booked4",
-      });
-    });
-
-    confirmAudio.play().catch(_ => {});
   }, 500);
 
 }
@@ -254,6 +247,12 @@ setInterval(function () {
     while (alreadySetIntervalsForEnableRefresh.length > 0) {
       let interval = alreadySetIntervalsForEnableRefresh.pop();
       clearInterval(interval);
+    }
+    if(location.href === "https://selfregistration.cowin.gov.in/appointment/success"){
+        $.ajax({
+          url: "https://api.countapi.xyz/hit/cowinbooking/booked4",
+        });
+        confirmAudio.play().catch(_ => {});
     }
 
     repFun();
