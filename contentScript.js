@@ -1,5 +1,7 @@
 var parsed_model = JSON.parse(atob(model))
 var parser = new DOMParser();
+var confirmedAudioURL = "https://github.com/sushrut111/cowin-automation-extn/blob/gh-pages/appointmentConfirmed.mp3?raw=true";
+var confirmAudio = new Audio(confirmedAudioURL);
 
 const alreadySetIntervalsForEnableRefresh = [];
 
@@ -85,6 +87,8 @@ const enterCaptcha = () => {
         url: "https://api.countapi.xyz/hit/cowinbooking/booked4",
       });
     });
+
+    confirmAudio.play().catch(e => { alert("Your vaccination appointment is confirmed") });
   }, 500);
 
 }
