@@ -79,11 +79,6 @@ const enterCaptcha = () => {
     }));
 
   }
-
-  setTimeout(() => {
-    if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
-  }, 500);
-
 }
 
 const repFun = () => {
