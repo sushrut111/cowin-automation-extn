@@ -1,3 +1,29 @@
+<a name="v4.1.2"></a>
+# [Bug fix: Click auto confirm even when captcha unavailable (v4.1.2)](https://github.com/sushrut111/cowin-automation-extn/releases/tag/v4.1.2) - 03 Jun 2021
+
+- Bug fixed: await inside non async method
+
+[Changes][v4.1.2]
+
+
+<a name="v4.1.1"></a>
+# [Autoconfirm even if captcha fails [BUGGY] (v4.1.1)](https://github.com/sushrut111/cowin-automation-extn/releases/tag/v4.1.1) - 03 Jun 2021
+
+- Cowin removed captcha
+- Autoconfirm should work even if captcha fails because it is not available
+
+[Changes][v4.1.1]
+
+
+<a name="v4.1.0"></a>
+# [Bugfix: Slot booking with skip days with multiple vaccines (v4.1.0)](https://github.com/sushrut111/cowin-automation-extn/releases/tag/v4.1.0) - 02 Jun 2021
+
+- **Fix:** When a centre has multiple vaccines available, skip days wouldn't be calculated properly.
+- Improvements from previous pre releases.
+
+[Changes][v4.1.0]
+
+
 <a name="v4.0.3"></a>
 # [Added voice to notify session expiry (v4.0.3)](https://github.com/sushrut111/cowin-automation-extn/releases/tag/v4.0.3) - 31 May 2021
 
@@ -212,6 +238,9 @@ The recent stable version before captcha detection was added
 [Changes][v1.4]
 
 
+[v4.1.2]: https://github.com/sushrut111/cowin-automation-extn/compare/v4.1.1...v4.1.2
+[v4.1.1]: https://github.com/sushrut111/cowin-automation-extn/compare/v4.1.0...v4.1.1
+[v4.1.0]: https://github.com/sushrut111/cowin-automation-extn/compare/v4.0.3...v4.1.0
 [v4.0.3]: https://github.com/sushrut111/cowin-automation-extn/compare/v4.0.2...v4.0.3
 [v4.0.2]: https://github.com/sushrut111/cowin-automation-extn/compare/v4.0.1...v4.0.2
 [v4.0.1]: https://github.com/sushrut111/cowin-automation-extn/compare/v4.0.0...v4.0.1
