@@ -1,17 +1,12 @@
 # Latest release
 [![GitHub version](https://img.shields.io/github/v/release/sushrut111/cowin-automation-extn)](https://github.com/sushrut111/cowin-automation-extn/releases)
 # Install released versions
-[Chrome store](https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm)
 
 [Install on smartphone](https://github.com/sushrut111/cowin-automation-extn/wiki/How-install-from-release-on-smartphone)
 
 [Install lastest on chrome desktop](https://github.com/sushrut111/cowin-automation-extn/wiki/How-install-extension-manually-from-github-release--on-chrome-desktop)
 
 
-
-# Users and Ratings
-[![Chrome web store ratings](https://img.shields.io/chrome-web-store/rating/gemdkhkmcnifpfbfnhpbbhageflibppm)]()
-[![Chrome web store downloads](https://img.shields.io/chrome-web-store/users/gemdkhkmcnifpfbfnhpbbhageflibppm)]()
 ## Disclaimer
 Many other developers have created scripts to book vaccine slots automatically -  due to this, those who do not know how to use those scripts are facing issues while searching for vaccine slots. 
 I made this extension to counter that - anyone will be able to use this extension very easily even if they do not know how it works.
