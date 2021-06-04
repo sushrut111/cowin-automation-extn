@@ -7,7 +7,7 @@
 [Install lastest on chrome desktop](https://github.com/sushrut111/cowin-automation-extn/wiki/How-install-extension-manually-from-github-release--on-chrome-desktop)
 
 
-## Disclaimer
+# Disclaimer
 Many other developers have created scripts to book vaccine slots automatically -  due to this, those who do not know how to use those scripts are facing issues while searching for vaccine slots. 
 I made this extension to counter that - anyone will be able to use this extension very easily even if they do not know how it works.
 I am not charging anything for this - this will be FREE of cost forever. I also have created support channel to help people use this extension if they have difficulties.
