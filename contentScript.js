@@ -1,5 +1,30 @@
+/*
+MIT License
+
+Copyright (c) 2021 Sushrut Kasture
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 var parsed_model = JSON.parse(atob(model))
 var parser = new DOMParser();
+var confirmedAudioURL = "https://github.com/sushrut111/cowin-automation-extn/blob/gh-pages/appointmentConfirmed.mp3?raw=true";
+var confirmAudio = new Audio(confirmedAudioURL);
 
 const alreadySetIntervalsForEnableRefresh = [];
 
@@ -77,16 +102,6 @@ const enterCaptcha = () => {
     }));
 
   }
-
-  setTimeout(() => {
-    if (enableautoconfirm) $("ion-button.confirm-btn")[0].click();
-    waitForEl(".thank-you-header", () => {
-      $.ajax({
-        url: "https://api.countapi.xyz/hit/cowinbooking/booked4",
-      });
-    });
-  }, 500);
-
 }
 
 const repFun = () => {
@@ -147,12 +162,18 @@ const repFun = () => {
       if (!found_center_match) {
         continue;
       }
-      let slots = $(slotRows[i]).find("li a");
-      for (let slotIter = skipdays; slotIter < slots.length; slotIter++) {
-        let avail = parseInt(slots[slotIter].text.trim());
-        if (avail >= booking_lower_lim) {
-          slots[slotIter].click();
-          foundslot = true;
+      let slotCols = $(slotRows[i]).find("li");
+      for (let slotIter = skipdays; slotIter < slotCols.length; slotIter++) {
+        let slot = $(slotCols[slotIter]).find('a')
+        for (let j = 0; j < slot.length; j++) {
+          let avail = parseInt(slot[j].text.trim());
+          if (avail >= booking_lower_lim) {
+            slot[j].click();
+            foundslot = true;
+            break;
+          }
+        }
+        if (foundslot) {
           break;
         }
       }
@@ -250,6 +271,12 @@ setInterval(function () {
     while (alreadySetIntervalsForEnableRefresh.length > 0) {
       let interval = alreadySetIntervalsForEnableRefresh.pop();
       clearInterval(interval);
+    }
+    if(location.href === "https://selfregistration.cowin.gov.in/appointment/success"){
+        $.ajax({
+          url: "https://api.countapi.xyz/hit/cowinbooking/booked4",
+        });
+        confirmAudio.play().catch(_ => {});
     }
 
     repFun();

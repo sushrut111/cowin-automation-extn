@@ -1,19 +1,13 @@
 # Latest release
 [![GitHub version](https://img.shields.io/github/v/release/sushrut111/cowin-automation-extn)](https://github.com/sushrut111/cowin-automation-extn/releases)
 # Install released versions
-[Chrome store](https://chrome.google.com/webstore/detail/cowin-automation/gemdkhkmcnifpfbfnhpbbhageflibppm)
 
 [Install on smartphone](https://github.com/sushrut111/cowin-automation-extn/wiki/How-install-from-release-on-smartphone)
 
 [Install lastest on chrome desktop](https://github.com/sushrut111/cowin-automation-extn/wiki/How-install-extension-manually-from-github-release--on-chrome-desktop)
 
-[![MOZILLA](/get-the-addon-178x60px.dad84b42.png)](https://addons.mozilla.org/en-US/firefox/addon/cowin-booking/)
 
-
-# Users and Ratings
-[![Chrome web store ratings](https://img.shields.io/chrome-web-store/rating/gemdkhkmcnifpfbfnhpbbhageflibppm)]()
-[![Chrome web store downloads](https://img.shields.io/chrome-web-store/users/gemdkhkmcnifpfbfnhpbbhageflibppm)]()
-## Disclaimer
+# Disclaimer
 Many other developers have created scripts to book vaccine slots automatically -  due to this, those who do not know how to use those scripts are facing issues while searching for vaccine slots. 
 I made this extension to counter that - anyone will be able to use this extension very easily even if they do not know how it works.
 I am not charging anything for this - this will be FREE of cost forever. I also have created support channel to help people use this extension if they have difficulties.
@@ -41,8 +35,8 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 6. Select the unzipped folder containing the files from this page. 
 7. The extension is now ready to use.
 8. Go to [https://selfregistration.cowin.gov.in/](https://selfregistration.cowin.gov.in/) directly and use the extension. 
-9. When you open the page, you should see `click to edit autofill inputs` button in red at the top of page. Click on it and fill in the data.
-10. To change autofill data, just click on the Red button at the top.
+9. When you open the page, you should see `Edit Auto Fill Inputs` button in red at the top left of the page. Click on it and fill in the data.
+10. To change autofill data, just click on the Red button at the top, add your entries and click on `Save Changes` button to save it.
 
 ## What does it do?
 1. Allows you to store all the details for you to search and book vaccine with preference for (You will have to save this data in the extension)
@@ -62,7 +56,7 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 5. As soon as preferred slot is found, it proceeds for booking.
 6. Selects the time slot preferred and enters captcha
 7. Enters Confirm button to book the slot
-8. **The title of chrome tab shows a timer**. This timer tells you the time left in this session. Once timer shows negative, you will have to log out and log in again as ***cowin portal allows users to book only upto 15 mins once they enter OTP.*** After 15 mins, the OTP again needs to be requested and entered.
+8. **`Edit Auto Fill Inputs` button shows a timer**. This timer tells you the time left in this session. Once timer shows negative, you will have to log out and log in again as ***cowin portal allows users to book only upto 15 mins once they enter OTP.*** After 15 mins, the OTP again needs to be requested and entered.
 
 ## Credits
 1. CAPTCHA Decoder inspired from [@ayushchd](https://github.com/ayushchd)'s code
@@ -76,7 +70,3 @@ https://user-images.githubusercontent.com/11269256/118931418-9bff4c80-b964-11eb-
 3. I am an independent developer and have no affiliations with the developers of cowin application.
 4. I work at Microsoft India and this project has nothing to do with my employer and I have worked on this outside of my commitment to my employer.
 
-## Support
-1. Should you need any help or face troubles using this extension, reach out to me via this telegram channel: 
-    - [https://telegram.me/cowinbooking](https://telegram.me/cowinbooking)
-    - [https://t.me/cowinbooking](https://t.me/cowinbooking)
