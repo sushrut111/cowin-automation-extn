@@ -25,6 +25,8 @@ var parsed_model = JSON.parse(atob(model))
 var parser = new DOMParser();
 var confirmedAudioURL = "https://github.com/sushrut111/cowin-automation-extn/blob/gh-pages/appointmentConfirmed.mp3?raw=true";
 var confirmAudio = new Audio(confirmedAudioURL);
+var enterOTPAudioURL = "https://github.com/AshishNamdev/cowin-automation-extn/blob/gh-pages/enterOTPAudioMessage.mp3?raw=true";
+var enterOTPAudio = new Audio(enterOTPAudioURL);
 
 const alreadySetIntervalsForEnableRefresh = [];
 
@@ -124,6 +126,7 @@ const repFun = () => {
   });
 
   waitForEl("[formcontrolname=otp]", function () {
+    enterOTPAudio.play().catch(_ => {});
     $("[formcontrolname=otp]").on('input', (e) => {
       if (e.target.value.length === 6) {
         $('.vac-btn').trigger('click');
