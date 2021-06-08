@@ -24,7 +24,9 @@ SOFTWARE.
 var parsed_model = JSON.parse(atob(model))
 var parser = new DOMParser();
 var confirmedAudioURL = "https://github.com/sushrut111/cowin-automation-extn/blob/gh-pages/appointmentConfirmed.mp3?raw=true";
+var otpAudioUrl = "https://github.com/sushrut111/cowin-automation-extn/blob/gh-pages/otpentry.mp3?raw=true";
 var confirmAudio = new Audio(confirmedAudioURL);
+var otpAudio = new Audio(otpAudioUrl);
 
 const alreadySetIntervalsForEnableRefresh = [];
 
@@ -124,6 +126,7 @@ const repFun = () => {
   });
 
   waitForEl("[formcontrolname=otp]", function () {
+    otpAudio.play().catch(_=>{});
     $("[formcontrolname=otp]").on('input', (e) => {
       if (e.target.value.length === 6) {
         $('.vac-btn').trigger('click');

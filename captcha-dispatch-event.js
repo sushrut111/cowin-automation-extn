@@ -21,6 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+const handleBookingErrorAndGoBack = () => {
+    waitForEl(".ng-star-inserted.ng-trigger.ng-trigger-flyInOut.ngx-toastr.toast-error", async() => {
+        await sleep(1000);
+        window.location.reload();
+    });
+}
 $(document).on('click', 'div.slots-box:not(.no-available)', async function (e) {
     await sleep(1000);
     waitForEl('.appoint-success', () => {
@@ -30,6 +36,7 @@ $(document).on('click', 'div.slots-box:not(.no-available)', async function (e) {
             console.log("Unable to enter captcha");
         } finally {
             if (enableautoconfirm) {
+                handleBookingErrorAndGoBack();
                 $("ion-button.confirm-btn")[0].click();
             }
         }
