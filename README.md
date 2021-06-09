@@ -1,8 +1,13 @@
+# Important to note
+
+This repository is just a proof of concept and I strongly advise you to NOT use this extension for booking your vaccine slots - as it may load the cowin servers and violate the terms of use. You might get yourself blocked from using cowin portal by using this extension.
+
+Please use the extension at your own risk. Make sure you are aware of the "Terms of Service" published by Ministry of Health and Family Welfare, Government of India.
+Here are the "Terms of Service" published by Ministry of Health and Family Welfare, Government of India: [https://www.cowin.gov.in/terms-condition](https://www.cowin.gov.in/terms-condition)
+
 # Latest release
 [![GitHub version](https://img.shields.io/github/v/release/sushrut111/cowin-automation-extn)](https://github.com/sushrut111/cowin-automation-extn/releases)
 # Install released versions
-
-[Install from chrome web store](https://bit.ly/vaccine-slots)
 
 [Install on smartphone](https://github.com/sushrut111/cowin-automation-extn/wiki/How-install-from-release-on-smartphone)
 
