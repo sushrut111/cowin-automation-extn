@@ -27,6 +27,11 @@ const buttonCheckboxMapping = {
         label: "Age 18+",
         checked: false
     },
+    age18to45checkbox: {
+        labelId: "age18to45checkboxlabel",
+        label: "18-44 Only",
+        checked: false
+    },
     age45checkbox: {
         labelId: "age45checkboxlabel",
         label: "Age 45+",
